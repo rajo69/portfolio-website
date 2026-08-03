@@ -5,8 +5,8 @@ import type { Project } from "./types";
  * Flagship section". Work renders everything else, so flipping the flag before
  * the block exists would make a project disappear from the site entirely.
  *
- * Flagship blocks today: AI Accountant, Clustering Stability, Gated Attention.
- * Queued: Banking77 fine-tune, the dissertation.
+ * Flagship blocks today: AI Accountant, Clustering Stability, Banking77,
+ * Gated Attention. Queued: the dissertation.
  *
  * The IBM engagement stays in Work only until the Experience section exists,
  * which is where it belongs.
@@ -214,6 +214,7 @@ export const projects: Project[] = [
     repo:
       "https://github.com/rajo69/Fine-Tuning-Llama-3.2-1B-Instruct-on-Banking77-Intent-Classification",
     demo: "https://huggingface.co/rajo0113/banking77-llama-1b-lora",
+    featured: true,
   },
   {
     slug: "image-captioning",
