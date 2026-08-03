@@ -2,7 +2,6 @@ import { About } from "@/components/section/About";
 import { Certifications } from "@/components/section/Certifications";
 import { Flagship } from "@/components/section/Flagship";
 import { Hero } from "@/components/section/Hero";
-import { Lab } from "@/components/section/Lab";
 import { Method } from "@/components/section/Method";
 import { Spine } from "@/components/section/Spine";
 import { Stack } from "@/components/section/Stack";
@@ -22,7 +21,6 @@ export default function Home() {
       <Hero />
       <Spine />
       <Flagship />
-      <Lab />
       <Work />
       <Method />
       <About />

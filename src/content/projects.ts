@@ -1,19 +1,15 @@
 import type { Project } from "./types";
 
 /**
- * The four `featured: true` entries become the Lab, and they are chosen to
- * span the four capabilities rather than to be the four newest or the four
- * most impressive individually. One agentic system, one data platform, one
- * interpretability study, one computer vision piece.
+ * `featured: true` means "this project has a hand-written block in the
+ * Flagship section". Work renders everything else, so flipping the flag before
+ * the block exists would make a project disappear from the site entirely.
  *
- * That is the T made concrete: a reader who cares about pipelines finds one
- * immediately, and so does a reader who cares about research. The horizontal
- * bar (SQL, ETL, Python, statistics) runs through all four rather than being
- * a project of its own.
+ * Flagship blocks today: AI Accountant, Clustering Stability.
+ * Queued: Banking77 fine-tune, the dissertation, gated attention.
  *
- * The IBM engagement earns a card despite having no public repository. It is
- * the largest data platform work here and it existed only as CV bullets,
- * which meant the data half of the portfolio was invisible.
+ * The IBM engagement stays in Work only until the Experience section exists,
+ * which is where it belongs.
  *
  * No em dashes anywhere in this file.
  */
@@ -58,7 +54,6 @@ export const projects: Project[] = [
     category: "Data platform",
     period: "2021 to 2023",
     tech: ["ETL", "Snowflake", "SQL", "Tableau", "Power BI", "Python", "XGBoost"],
-    featured: true,
     caseStudy: true,
     metrics: [
       { label: "Reporting migrated to Tableau", value: "68%", chart: "gauge", series: [] },
@@ -82,7 +77,6 @@ export const projects: Project[] = [
     tech: ["PyTorch", "Transformers", "Forward hooks", "Bootstrapped CIs"],
     repo:
       "https://github.com/rajo69/Gate-Sparsity-and-Functional-Sensitivity-in-Gated-Attention-An-Empirical-Analysis",
-    featured: true,
     caseStudy: true,
     metrics: [
       { label: "Gate dimensions stably suppressed", value: "48.3%", chart: "histogram", series: [] },
@@ -106,7 +100,6 @@ export const projects: Project[] = [
     tech: ["MATLAB", "Deep Learning Toolbox", "CNNs", "Formal verification"],
     repo:
       "https://github.com/rajo69/Enhancing-Neural-Network-Robustness-using-Hybrid-Adversarial-Training",
-    featured: true,
     caseStudy: true,
     metrics: [
       // Both of these are defensible from the degree record. The robustness
@@ -146,6 +139,7 @@ export const projects: Project[] = [
     period: "2026",
     tech: ["scikit-learn", "Python", "Jupyter"],
     repo: "https://github.com/rajo69/Clustering-Stability-Analysis",
+    featured: true,
   },
   {
     slug: "job-apply-harness",
@@ -208,15 +202,17 @@ export const projects: Project[] = [
   },
   {
     slug: "banking77-llama",
-    title: "Llama-3.2-1B on Banking77",
-    summary: "Fine-tuning a 1B instruct model for 77-class banking intent classification.",
+    title: "Banking77 Llama-1B LoRA",
+    summary:
+      "QLoRA fine-tune taking a 1B instruct model from 0% to 90.21% exact match on 77-class banking intent classification. Published to Hugging Face.",
     track: "research",
     capabilities: ["research", "ai"],
     category: "Fine-tuning",
     period: "2026",
-    tech: ["Llama", "PEFT", "Transformers"],
+    tech: ["QLoRA", "rsLoRA", "NEFTune", "Unsloth", "TRL", "PEFT"],
     repo:
       "https://github.com/rajo69/Fine-Tuning-Llama-3.2-1B-Instruct-on-Banking77-Intent-Classification",
+    demo: "https://huggingface.co/rajo0113/banking77-llama-1b-lora",
   },
   {
     slug: "image-captioning",
