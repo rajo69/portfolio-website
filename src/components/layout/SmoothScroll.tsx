@@ -37,7 +37,17 @@ export function SmoothScroll() {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
+    // Trigger start/end positions are measured at creation, which happens
+    // before webfonts finish swapping in. Archivo is much wider than the
+    // fallback, so headlines reflow and every measurement below them shifts.
+    // Recompute once the real faces are in.
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) ScrollTrigger.refresh();
+    });
+
     return () => {
+      cancelled = true;
       gsap.ticker.remove(tick);
       lenis.destroy();
     };
