@@ -1,0 +1,88 @@
+import { Bars } from "@/components/blog/Bars";
+
+export const meta = {
+  title: "What the gates in gated attention actually do",
+  summary:
+    "The paper shows that gating helps. It does not say what the trained gates are doing. I ran the released models over 25,600 tokens to find out, and one layer turned out to account for almost all of it.",
+  date: "2026-08-03",
+  topic: "Interpretability",
+  paper: {
+    title: "Gated Attention for Large Language Models",
+    authors: "Qiu et al.",
+    year: 2025,
+    venue: "NeurIPS 2025",
+    url: "https://arxiv.org/abs/2505.06708",
+  },
+  // DRAFT. Scaffold written from the repository README so the blog has a real
+  // post to render. Every number below is from the analysis and is correct,
+  // but the argument and the voice are placeholders: rewrite before publishing.
+  draft: true,
+};
+
+The original paper establishes something useful: putting a sigmoid gate after
+attention makes language models better. It reports aggregate statistics about
+those gates, layer-wise means, attention sink percentages, and it stops there.
+
+What it does not answer is the question I care about. Once training is done,
+what are the individual gates doing, and what breaks if you interfere with
+them? So I took the released pretrained models and ran forward hooks, layer
+ablations and cross-domain checks over 25,600 WikiText-2 tokens. No training,
+no improvement claims, just measurement of a model somebody else trained.
+
+## The gates are close to binary
+
+The first surprise is that gate dimensions are not spread across a continuum.
+They cluster at the ends.
+
+<Bars
+  caption="Elementwise gate dimensions by behaviour, aggregated with Welford over 25,600 WikiText-2 tokens. The categories overlap, so they do not sum to 100. Split-half stability confirmed."
+  data={[
+    { label: "Stably suppressed", value: 48.3, series: 0 },
+    { label: "Dynamic", value: 54.8, series: 1 },
+  ]}
+  max={100}
+/>
+
+Roughly half the dimensions are held down essentially all the time, and a
+slightly larger share genuinely vary with the input. The two sets overlap,
+which is why the numbers do not add to a hundred.
+
+## Layer 0 is doing nearly all the work
+
+The more striking result is how unevenly the damage is distributed when you
+start opening gates.
+
+<Bars
+  caption="Share of total ablation damage attributable to layer 0 versus every other layer combined. Bootstrapped confidence intervals, consistent with the layer sparsity pattern."
+  data={[
+    { label: "Layer 0", value: 99.8, series: 0 },
+    { label: "All other layers", value: 0.2, series: 1 },
+  ]}
+  max={100}
+/>
+
+Ablating layer 0's gate accounts for 99.8% of the perplexity damage. Everything
+else is rounding error. That is a strong enough result that my first assumption
+was a bug in the harness, which is most of why the confidence grades in the
+repository exist at all.
+
+## What did not work
+
+I expected forcing layer 0's gate open to restore the attention sink. It does
+not. That is a null result and I have graded it moderate: the attention weight
+hooks are doing what I think they are doing, but the mechanism is unclear and
+it does not contradict the paper's system-level claim.
+
+Related, the best fixed gate value I could find, 0.15, is still 99.21
+perplexity worse than the learned gates. Whatever the gates are encoding, a
+constant does not approximate it.
+
+## What this does not show
+
+One model size. One primary dataset. No retraining. The finding that some heads
+show no quality loss when killed is graded low for exactly that reason, and it
+stays low until it has been run against another benchmark.
+
+The full findings table, with a confidence grade and the evidence behind every
+row, is in the repository, along with the `.pkl` files needed to reproduce the
+whole thing on a free Colab T4 in about three hours.
