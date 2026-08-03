@@ -7,8 +7,26 @@
  * and caught by `npm run check:content`.
  */
 
-/** Which side of the Research → Engineering → Product spine a project sits on. */
+/** Which side of the Research, Engineering, Product spine a project sits on. */
 export type Track = "research" | "engineering" | "product";
+
+/**
+ * The capability a project demonstrates. Deliberately a list, not a single
+ * value: the whole argument of this portfolio is that the interesting work
+ * sits where these overlap, so a project that is both data and AI should say
+ * so rather than being filed under one.
+ *
+ * These are the vertical spikes of a T. The horizontal bar (SQL, ETL, Python,
+ * statistics) runs under all of them and is shown in the stack, not here.
+ */
+export type Capability = "ai" | "data" | "research" | "vision";
+
+export const CAPABILITY_LABEL: Record<Capability, string> = {
+  ai: "AI & agents",
+  data: "Data & pipelines",
+  research: "Research",
+  vision: "Vision & robustness",
+};
 
 /** A hero/section statistic. Renders as a big accent number + tracked caption. */
 export interface Stat {
@@ -53,6 +71,8 @@ export interface Project {
    */
   proves?: string;
   track: Track;
+  /** Capabilities this demonstrates. Drives the Work list filter. */
+  capabilities: Capability[];
   /** Display category pill, e.g. "Interpretability", "Agents", "RAG". */
   category: string;
   /** Year or range, e.g. "2026" or "2025, 26". */

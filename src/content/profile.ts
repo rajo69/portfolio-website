@@ -54,31 +54,50 @@ export const profile: Profile = {
    */
   spine: {
     intro:
-      "Getting a model to be accurate is the part that has a benchmark. The part that decides whether it ever runs in a real workflow is whether the person accountable for the output is willing to put their name on it. That question is answered in the design, not in a rollout meeting.",
+      "Most of what decides whether an AI system works happens before the model runs, and most of what decides whether it gets used happens after. The pipeline that cleans and structures data is the same pipeline whether it ends in a dashboard or in an LLM's context window. I build the whole line.",
     nodes: [
       {
-        label: "Build",
-        body: "Agents, retrieval and fine-tuned models in production. LangGraph, Claude, pgvector, FastAPI, on real systems of record.",
+        label: "Pipeline",
+        body: "SQL, ETL and data quality. A model is only as good as what reaches it, and a retrieval system is a data pipeline with a language model on the end.",
       },
       {
-        label: "Explain",
-        body: "Feature importances, calibrated confidence, immutable audit logs. The reasoning ships with the answer, not after it.",
+        label: "Model",
+        body: "Agents, retrieval, fine-tuning, convolutional networks and statistical models. Whichever one the problem actually calls for.",
       },
       {
-        label: "Adopt",
-        body: "Human in the loop by design. The professional reviews, corrects, and signs off, and the system learns from the correction.",
+        label: "Trust",
+        body: "Evals, interpretability, calibrated confidence and audit logs. The reasoning ships with the answer, so the person accountable can check it.",
       },
     ],
-    kicker: "Accuracy gets you a demo.\nExplainability gets you a user.",
+    kicker: "Accuracy gets you a demo.\nThe pipeline and the audit trail get you a user.",
   },
 
+  /**
+   * Rendered as a T: one foundations row that runs under everything, then the
+   * three spikes. Grouped this way on purpose, because a flat tool list is the
+   * thing the research says not to do.
+   */
   stack: [
-    { group: "Agents", items: ["LangGraph", "Claude", "Instructor", "MCP", "Gymnasium"] },
-    { group: "Models", items: ["PyTorch", "Transformers", "TRL / GRPO", "XGBoost", "Unsloth"] },
-    { group: "Retrieval", items: ["pgvector", "LlamaIndex", "Neo4j", "NVIDIA NIM"] },
-    { group: "Serving", items: ["FastAPI", "Next.js", "Vercel", "Postgres"] },
-    { group: "Interpretability", items: ["InterpretML EBM", "Fuzzy logic", "SHAP", "Forward hooks"] },
-    { group: "Data", items: ["Power BI", "Tableau", "Snowflake", "Power Query", "SQL"] },
+    {
+      group: "Foundations",
+      items: ["Python", "SQL", "ETL", "Statistics", "Git", "Docker"],
+    },
+    {
+      group: "Data & pipelines",
+      items: ["Power Query", "Power Automate", "Snowflake", "Power BI", "Tableau", "Dynamics 365", "Postgres"],
+    },
+    {
+      group: "AI & agents",
+      items: ["LangGraph", "Claude", "Instructor", "MCP", "pgvector", "LlamaIndex", "FastAPI"],
+    },
+    {
+      group: "Models & research",
+      items: ["PyTorch", "Transformers", "TRL / GRPO", "PPO", "XGBoost", "scikit-learn", "MATLAB"],
+    },
+    {
+      group: "Trust & evaluation",
+      items: ["InterpretML EBM", "Fuzzy logic", "Forward hooks", "Bootstrapped CIs", "Gymnasium"],
+    },
   ],
 
   faq: [
