@@ -33,8 +33,7 @@ export const profile: Profile = {
 
   socials: {
     github: "https://github.com/rajo69",
-    // TODO(rajarshi): send your LinkedIn URL for the footer.
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/rajarshi-nandi/",
     scholar: "",
   },
 

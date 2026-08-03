@@ -158,6 +158,14 @@ export interface Certification {
   url?: string;
   /** Optional grouping, e.g. "Cloud", "ML", "Data". */
   category?: string;
+  /**
+   * Surfaced by default. The rest collapse behind a "show all" toggle.
+   *
+   * Rajarshi's own application profile carries a rule against listing every
+   * certification he holds: dumping the pile dilutes the signal and reads as
+   * padding. Four JD-matched ones do more work than thirteen.
+   */
+  featured?: boolean;
 }
 
 export interface WritingItem {

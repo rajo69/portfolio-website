@@ -1,5 +1,7 @@
 import { Section } from "@/components/layout/Section";
 import { About } from "@/components/section/About";
+import { Certifications } from "@/components/section/Certifications";
+import { Flagship } from "@/components/section/Flagship";
 import { Hero } from "@/components/section/Hero";
 import { Method } from "@/components/section/Method";
 import { Spine } from "@/components/section/Spine";
@@ -18,8 +20,10 @@ export default function Home() {
     <>
       <Hero />
       <Spine />
+      <Flagship />
       <Method />
       <About />
+      <Certifications />
 
       {/* Placeholders. Phase 3 replaces these with the Lab cards and the
           filterable Work list. See CONTENT-BRIEF.md. */}
