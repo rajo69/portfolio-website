@@ -71,7 +71,7 @@ export default async function PostPage({
           <div className="flex flex-wrap items-center gap-3">
             <Eyebrow>{post.topic}</Eyebrow>
             {post.draft && (
-              <span className="rounded-full border border-ink-500 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-faint">
+              <span className="rounded-full border border-line-strong px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-faint">
                 Draft
               </span>
             )}
@@ -87,7 +87,7 @@ export default async function PostPage({
           </div>
 
           {post.paper && (
-            <div className="mt-8 rounded-sm border border-ink-600 bg-ink-800 p-5">
+            <div className="mt-8 rounded-sm border border-line bg-ink-800 p-5">
               <Label className="block">The paper</Label>
               <a
                 href={post.paper.url}

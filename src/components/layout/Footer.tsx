@@ -18,7 +18,7 @@ export function Footer() {
   ].filter((s): s is { label: string; href: string } => Boolean(s.href));
 
   return (
-    <footer className="border-t border-ink-600 px-(--gutter) py-14">
+    <footer className="border-t border-line px-(--gutter) py-14">
       <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <a
@@ -79,7 +79,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-16 flex flex-col gap-3 border-t border-ink-600 pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
         <Label>{profile.location}</Label>
         <Label>
           {`${profile.name} · MMXXVI · Built with Next.js, GSAP & a canvas`}

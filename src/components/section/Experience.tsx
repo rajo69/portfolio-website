@@ -47,7 +47,7 @@ export function Experience() {
   const roles = experience.filter((r) => !r.hidden);
 
   return (
-    <Section id="experience">
+    <Section id="experience" bloom>
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Experience</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">
@@ -60,16 +60,16 @@ export function Experience() {
         </Lede>
       </Reveal>
 
-      <div className="mt-16 border-t border-ink-600">
+      <div className="mt-16 border-t border-line">
         {roles.map((role) => (
           <Reveal
             key={`${role.company}-${role.start}`}
             variant="stagger"
-            className="grid gap-6 border-b border-ink-600 py-12 lg:grid-cols-[200px_1fr] lg:gap-12"
+            className="grid gap-6 border-b border-line py-12 lg:grid-cols-[200px_1fr] lg:gap-12"
           >
             {/* Rail */}
             <div>
-              <Label className="block text-accent">
+              <Label className="block text-paper">
                 {fmt(role.start)} to {fmt(role.end)}
               </Label>
               <Label className="mt-1.5 block opacity-60">
@@ -110,7 +110,7 @@ export function Experience() {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-1.5 block size-1 shrink-0 bg-accent"
+                      className="mt-[0.45rem] block size-1 shrink-0 rounded-full bg-paper-faint"
                     />
                     <span>{h}</span>
                   </li>
@@ -122,7 +122,7 @@ export function Experience() {
                   {role.tech.map((t) => (
                     <li
                       key={t}
-                      className="rounded-sm border border-ink-500 px-2 py-0.5 font-mono text-[10px] text-paper-faint"
+                      className="rounded-sm border border-line-strong px-2 py-0.5 font-mono text-[10px] text-paper-faint"
                     >
                       {t}
                     </li>
@@ -138,10 +138,10 @@ export function Experience() {
           <Reveal
             key={ed.institution}
             variant="stagger"
-            className="grid gap-6 border-b border-ink-600 py-12 lg:grid-cols-[200px_1fr] lg:gap-12"
+            className="grid gap-6 border-b border-line py-12 lg:grid-cols-[200px_1fr] lg:gap-12"
           >
             <div>
-              <Label className="block text-accent">
+              <Label className="block text-paper">
                 {fmt(ed.start)} to {fmt(ed.end)}
               </Label>
               <Label className="mt-1.5 block opacity-60">{ed.location}</Label>

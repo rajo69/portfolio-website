@@ -74,13 +74,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     pre: ({ children, ...props }) => (
       <pre
-        className="mt-6 overflow-x-auto rounded-sm border border-ink-600 bg-ink-800 p-5 font-mono text-sm leading-relaxed text-paper-dim"
+        className="mt-6 overflow-x-auto rounded-sm border border-line bg-ink-800 p-5 font-mono text-sm leading-relaxed text-paper-dim"
         {...props}
       >
         {children}
       </pre>
     ),
-    hr: (props) => <hr className="mt-12 border-ink-600" {...props} />,
+    hr: (props) => <hr className="mt-12 border-line" {...props} />,
     table: ({ children, ...props }) => (
       // Wide tables scroll inside their own box; the page never scrolls sideways.
       <div className="mt-6 overflow-x-auto">
@@ -91,14 +91,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     th: ({ children, ...props }) => (
       <th
-        className="border-b border-ink-500 py-2.5 pr-6 text-left font-mono text-[11px] uppercase tracking-[0.18em] text-paper-faint"
+        className="border-b border-line-strong py-2.5 pr-6 text-left font-mono text-[11px] uppercase tracking-[0.18em] text-paper-faint"
         {...props}
       >
         {children}
       </th>
     ),
     td: ({ children, ...props }) => (
-      <td className="border-b border-ink-600 py-2.5 pr-6 text-paper-dim" {...props}>
+      <td className="border-b border-line py-2.5 pr-6 text-paper-dim" {...props}>
         {children}
       </td>
     ),

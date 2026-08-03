@@ -31,7 +31,7 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-40 transition-colors duration-300",
-        scrolled && "border-b border-ink-600 bg-ink-900/80 backdrop-blur-md")}
+        scrolled && "border-b border-line bg-ink-900/80 backdrop-blur-md")}
     >
       <div className="flex items-center justify-between px-(--gutter) py-5">
         <a

@@ -22,7 +22,7 @@ import { Eyebrow, Label, Lede } from "@/components/type";
  */
 export function Flagship() {
   return (
-    <Section id="flagship">
+    <Section id="flagship" bloom>
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Flagship projects</Eyebrow>
         <SplitHeading size="h1" className="max-w-[17ch]">
@@ -211,7 +211,7 @@ export function Flagship() {
         </Block>
       </div>
 
-      <Reveal className="mt-24 border-t border-ink-600 pt-10">
+      <Reveal className="mt-24 border-t border-line pt-10">
         <Label>Next: the ResNet-18 dissertation</Label>
       </Reveal>
     </Section>

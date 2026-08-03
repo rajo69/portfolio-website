@@ -4,6 +4,7 @@ import { ArrowDown } from "lucide-react";
 import { useRef } from "react";
 
 import { LogitLens, LogitLensRail } from "@/components/motion/LogitLens";
+import { Parallax } from "@/components/motion/Parallax";
 import { Reveal } from "@/components/motion/Reveal";
 import { Counter } from "@/components/type/Counter";
 import { Eyebrow, Label, Lede } from "@/components/type";
@@ -22,9 +23,9 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[88svh] flex-col justify-between px-(--gutter) pb-10 pt-24 md:pt-32"
+      className="bloom isolate relative flex min-h-[92svh] flex-col justify-between px-(--gutter) pb-10 pt-24 md:pt-32"
     >
-      <div className="mx-auto flex w-full max-w-(--shell) flex-1 flex-col justify-center">
+      <Parallax y={-90} fadeTo={0.25} className="mx-auto flex w-full max-w-(--shell) flex-1 flex-col justify-center">
         <Reveal variant="stagger" className="space-y-8">
           <Eyebrow>{profile.title}</Eyebrow>
 
@@ -52,7 +53,7 @@ export function Hero() {
             ))}
           </ul>
         </Reveal>
-      </div>
+      </Parallax>
 
       <div className="mx-auto flex w-full max-w-(--shell) items-center justify-between">
         <Label>{profile.location}</Label>

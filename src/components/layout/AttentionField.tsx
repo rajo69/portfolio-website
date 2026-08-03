@@ -107,9 +107,9 @@ const NODE_MAX_ALPHA = 0.95;
  * see the network, then watch a head fire across it. Verified by sampling the
  * canvas rather than by eye; see the budget note in DESIGN.md.
  */
-const EDGE_BASE_ALPHA = 0.16;
-const LONG_EDGE_BASE_ALPHA = 0.085;
-const NODE_BASE_ALPHA = 0.42;
+const EDGE_BASE_ALPHA = 0.2;
+const LONG_EDGE_BASE_ALPHA = 0.1;
+const NODE_BASE_ALPHA = 0.34;
 
 export function AttentionField() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -125,8 +125,13 @@ export function AttentionField() {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const accent = parseHex(
-      getComputedStyle(document.documentElement).getPropertyValue("--accent"));
+    const css = getComputedStyle(document.documentElement);
+    const accent = parseHex(css.getPropertyValue("--accent"));
+    // The resting lattice is deliberately NOT the accent. When every edge was
+    // pink the page read as pink soup and a firing head was indistinguishable
+    // from the background. Neutral at rest means an event actually reads as
+    // an event, and it keeps the accent budget for the numbers.
+    const lattice = css.getPropertyValue("--lattice").trim() || "150 155 168";
 
     let nodes: Node[] = [];
     let edges: Edge[] = [];
@@ -288,7 +293,7 @@ export function AttentionField() {
       ctx!.lineWidth = 0.6;
       for (let b = 0; b < BUCKETS; b++) {
         const alpha = ((b + 0.5) / BUCKETS) * EDGE_MAX_ALPHA;
-        ctx!.strokeStyle = `rgb(${accent} / ${alpha})`;
+        ctx!.strokeStyle = `rgb(${lattice} / ${alpha})`;
         ctx!.stroke(edgePaths[b]);
       }
 
@@ -296,6 +301,8 @@ export function AttentionField() {
         const a = nodes[edge.a];
         const b = nodes[edge.b];
         const gate = Math.min(a.gate, b.gate);
+        // Only genuinely hot edges get the accent, which is what makes a
+        // firing head legible against a neutral field.
         ctx!.strokeStyle = `rgb(${accent} / ${Math.min(0.85, 0.25 + edge.flash * 0.4) * gate})`;
         ctx!.lineWidth = 1.4;
         ctx!.beginPath();
@@ -319,7 +326,10 @@ export function AttentionField() {
 
       for (let b = 0; b < BUCKETS; b++) {
         const alpha = ((b + 0.5) / BUCKETS) * NODE_MAX_ALPHA;
-        ctx!.fillStyle = `rgb(${accent} / ${alpha})`;
+        // Top two buckets are only reachable by a flashing node, so they take
+        // the accent; the resting field below them stays neutral.
+        const hot = b >= BUCKETS - 2;
+        ctx!.fillStyle = `rgb(${hot ? accent : lattice} / ${alpha})`;
         ctx!.fill(nodePaths[b]);
       }
 

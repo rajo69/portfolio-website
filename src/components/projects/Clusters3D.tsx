@@ -175,11 +175,11 @@ export function Clusters3D() {
     `rounded-full border px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 ${
       on
         ? "border-accent bg-accent text-on-accent"
-        : "border-ink-500 text-paper-dim hover:border-accent hover:text-paper"
+        : "border-line-strong text-paper-dim hover:border-accent hover:text-paper"
     }`;
 
   return (
-    <div className="rounded-sm border border-ink-600 bg-ink-800 p-5 sm:p-7">
+    <div className="surface rounded-lg p-5 sm:p-7">
       <div className="flex flex-wrap gap-2">
         {DATASETS.map((d) => (
           <button
@@ -238,7 +238,7 @@ export function Clusters3D() {
         <Label>Drag to rotate</Label>
       </div>
 
-      <dl className="mt-6 grid gap-5 border-t border-ink-600 pt-5 sm:grid-cols-3">
+      <dl className="mt-6 grid gap-5 border-t border-line pt-5 sm:grid-cols-3">
         {[
           [run.ari.toFixed(3), "ARI vs ground truth"],
           [`${misassigned}`, `Of ${dataset.truth.length} points misassigned`],

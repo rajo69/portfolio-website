@@ -22,7 +22,7 @@ export function About() {
     <Section id="about">
       <div className="grid gap-14 lg:grid-cols-[auto_1fr] lg:gap-20">
         <Reveal className="mx-auto w-full max-w-[280px] lg:mx-0 lg:w-[300px]">
-          <div className="relative overflow-hidden rounded-sm border border-ink-600">
+          <div className="relative overflow-hidden rounded-sm border border-line">
             <Image
               src="/headshot.png"
               alt={`${profile.name}, ${profile.title}`}

@@ -42,7 +42,7 @@ export function Stack() {
 
       <Reveal
         variant="stagger"
-        className="mt-px grid gap-px border-ink-600 bg-ink-600 sm:grid-cols-2 lg:grid-cols-4"
+        className="mt-px grid gap-px border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
       >
         {spikes.map((group) => (
           <div key={group.group} className="bg-ink-900 p-6">

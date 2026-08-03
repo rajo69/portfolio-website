@@ -50,7 +50,7 @@ export function Bars({
 
   return (
     <figure className={cn("mt-8", className)}>
-      <div className="rounded-sm border border-ink-600 bg-ink-800 p-6">
+      <div className="surface rounded-lg p-6">
         <div className="space-y-5">
           {data.map((d) => {
             const pct = (d.value / ceiling) * 100;
@@ -66,7 +66,7 @@ export function Bars({
                 </div>
                 {/* Track sits at 2px inset from the fill, giving the surface
                     gap the mark spec asks for. */}
-                <div className="h-2 w-full overflow-hidden rounded-full bg-ink-600">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-line">
                   <div
                     className="h-full rounded-full"
                     style={{
@@ -81,7 +81,7 @@ export function Bars({
         </div>
 
         {/* Recessive axis. */}
-        <div className="mt-5 flex justify-between border-t border-ink-600 pt-2">
+        <div className="mt-5 flex justify-between border-t border-line pt-2">
           <span className="font-mono text-[10px] tracking-wider text-paper-faint">0</span>
           <span className="font-mono text-[10px] tracking-wider text-paper-faint">
             {ceiling}
@@ -103,10 +103,10 @@ export function Bars({
         <table className="mt-3 w-full border-collapse text-sm">
           <thead>
             <tr>
-              <th className="border-b border-ink-500 py-2 pr-6 text-left font-mono text-[11px] uppercase tracking-[0.18em] text-paper-faint">
+              <th className="border-b border-line-strong py-2 pr-6 text-left font-mono text-[11px] uppercase tracking-[0.18em] text-paper-faint">
                 Series
               </th>
-              <th className="border-b border-ink-500 py-2 text-right font-mono text-[11px] uppercase tracking-[0.18em] text-paper-faint">
+              <th className="border-b border-line-strong py-2 text-right font-mono text-[11px] uppercase tracking-[0.18em] text-paper-faint">
                 Value
               </th>
             </tr>
@@ -114,10 +114,10 @@ export function Bars({
           <tbody>
             {data.map((d) => (
               <tr key={d.label}>
-                <td className="border-b border-ink-600 py-2 pr-6 text-paper-dim">
+                <td className="border-b border-line py-2 pr-6 text-paper-dim">
                   {d.label}
                 </td>
-                <td className="border-b border-ink-600 py-2 text-right font-mono tabular-nums text-paper-dim">
+                <td className="border-b border-line py-2 text-right font-mono tabular-nums text-paper-dim">
                   {d.value}
                   {unit}
                 </td>

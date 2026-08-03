@@ -38,7 +38,7 @@ function Row({ cert }: { cert: Certification }) {
   const Wrapper = verifiable ? "a" : "div";
 
   return (
-    <li className="border-b border-ink-600">
+    <li className="border-b border-line">
       <Wrapper
         {...(verifiable
           ? { href: cert.url, target: "_blank", rel: "noreferrer" }
@@ -97,7 +97,7 @@ export function Certifications() {
       </Reveal>
 
       <Reveal className="mt-14">
-        <ul className="border-t border-ink-600">
+        <ul className="border-t border-line">
           {featured.map((c) => (
             <Row key={c.name} cert={c} />
           ))}
@@ -108,7 +108,7 @@ export function Certifications() {
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
-          className="mt-6 inline-flex items-center gap-2 rounded-full border border-ink-500 px-5 py-2 text-xs tracking-wide text-paper-dim transition-colors duration-200 hover:border-accent hover:text-paper"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2 text-xs tracking-wide text-paper-dim transition-colors duration-200 hover:border-accent hover:text-paper"
         >
           {expanded ? "Show fewer" : `Show all ${certifications.length}`}
         </button>

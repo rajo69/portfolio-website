@@ -58,7 +58,7 @@ export function Points({
       <ul className="space-y-2.5">
         {items.map((t, i) => (
           <li key={i} className="flex gap-3 text-sm leading-snug text-paper-dim">
-            <span aria-hidden="true" className="mt-1.5 block size-1 shrink-0 bg-accent" />
+            <span aria-hidden="true" className="mt-[0.45rem] block size-1 shrink-0 rounded-full bg-paper-faint" />
             <span>{t}</span>
           </li>
         ))}
@@ -70,7 +70,7 @@ export function Points({
 /** Problem on top in paper, the fix under it in dim. Two lines each, maximum. */
 export function Fix({ problem, fix }: { problem: string; fix: string }) {
   return (
-    <li className="border-l-2 border-ink-500 pl-4">
+    <li className="border-l-2 border-line-strong pl-4">
       <p className="text-sm leading-snug text-paper">{problem}</p>
       <p className="mt-1.5 text-sm leading-snug text-paper-dim">{fix}</p>
     </li>
@@ -106,7 +106,7 @@ export function Links({
           className={
             l.primary
               ? "inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity hover:opacity-90"
-              : "inline-flex items-center gap-2 rounded-full border border-ink-500 px-5 py-2.5 text-sm text-paper-dim transition-colors hover:border-accent hover:text-paper"
+              : "inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 text-sm text-paper-dim transition-colors hover:border-accent hover:text-paper"
           }
         >
           {l.icon === "gh" ? <GithubMark /> : null}
@@ -141,14 +141,14 @@ export function Block({
   links: { label: string; href: string; primary?: boolean; icon?: "gh" }[];
 }) {
   return (
-    <article className="border-t border-ink-600 pt-14">
+    <article className="border-t border-line pt-14">
       <Reveal variant="stagger">
         <div className="flex flex-wrap items-center gap-2">
           <Label className="text-accent">{index}</Label>
           {capabilities.map((c) => (
             <span
               key={c}
-              className="rounded-full border border-accent/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-accent"
+              className="rounded-full border border-line-strong px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-paper-dim"
             >
               {c}
             </span>

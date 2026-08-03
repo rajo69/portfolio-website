@@ -39,9 +39,9 @@ export default async function BlogIndex() {
           </p>
         </Reveal>
       ) : (
-        <Reveal as="ul" variant="stagger" className="mt-16 border-t border-ink-600">
+        <Reveal as="ul" variant="stagger" className="mt-16 border-t border-line">
           {posts.map((post) => (
-            <li key={post.slug} className="border-b border-ink-600">
+            <li key={post.slug} className="border-b border-line">
               <Link
                 href={`/blog/${post.slug}`}
                 className="group grid gap-4 py-8 md:grid-cols-[1fr_auto] md:gap-12"
@@ -50,7 +50,7 @@ export default async function BlogIndex() {
                   <div className="flex flex-wrap items-center gap-3">
                     <Label className="text-accent">{post.topic}</Label>
                     {post.draft && (
-                      <span className="rounded-full border border-ink-500 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-faint">
+                      <span className="rounded-full border border-line-strong px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper-faint">
                         Draft
                       </span>
                     )}

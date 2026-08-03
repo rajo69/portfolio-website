@@ -37,10 +37,10 @@ export function ModelCard() {
       href={URL}
       target="_blank"
       rel="noreferrer"
-      className="group block overflow-hidden rounded-lg border border-ink-600 bg-ink-800 transition-colors duration-300 hover:border-accent/40"
+      className="surface group block overflow-hidden rounded-lg transition-colors duration-300 hover:border-accent/40"
     >
       {/* Header, mirroring how the model is identified on the hub */}
-      <div className="flex flex-wrap items-center gap-3 border-b border-ink-600 px-5 py-4">
+      <div className="flex flex-wrap items-center gap-3 border-b border-line px-5 py-4">
         <span aria-hidden="true" className="text-lg leading-none">
           🤗
         </span>
@@ -80,7 +80,7 @@ export function ModelCard() {
           {TAGS.map((t) => (
             <li
               key={t}
-              className="rounded-sm border border-ink-500 px-2 py-0.5 font-mono text-[10px] text-paper-faint"
+              className="rounded-sm border border-line-strong px-2 py-0.5 font-mono text-[10px] text-paper-faint"
             >
               {t}
             </li>
@@ -95,7 +95,7 @@ export function ModelCard() {
                 {["Setting", "Accuracy", "Correct"].map((h) => (
                   <th
                     key={h}
-                    className="border-b border-ink-500 py-2 pr-6 text-left font-mono text-[10px] uppercase tracking-[0.18em] text-paper-faint"
+                    className="border-b border-line-strong py-2 pr-6 text-left font-mono text-[10px] uppercase tracking-[0.18em] text-paper-faint"
                   >
                     {h}
                   </th>
@@ -105,17 +105,17 @@ export function ModelCard() {
             <tbody>
               {RESULTS.map((r) => (
                 <tr key={r.setting}>
-                  <td className="border-b border-ink-600 py-2.5 pr-6 text-paper-dim">
+                  <td className="border-b border-line py-2.5 pr-6 text-paper-dim">
                     {r.setting}
                   </td>
                   <td
-                    className={`border-b border-ink-600 py-2.5 pr-6 font-mono tabular-nums ${
+                    className={`border-b border-line py-2.5 pr-6 font-mono tabular-nums ${
                       r.accuracy === "0.00%" ? "text-paper-faint" : "text-accent"
                     }`}
                   >
                     {r.accuracy}
                   </td>
-                  <td className="border-b border-ink-600 py-2.5 pr-6 font-mono text-xs tabular-nums text-paper-faint">
+                  <td className="border-b border-line py-2.5 pr-6 font-mono text-xs tabular-nums text-paper-faint">
                     {r.correct}
                   </td>
                 </tr>

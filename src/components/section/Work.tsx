@@ -71,7 +71,7 @@ export function Work() {
                 className={`rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors duration-200 ${
                   on
                     ? "border-accent bg-accent text-on-accent"
-                    : "border-ink-500 text-paper-dim hover:border-accent hover:text-paper"
+                    : "border-line-strong text-paper-dim hover:border-accent hover:text-paper"
                 }`}
               >
                 {f === "all" ? "All" : CAPABILITY_LABEL[f]}
@@ -82,11 +82,11 @@ export function Work() {
         </div>
       </Reveal>
 
-      <ul className="mt-10 border-t border-ink-600">
+      <ul className="mt-10 border-t border-line">
         {visible.map((project) => {
           const Wrapper = project.repo ? "a" : "div";
           return (
-            <li key={project.slug} className="border-b border-ink-600">
+            <li key={project.slug} className="border-b border-line">
               <Wrapper
                 {...(project.repo
                   ? { href: project.repo, target: "_blank", rel: "noreferrer" }
@@ -103,7 +103,7 @@ export function Work() {
                 </div>
 
                 <div className="flex items-center gap-4 md:justify-end">
-                  <span className="rounded-full border border-ink-500 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-paper-faint">
+                  <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-paper-faint">
                     {project.category}
                   </span>
                   <Label>{project.period}</Label>

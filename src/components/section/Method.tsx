@@ -56,11 +56,11 @@ export function Method() {
           <Label>Observed live</Label>
         </div>
 
-        <ul className="border-t border-ink-600">
+        <ul className="border-t border-line">
           {scars.map((s) => (
             <li
               key={s.mechanism}
-              className="grid gap-3 border-b border-ink-600 py-5 md:grid-cols-2 md:gap-10"
+              className="grid gap-3 border-b border-line py-5 md:grid-cols-2 md:gap-10"
             >
               <p className="text-sm leading-snug text-paper-dim">{s.failure}</p>
               <div>

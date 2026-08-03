@@ -23,11 +23,23 @@
      Plasma: the hot end of an attention heatmap. 5.97:1 on --ink-900,
      which clears WCAG AA for normal text. Because it sits lower than a
      lime or cyan would, accent-on-black body copy is capped at label
-     size and headline size, never a paragraph. */
+     size and headline size, never a paragraph.
+
+     ACCENT BUDGET. Roughly one accent element per screenful. It earns its
+     place on numbers, on the single active state in a control group, and
+     on one mark per section. Everywhere else uses --line or --paper-faint.
+     Before this rule the page was pink on pink and the numbers, which are
+     the thing worth reading, had nothing to stand against. */
   --accent: #ff3d8b; /* Plasma */
   --accent-dim: #c22a69; /* hover / pressed / secondary strokes */
-  --accent-ghost: rgb(255 61 139 / 0.08); /* card washes, canvas traces */
+  --accent-ghost: rgb(255 61 139 / 0.07); /* card washes */
+  --accent-glow: rgb(255 61 139 / 0.14); /* atmospheric bloom only */
   --on-accent: #08090a; /* text on a filled accent surface, 5.97:1 */
+
+  /* --- Structure: neutral, so accent stays scarce --- */
+  --line: rgb(244 243 240 / 0.09); /* default hairline */
+  --line-strong: rgb(244 243 240 / 0.16); /* dividers that must read */
+  --lattice: 150 155 168; /* canvas at rest, cool neutral */
 
   /* --- Semantic --- */
   --ok: #4ade80;
@@ -61,6 +73,8 @@
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
   --color-on-accent: var(--on-accent);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
 
   --color-background: var(--ink-900);
   --color-foreground: var(--paper);
@@ -70,6 +84,38 @@
   --font-display: var(--ff-display), "Arial Black", sans-serif;
   --font-sans: var(--ff-sans), system-ui, sans-serif;
   --font-mono: var(--ff-mono), ui-monospace, monospace;
+}
+
+/* ============================================================
+   ELEVATION
+
+   Cards were all one fill with one border, which read as flat. A surface
+   now carries a faint top highlight and a soft drop, so panels sit above
+   the page rather than being drawn on it.
+   ============================================================ */
+
+.surface {
+  background:
+    linear-gradient(to bottom, rgb(244 243 240 / 0.028), transparent 120px),
+    var(--ink-800);
+  border: 1px solid var(--line);
+  box-shadow:
+    0 1px 0 0 rgb(244 243 240 / 0.04) inset,
+    0 24px 48px -32px rgb(0 0 0 / 0.9);
+}
+
+/* A single soft bloom, used once per major section to give the flat black
+   somewhere to breathe. Purely atmospheric, never behind body copy. */
+.bloom::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -10%;
+  height: 60%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(60% 50% at 50% 0%, var(--accent-glow), transparent 70%);
+  filter: blur(40px);
 }
 
 /* ============================================================

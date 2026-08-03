@@ -77,10 +77,10 @@ export function LiveEmbed() {
       href={LIVE_URL}
       target="_blank"
       rel="noreferrer"
-      className="group block overflow-hidden rounded-lg border border-ink-600 bg-ink-800 transition-colors duration-300 hover:border-accent/40"
+      className="surface group block overflow-hidden rounded-lg transition-colors duration-300 hover:border-accent/40"
     >
       {/* Browser chrome */}
-      <div className="flex items-center gap-2 border-b border-ink-600 px-4 py-3">
+      <div className="flex items-center gap-2 border-b border-line px-4 py-3">
         <span aria-hidden="true" className="flex gap-1.5">
           <span className="block size-2.5 rounded-full bg-ink-500" />
           <span className="block size-2.5 rounded-full bg-ink-500" />

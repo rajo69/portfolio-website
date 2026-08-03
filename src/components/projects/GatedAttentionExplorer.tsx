@@ -183,7 +183,7 @@ export function GatedAttentionExplorer() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-sm border border-ink-600 bg-ink-800 p-6 sm:p-8">
+    <div className="surface rounded-lg p-6 sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <Label as="h4">The intervention</Label>
         <button
@@ -193,7 +193,7 @@ export function GatedAttentionExplorer() {
           className={`rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors duration-200 ${
             open
               ? "border-accent bg-accent text-on-accent"
-              : "border-ink-500 text-paper-dim hover:border-accent hover:text-paper"
+              : "border-line-strong text-paper-dim hover:border-accent hover:text-paper"
           }`}
         >
           {open ? "Gate forced open" : "Gate as trained"}
@@ -211,7 +211,7 @@ export function GatedAttentionExplorer() {
       </p>
 
       {/* Headline measurements */}
-      <dl className="mt-8 grid gap-6 border-t border-ink-600 pt-6 sm:grid-cols-2">
+      <dl className="mt-8 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
         <div>
           <dd className="font-display text-[clamp(1.75rem,3vw,2.5rem)] font-bold leading-none tracking-tight text-accent tabular-nums">
             99.8%
@@ -231,7 +231,7 @@ export function GatedAttentionExplorer() {
       </dl>
 
       {/* Findings, graded */}
-      <div className="mt-8 border-t border-ink-600 pt-6">
+      <div className="mt-8 border-t border-line pt-6">
         <div className="mb-4 flex items-baseline justify-between gap-4">
           <Label as="h4">Every finding, with how far it can be pushed</Label>
           <Label>25,600 tokens</Label>
@@ -241,7 +241,7 @@ export function GatedAttentionExplorer() {
           {findings.map((f) => (
             <li
               key={f.claim}
-              className="grid gap-2 border-b border-ink-600 py-4 last:border-b-0 md:grid-cols-[1fr_auto] md:items-start md:gap-8"
+              className="grid gap-2 border-b border-line py-4 last:border-b-0 md:grid-cols-[1fr_auto] md:items-start md:gap-8"
             >
               <div>
                 <p className="text-sm leading-snug text-paper">{f.claim}</p>
