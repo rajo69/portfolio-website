@@ -4,7 +4,8 @@ import { useRef } from "react";
 
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
-import { DisplayHeading, Eyebrow, Lede } from "@/components/type";
+import { SplitHeading } from "@/components/motion/SplitHeading";
+import { Eyebrow, Lede } from "@/components/type";
 import { profile } from "@/content/profile";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { prefersReducedMotion, useReducedMotion } from "@/lib/use-reduced-motion";
@@ -79,9 +80,9 @@ export function Spine() {
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>The spine</Eyebrow>
         {/* Two lines, per DESIGN.md §4 — the measure is set to break it there. */}
-        <DisplayHeading size="h1" className="max-w-[21ch]">
+        <SplitHeading size="h1" className="max-w-[21ch]">
           Running the model was never the hard part.
-        </DisplayHeading>
+        </SplitHeading>
         <Lede className="max-w-[54ch]">{profile.spine.intro}</Lede>
       </Reveal>
 

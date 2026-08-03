@@ -49,9 +49,10 @@ export function Label({
   return <Tag className={cn("t-label", className)}>{children}</Tag>;
 }
 
-type HeadingSize = "hero" | "h1" | "h2" | "h3";
+export type HeadingSize = "hero" | "h1" | "h2" | "h3";
 
-const HEADING_SIZE: Record<HeadingSize, string> = {
+/** Exported so SplitHeading shares one scale — it must not drift from this. */
+export const HEADING_SIZE: Record<HeadingSize, string> = {
   hero: "text-[clamp(2.75rem,7vw,6.25rem)] tracking-[-0.04em] leading-[0.92]",
   h1: "text-[clamp(2.25rem,5vw,4.25rem)] tracking-[-0.035em] leading-[0.94]",
   h2: "text-[clamp(1.5rem,2.5vw,2.25rem)] tracking-[-0.02em] leading-[1.05]",

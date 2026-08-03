@@ -36,6 +36,13 @@ type Node = {
 type Edge = {
   a: number;
   b: number;
+  /**
+   * `grid` edges run to the orthogonal neighbour and carry the structure —
+   * they are what makes this read as a lattice rather than a starfield.
+   * `long` edges skip across the field, which is the defining property of
+   * attention: it is not local.
+   */
+  kind: "grid" | "long";
   /** Static baseline visibility, so the lattice isn't uniform. */
   base: number;
   /** Decaying highlight, 0..1. */
@@ -51,14 +58,16 @@ type Pulse = {
   dir: 1 | -1;
 };
 
-const SPACING = 96; // px between lattice nodes
-const JITTER = 0.34; // fraction of SPACING
-const MAX_NODES = 420;
-const NEIGHBOURS = 3;
-const MAX_PULSES = 26;
+const SPACING = 84; // px between lattice nodes
+/** Low, so rows and columns stay legible. High jitter turns the grid to mush. */
+const JITTER = 0.16;
+const MAX_NODES = 620;
+const MAX_PULSES = 30;
+/** Probability a node also throws a long-range edge across the field. */
+const LONG_RANGE_CHANCE = 0.16;
 
-const FIRE_INTERVAL = 1500; // ms between attention heads firing
-const GATE_INTERVAL = 2600; // ms between gate events
+const FIRE_INTERVAL = 1100; // ms between attention heads firing
+const GATE_INTERVAL = 2400; // ms between gate events
 
 /**
  * `#rrggbb` → `"r g b"` for use in `rgb(r g b / alpha)`.
@@ -83,19 +92,24 @@ function parseHex(hex: string): string {
  * bin is stroked in a single call — ~8 draw calls per frame instead of ~1300.
  */
 const BUCKETS = 8;
-const EDGE_MAX_ALPHA = 0.26;
-const NODE_MAX_ALPHA = 0.7;
+const EDGE_MAX_ALPHA = 0.5;
+const NODE_MAX_ALPHA = 0.95;
 
 /**
  * Resting visibility of the lattice.
  *
- * Tuned by eye against the reference, which keeps its traces clearly legible
- * as structure while still sitting well behind the copy. Much below this and
- * the field reads as random dust rather than a network; much above and it
- * competes with the headline.
+ * These were originally 0.055 / 0.16 and the field was effectively invisible:
+ * measured over the whole canvas, 1.2% of pixels were lit at all, at a mean
+ * alpha of 6.6/255. The structure only ever appeared on the one or two edges
+ * that happened to be mid-flash, so it read as a starfield.
+ *
+ * The lattice has to be legible *at rest* — the whole conceit is that you can
+ * see the network, then watch a head fire across it. Verified by sampling the
+ * canvas rather than by eye; see the budget note in DESIGN.md.
  */
-const EDGE_BASE_ALPHA = 0.055;
-const NODE_BASE_ALPHA = 0.16;
+const EDGE_BASE_ALPHA = 0.16;
+const LONG_EDGE_BASE_ALPHA = 0.085;
+const NODE_BASE_ALPHA = 0.42;
 
 export function AttentionField() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -135,38 +149,56 @@ export function AttentionField() {
       const cols = Math.ceil(width / SPACING) + 1;
       const rows = Math.ceil(height / SPACING) + 1;
 
+      // Index by (row, col) so grid neighbours are O(1) rather than a sort.
+      const index = (row: number, col: number) => row * cols + col;
+
       nodes = [];
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-          if (nodes.length >= MAX_NODES) break;
           nodes.push({
             x: col * SPACING + (Math.random() - 0.5) * SPACING * JITTER * 2,
             y: row * SPACING + (Math.random() - 0.5) * SPACING * JITTER * 2,
-            r: 0.9 + Math.random() * 1.5,
+            r: 1.1 + Math.random() * 1.6,
             gate: 1,
             gateTarget: 1,
             flash: 0,
           });
         }
       }
+      if (nodes.length > MAX_NODES) nodes.length = MAX_NODES;
 
-      // Connect each node to its nearest neighbours. Deduped via an
-      // ordered-pair key so a↔b is only drawn once.
-      const seen = new Set<string>();
       edges = [];
-      for (let i = 0; i < nodes.length; i++) {
-        const distances = nodes
-          .map((n, j) => ({ j, d: (n.x - nodes[i].x) ** 2 + (n.y - nodes[i].y) ** 2 }))
-          .filter((n) => n.j !== i)
-          .sort((p, q) => p.d - q.d)
-          .slice(0, NEIGHBOURS);
 
-        for (const { j } of distances) {
-          const key = i < j ? `${i}:${j}` : `${j}:${i}`;
-          if (seen.has(key)) continue;
-          seen.add(key);
-          edges.push({ a: i, b: j, base: 0.25 + Math.random() * 0.75, flash: 0 });
+      // 1. Orthogonal grid edges — the structure. Some are dropped so the
+      //    lattice looks woven rather than like graph paper.
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const a = index(row, col);
+          if (a >= nodes.length) continue;
+
+          const right = index(row, col + 1);
+          if (col + 1 < cols && right < nodes.length && Math.random() > 0.18) {
+            edges.push({ a, b: right, kind: "grid", base: 0.55 + Math.random() * 0.45, flash: 0 });
+          }
+
+          const down = index(row + 1, col);
+          if (row + 1 < rows && down < nodes.length && Math.random() > 0.18) {
+            edges.push({ a, b: down, kind: "grid", base: 0.55 + Math.random() * 0.45, flash: 0 });
+          }
         }
+      }
+
+      // 2. Long-range edges. Attention is not local, and these are what stop
+      //    the field reading as a circuit board someone else already drew.
+      for (let a = 0; a < nodes.length; a++) {
+        if (Math.random() > LONG_RANGE_CHANCE) continue;
+        const b = Math.floor(Math.random() * nodes.length);
+        if (b === a) continue;
+        const dx = nodes[a].x - nodes[b].x;
+        const dy = nodes[a].y - nodes[b].y;
+        // Only genuinely distant pairs; short ones just muddy the grid.
+        if (Math.hypot(dx, dy) < SPACING * 3) continue;
+        edges.push({ a, b, kind: "long", base: 0.5 + Math.random() * 0.5, flash: 0 });
       }
 
       pulses = [];
@@ -236,7 +268,8 @@ export function AttentionField() {
         const b = nodes[edge.b];
         // A gated node dims every edge it touches.
         const gate = Math.min(a.gate, b.gate);
-        const alpha = (EDGE_BASE_ALPHA * edge.base + edge.flash * 0.16) * gate;
+        const rest = edge.kind === "grid" ? EDGE_BASE_ALPHA : LONG_EDGE_BASE_ALPHA;
+        const alpha = (rest * edge.base + edge.flash * 0.28) * gate;
         if (alpha < 0.002) continue;
 
         // Strongly-lit edges get their own thicker pass — there are only ever
@@ -265,8 +298,8 @@ export function AttentionField() {
         const a = nodes[edge.a];
         const b = nodes[edge.b];
         const gate = Math.min(a.gate, b.gate);
-        ctx!.strokeStyle = `rgb(${accent} / ${Math.min(0.45, edge.flash * 0.18) * gate})`;
-        ctx!.lineWidth = 1;
+        ctx!.strokeStyle = `rgb(${accent} / ${Math.min(0.85, 0.25 + edge.flash * 0.4) * gate})`;
+        ctx!.lineWidth = 1.4;
         ctx!.beginPath();
         ctx!.moveTo(a.x, a.y);
         ctx!.lineTo(b.x, b.y);
@@ -276,7 +309,7 @@ export function AttentionField() {
       // --- Nodes, same bucketing ---
       const nodePaths = Array.from({ length: BUCKETS }, () => new Path2D());
       for (const node of nodes) {
-        const alpha = (NODE_BASE_ALPHA + node.flash * 0.6) * node.gate;
+        const alpha = (NODE_BASE_ALPHA + node.flash * 0.5) * node.gate;
         if (alpha < 0.004) continue;
         const bucket = Math.min(
           BUCKETS - 1,

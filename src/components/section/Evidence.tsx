@@ -2,8 +2,9 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
+import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Counter } from "@/components/type/Counter";
-import { DisplayHeading, Eyebrow, Label, Lede } from "@/components/type";
+import { Eyebrow, Label, Lede } from "@/components/type";
 import { measurements } from "@/content/proof";
 
 /**
@@ -20,9 +21,9 @@ export function Evidence() {
     <Section id="evidence">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>The evidence</Eyebrow>
-        <DisplayHeading size="h1" className="max-w-[16ch]">
+        <SplitHeading size="h1" className="max-w-[16ch]">
           Nothing here is a claim.
-        </DisplayHeading>
+        </SplitHeading>
         <Lede className="max-w-[54ch]">
           No stars, no download counts — these are research and production
           builds, not libraries chasing adoption. Every number below links to

@@ -1,6 +1,7 @@
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
-import { DisplayHeading, Eyebrow, Label, Lede } from "@/components/type";
+import { SplitHeading } from "@/components/motion/SplitHeading";
+import { Eyebrow, Label, Lede } from "@/components/type";
 import { findings, method, scars } from "@/content/proof";
 import type { Confidence } from "@/content/types";
 
@@ -59,9 +60,9 @@ export function Method() {
     <Section id="method">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Method</Eyebrow>
-        <DisplayHeading size="h1" className="max-w-[20ch]">
+        <SplitHeading size="h1" className="max-w-[20ch]">
           Every result carries how far it can be pushed.
-        </DisplayHeading>
+        </SplitHeading>
         <Lede className="max-w-[56ch]">
           Results are the easy half. What they are worth depends on how they
           were obtained and where they stop holding — so both ship with them.

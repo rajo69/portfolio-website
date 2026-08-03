@@ -37,7 +37,13 @@ That is not decoration. It is literally what your repos are: gated-attention ana
 ### 2.1 Ambient canvas — the attention lattice
 Replaces the PCB. A sparse token lattice on a fixed full-viewport canvas: nodes are tokens, edges are attention weights. Weights flicker; occasionally a gate closes and a node dims out entirely (your gated-attention finding, rendered). Same visual weight as the reference (~4–6% opacity accent on near-black), completely different meaning.
 
-*Budget:* 2D canvas, ≤400 nodes, DPR-capped at 2, `IntersectionObserver` pause, hard-off under `prefers-reduced-motion`. Target < 2ms/frame.
+*Structure:* an orthogonal grid of token nodes (low jitter, so rows and columns stay legible) carries the lattice, with ~16% of nodes also throwing a **long-range edge** across the field. The long edges are the point: attention is not local, and they stop the field reading as a circuit board someone else already drew.
+
+*Budget:* 2D canvas, ≤620 nodes, DPR-capped at 2, alpha-bucketed `Path2D` batching (~16 draw calls/frame), paused off-screen and on hidden tabs, hard-off under `prefers-reduced-motion`.
+
+*Density — verify by sampling, never by eye.* The first build shipped at edge alpha `0.055` / node alpha `0.16` and was effectively invisible: **1.22% of canvas pixels lit, mean alpha 6.6/255, max 42.** Only mid-flash edges ever showed, so it read as a starfield with no lattice at all. Current values (`0.16` grid / `0.085` long / `0.42` node) measure **4.84% lit, mean 12.5, max 128+**.
+
+> Sample the canvas with `getImageData` after any change to these constants. "Looks about right" was wrong by roughly 4× and survived three rounds of screenshots.
 
 ### 2.2 Hero — the "logit lens" decode
 The reference dissolves its headline into particles. Yours **decodes** it. Each word cycles through 3–4 plausible token candidates in dimmed mono, then locks into the display face as a confidence bar fills to 100%. Runs once, ~1.4s, then it is plain static text. No one else's portfolio does this and it is unambiguously your field.
