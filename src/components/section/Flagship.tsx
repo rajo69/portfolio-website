@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 import { Section } from "@/components/layout/Section";
+import { LiveEmbed } from "@/components/section/LiveEmbed";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Counter } from "@/components/type/Counter";
@@ -10,22 +10,8 @@ import { Eyebrow, Label, Lede } from "@/components/type";
 /**
  * THE FLAGSHIP: AI Accountant.
  *
- * WHY A SCREENSHOT AND NOT AN IFRAME.
- * The live app responds with `X-Frame-Options: DENY`, so an <iframe> renders
- * an empty box. That header is correct for an app holding a Xero OAuth
- * session: without it the page is framable by anyone, which is a clickjacking
- * route into a live financial integration.
- *
- * To embed it live, the accounting app should drop X-Frame-Options and send
- * `Content-Security-Policy: frame-ancestors 'self' https://<portfolio-domain>`
- * instead, scoping the permission to this site rather than removing it. Once
- * that ships, swap the <Image> below for an <iframe> and keep this as the
- * fallback. Until then a 2x capture loads faster than the real thing and
- * cannot break.
- *
- * The app is indigo and this site is Plasma, so the capture sits inside a
- * browser chrome frame. Presented as a device it reads as an embedded
- * product; bled into the page it would read as a palette mistake.
+ * The live landing page is embedded by <LiveEmbed>, which carries the notes
+ * on framing, the CSP allowlist and why the preview is not interactive.
  */
 
 /** lucide-react v1 removed brand icons, so the GitHub mark is inlined. */
@@ -63,50 +49,9 @@ export function Flagship() {
         </Lede>
       </Reveal>
 
-      {/* --- The product itself, in a browser frame --- */}
+      {/* --- The product itself, live --- */}
       <Reveal className="mt-14">
-        <a
-          href={LIVE_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="group block overflow-hidden rounded-lg border border-ink-600 bg-ink-800 transition-colors duration-300 hover:border-accent/40"
-        >
-          {/* Browser chrome */}
-          <div className="flex items-center gap-2 border-b border-ink-600 px-4 py-3">
-            <span aria-hidden="true" className="flex gap-1.5">
-              <span className="block size-2.5 rounded-full bg-ink-500" />
-              <span className="block size-2.5 rounded-full bg-ink-500" />
-              <span className="block size-2.5 rounded-full bg-ink-500" />
-            </span>
-            <span className="ml-2 flex-1 truncate rounded-sm bg-ink-900 px-3 py-1 font-mono text-[11px] text-paper-faint">
-              agentic-ai-accounting.vercel.app
-            </span>
-            <span className="hidden items-center gap-1.5 sm:inline-flex">
-              <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
-              </span>
-              <Label>Live</Label>
-            </span>
-          </div>
-
-          <div className="relative">
-            <Image
-              src="/ai-accountant-landing.png"
-              alt="The AI Accountant landing page: Accounting, automated. Connect Xero. AI categorises transactions, reconciles bank statements, and drafts management letters."
-              width={2880}
-              height={1800}
-              sizes="(max-width: 1240px) 100vw, 1240px"
-              className="h-auto w-full"
-            />
-            <span className="pointer-events-none absolute inset-0 flex items-end justify-center bg-gradient-to-t from-ink-900/80 via-transparent to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-on-accent">
-                Open the live app
-                <ArrowUpRight className="size-4" aria-hidden="true" />
-              </span>
-            </span>
-          </div>
-        </a>
+        <LiveEmbed />
       </Reveal>
 
       {/* --- Numbers, straight off the product --- */}
