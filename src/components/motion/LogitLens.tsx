@@ -7,14 +7,14 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { prefersReducedMotion, useReducedMotion } from "@/lib/use-reduced-motion";
 
 /**
- * THE LOGIT LENS — the hero's signature animation.
+ * THE LOGIT LENS, the hero's signature animation.
  *
  * The reference site dissolves its headline into particles. This one *decodes*
  * it. Each word cycles through plausible token candidates in dimmed mono, then
- * locks into the display face as a confidence rail fills — the way you'd watch
+ * locks into the display face as a confidence rail fills, the way you'd watch
  * a language model resolve a sequence, which is the work this site is about.
  *
- * Accessibility: the real headline is always present twice — once visually in
+ * Accessibility: the real headline is always present twice, once visually in
  * the animated layer (so no-JS and crawlers get it), and once in a `sr-only`
  * copy that assistive tech reads. The animated layer is `aria-hidden`, so a
  * screen reader never encounters a half-decoded candidate.
@@ -43,8 +43,7 @@ function candidatesFor(word: string, count: number): string[] {
   const target = bare.length || word.length;
 
   const pool = VOCAB.filter(
-    (v) => v.toLowerCase() !== bare.toLowerCase() && Math.abs(v.length - target) <= 2,
-  );
+    (v) => v.toLowerCase() !== bare.toLowerCase() && Math.abs(v.length - target) <= 2);
 
   const picked: string[] = [];
   while (picked.length < count && pool.length) {
@@ -52,7 +51,7 @@ function candidatesFor(word: string, count: number): string[] {
     picked.push(taken);
   }
 
-  // A truncation of the real word — the model narrowing in on the right token.
+  // A truncation of the real word, the model narrowing in on the right token.
   if (bare.length > 3) picked.push(bare.slice(0, Math.max(2, bare.length - 2)));
 
   // Preserve trailing punctuation so line rhythm doesn't jump.
@@ -82,12 +81,11 @@ export function LogitLens({
       const root = ref.current;
       if (!root) return;
 
-      // Read synchronously as well as via the hook — see Reveal for why.
+      // Read synchronously as well as via the hook, see Reveal for why.
       if (reduced || prefersReducedMotion()) return;
 
       const spans = Array.from(
-        root.querySelectorAll<HTMLElement>("[data-word]"),
-      );
+        root.querySelectorAll<HTMLElement>("[data-word]"));
       if (!spans.length) return;
 
       // Pin each word to its final width *before* swapping in candidates of
@@ -107,8 +105,8 @@ export function LogitLens({
 
       spans.forEach((span, i) => {
         const final = span.textContent ?? "";
-        const candidates = candidatesFor(final, 3);
-        const at = i * 0.075;
+        const candidates = candidatesFor(final, 4);
+        const at = i * 0.115;
 
         candidates.forEach((candidate, k) => {
           tl.call(
@@ -117,8 +115,7 @@ export function LogitLens({
               span.dataset.state = "decoding";
             },
             undefined,
-            at + k * 0.07,
-          );
+            at + k * 0.105);
         });
 
         // Lock: real token, display face, blur resolving to sharp.
@@ -129,9 +126,8 @@ export function LogitLens({
             span.style.minWidth = "";
             gsap.fromTo(
               span,
-              { filter: "blur(7px)", opacity: 0.55 },
-              { filter: "blur(0px)", opacity: 1, duration: 0.4, ease: "expo.out" },
-            );
+              { filter: "blur(10px)", opacity: 0.4, yPercent: 12 },
+              { filter: "blur(0px)", opacity: 1, yPercent: 0, duration: 0.72, ease: "expo.out" });
 
             locked++;
             const pct = Math.round((locked / spans.length) * 100);
@@ -148,8 +144,7 @@ export function LogitLens({
             }
           },
           undefined,
-          at + candidates.length * 0.07,
-        );
+          at + candidates.length * 0.105);
       });
 
       return () => {
@@ -160,8 +155,7 @@ export function LogitLens({
         }
       };
     },
-    { scope: ref, dependencies: [reduced, text] },
-  );
+    { scope: ref, dependencies: [reduced, text] });
 
   return (
     <>

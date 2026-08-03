@@ -1,5 +1,5 @@
 import { Section } from "@/components/layout/Section";
-import { Evidence } from "@/components/section/Evidence";
+import { About } from "@/components/section/About";
 import { Hero } from "@/components/section/Hero";
 import { Method } from "@/components/section/Method";
 import { Spine } from "@/components/section/Spine";
@@ -8,70 +8,57 @@ import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Eyebrow, Lede } from "@/components/type";
 
 /**
- * PHASE 2 — Hero and Spine are real. Lab, Work and Receipts below are still
- * placeholders awaiting content; see CONTENT-BRIEF.md.
+ * The standalone "Evidence" section has been removed. It headlined "Nothing
+ * here is a claim" and opened by pointing out the absence of stars, which
+ * argued with a reader who had not objected to anything. The numbers now live
+ * on the project cards, where a number belongs next to the thing it describes.
  */
 export default function Home() {
   return (
     <>
       <Hero />
       <Spine />
-      <Evidence />
       <Method />
+      <About />
 
-      {/* Placeholders — Phase 3 replaces these with real Lab cards and the
+      {/* Placeholders. Phase 3 replaces these with the Lab cards and the
           filterable Work list. See CONTENT-BRIEF.md. */}
       <Section id="lab">
         <Reveal variant="stagger" className="space-y-6">
-          <Eyebrow>Next · The Lab</Eyebrow>
+          <Eyebrow>The Lab</Eyebrow>
           <SplitHeading size="h1" className="max-w-[18ch]">
-            Open the systems.
-            <br />
-            Read the evals.
+            Four things worth opening.
           </SplitHeading>
           <Lede>
-            Four flagship projects, each with a live chart of its real measured
-            metric and a link straight to the repo.
+            AI Accountant, the RL routing study, the job apply harness and the
+            gated attention analysis, each with its numbers and a link to the
+            repository.
           </Lede>
         </Reveal>
       </Section>
 
       <Section id="work">
         <Reveal variant="stagger" className="space-y-6">
-          <Eyebrow>Next</Eyebrow>
+          <Eyebrow>Work</Eyebrow>
           <SplitHeading size="h1" className="max-w-[18ch]">
-            Where capability
-            <br />
-            became a system.
+            Everything else.
           </SplitHeading>
           <Lede>
-            Four flagship projects become Lab cards with live charts of their real
-            measured metrics. Everything else becomes a filterable Work list.
+            Compliance retrieval, fine-tuning studies and earlier product builds,
+            filterable by track.
           </Lede>
         </Reveal>
       </Section>
 
       <Section id="receipts">
         <Reveal variant="stagger" className="space-y-6">
-          <Eyebrow>Then</Eyebrow>
+          <Eyebrow>Background</Eyebrow>
           <SplitHeading size="h1" className="max-w-[18ch]">
-            The receipts.
+            IBM, the NHS, and an MSc in between.
           </SplitHeading>
           <Lede>
-            Experience, education and certifications — with verification links,
-            because the whole argument of this site is receipts over claims.
+            Experience, education and certifications.
           </Lede>
-        </Reveal>
-      </Section>
-
-      <Section id="about">
-        <Reveal variant="stagger" className="space-y-6">
-          <Eyebrow>About</Eyebrow>
-          <SplitHeading size="h1" className="max-w-[18ch]">
-            One engineer,
-            <br />
-            <span className="text-accent">both ends of the pipeline.</span>
-          </SplitHeading>
         </Reveal>
       </Section>
     </>

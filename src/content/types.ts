@@ -2,7 +2,7 @@
  * Content contract.
  *
  * Every piece of copy on the site resolves to one of these types. If a field
- * is required here and missing in the data file, the build fails — that is
+ * is required here and missing in the data file, the build fails, that is
  * deliberate. Placeholders awaiting real content are marked `TODO(rajarshi)`
  * and caught by `npm run check:content`.
  */
@@ -19,8 +19,8 @@ export interface Stat {
 }
 
 /**
- * A metric shown on a Lab card. This is the site's core credibility device —
- * it must be a number you can point at in a repo, not a claim.
+ * A metric shown on a Lab card. It must be a number you can point at in a
+ * repository, not a claim.
  */
 export interface Metric {
   label: string;
@@ -29,10 +29,10 @@ export interface Metric {
   baseline?: string;
   /**
    * Which chart primitive visualises it.
-   * `sparkline` — a trend over steps/epochs
-   * `histogram` — a distribution (e.g. gate sparsity)
-   * `gauge`     — a single ratio out of a whole
-   * `heatmap`   — a 2D grid (e.g. attention, contributions)
+   * `sparkline`, a trend over steps/epochs
+   * `histogram`, a distribution (e.g. gate sparsity)
+   * `gauge`, a single ratio out of a whole
+   * `heatmap`, a 2D grid (e.g. attention, contributions)
    */
   chart?: "sparkline" | "histogram" | "gauge" | "heatmap";
   /** Raw series backing the chart. Normalised at render; any scale is fine. */
@@ -44,10 +44,10 @@ export interface Project {
   title: string;
   /** One sentence. Shown in the Work list. */
   summary: string;
-  /** 2–3 sentences. Shown on Lab cards only. */
+  /** 2, 3 sentences. Shown on Lab cards only. */
   description?: string;
   /**
-   * The "Proves:" line — what this project demonstrates about you as an
+   * The "Proves:" line, what this project demonstrates about you as an
    * engineer. Borrowed from the reference; it is what turns a repo into an
    * argument. Featured projects must have one.
    */
@@ -55,7 +55,7 @@ export interface Project {
   track: Track;
   /** Display category pill, e.g. "Interpretability", "Agents", "RAG". */
   category: string;
-  /** Year or range, e.g. "2026" or "2025–26". */
+  /** Year or range, e.g. "2026" or "2025, 26". */
   period: string;
   tech: string[];
   repo?: string;
@@ -63,7 +63,7 @@ export interface Project {
   paper?: string;
   /** Featured projects become Lab cards; the rest become Work rows. */
   featured?: boolean;
-  /** Required when `featured` is true — the card is built around it. */
+  /** Required when `featured` is true, the card is built around it. */
   metrics?: Metric[];
   /** Set true to render a full /work/[slug] case study page. */
   caseStudy?: boolean;
@@ -74,7 +74,7 @@ export interface Project {
  *
  * This is the site's answer to having no stars, forks or downloads. Those
  * count how many people noticed; these are falsifiable claims with the
- * receipt attached. `source` is non-optional on purpose — a number without
+ * receipt attached. `source` is non-optional on purpose, a number without
  * one doesn't belong on this page.
  */
 export interface Measurement {
@@ -91,7 +91,7 @@ export type Confidence = "high" | "moderate-high" | "moderate" | "low";
 
 /**
  * A research finding carrying its own confidence grade and the evidence
- * behind it — lifted from the structure of the gate-sparsity README.
+ * behind it, lifted from the structure of the gate-sparsity README.
  *
  * Keeping the `low` rows in is the entire point. Anyone can list results;
  * publishing the ones you don't yet trust is the part that's hard to fake.
@@ -122,10 +122,10 @@ export interface Experience {
   /** ISO `YYYY-MM`, or "present". */
   end: string;
   location: string;
-  /** One sentence on scope — what you owned, not what the company does. */
+  /** One sentence on scope, what you owned, not what the company does. */
   summary: string;
   /**
-   * 2–4 bullets. Lead each with a verb and land a number where one exists.
+   * 2, 4 bullets. Lead each with a verb and land a number where one exists.
    * The reference's whole credibility comes from quantified outcomes.
    */
   highlights: string[];
@@ -141,7 +141,7 @@ export interface Education {
   location: string;
   /** e.g. "Distinction", "First Class Honours", "3.9/4.0". */
   grade?: string;
-  /** Dissertation/thesis title — worth surfacing for a research-track site. */
+  /** Dissertation/thesis title, worth surfacing for a research-track site. */
   thesis?: string;
   highlights?: string[];
 }
@@ -172,7 +172,7 @@ export interface WritingItem {
 
 export interface FaqItem {
   question: string;
-  /** Plain prose, 2–4 sentences, first person. No marketing register. */
+  /** Plain prose, 2, 4 sentences, first person. No marketing register. */
   answer: string;
 }
 
@@ -187,9 +187,9 @@ export interface Profile {
   name: string;
   /** Eyebrow above the hero. Uppercase at render. */
   title: string;
-  /** The hero headline. 6–10 words. Runs the logit-lens decode animation. */
+  /** The hero headline. 6, 10 words. Runs the logit-lens decode animation. */
   headline: string;
-  /** 2–3 lines under the headline. This is your thesis. */
+  /** 2, 3 lines under the headline. This is your thesis. */
   subhead: string;
   location: string;
   email: string;

@@ -41,7 +41,7 @@ export function SplitHeading({
       if (reduced || prefersReducedMotion()) return;
 
       // SplitText rewrites the element's DOM into one span per character, so
-      // it must be reverted on cleanup — otherwise assistive tech is left
+      // it must be reverted on cleanup, otherwise assistive tech is left
       // reading a pile of single-character nodes instead of a sentence.
       const split = new SplitText(el, { type: "chars,words", tag: "span" });
 
@@ -68,8 +68,7 @@ export function SplitHeading({
         split.revert();
       };
     },
-    { scope: ref, dependencies: [reduced] },
-  );
+    { scope: ref, dependencies: [reduced] });
 
   return (
     <Tag ref={ref} className={cn("t-display", HEADING_SIZE[size], className)}>

@@ -64,8 +64,7 @@ export function Reveal({
         },
       });
     },
-    { scope: ref, dependencies: [reduced, variant, delay] },
-  );
+    { scope: ref, dependencies: [reduced, variant, delay] });
 
   return (
     <Tag ref={ref} className={cn(className)}>

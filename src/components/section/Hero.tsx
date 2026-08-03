@@ -10,9 +10,9 @@ import { Eyebrow, Label, Lede } from "@/components/type";
 import { profile } from "@/content/profile";
 
 /**
- * The hero. Follows the reference's structure exactly — eyebrow, oversized
+ * The hero. Follows the reference's structure exactly, eyebrow, oversized
  * two-line headline, muted lede, a row of hard numbers, and a baseline strip
- * with location and a scroll cue — but the headline decodes rather than
+ * with location and a scroll cue, but the headline decodes rather than
  * dissolving. See LogitLens.
  */
 export function Hero() {

@@ -11,12 +11,12 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { prefersReducedMotion, useReducedMotion } from "@/lib/use-reduced-motion";
 
 /**
- * THE SPINE — Research → Engineering → Product, owned end to end.
+ * THE SPINE, Research → Engineering → Product, owned end to end.
  *
  * Structurally this is the reference's "one operator owns all three" section:
  * a list of three capabilities on the left, a triangle diagram on the right,
  * and a two-line kicker underneath. The three nodes are the only thing that
- * changed, because the argument is the same shape — a pipeline whose value
+ * changed, because the argument is the same shape, a pipeline whose value
  * leaks at the handoffs unless one person holds all of it.
  */
 
@@ -62,24 +62,21 @@ export function Spine() {
       tl.from(
         marks,
         { opacity: 0, scale: 0.6, transformOrigin: "center", duration: 0.5, stagger: 0.1, ease: "back.out(1.6)" },
-        "-=0.55",
-      );
+        "-=0.55");
 
-      // The centre keeps a slow pulse — the operator is the live part.
+      // The centre keeps a slow pulse, the operator is the live part.
       tl.to(
         svg.querySelector("[data-centre-glow]"),
         { scale: 1.35, opacity: 0.12, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut", transformOrigin: "center" },
-        "-=0.2",
-      );
+        "-=0.2");
     },
-    { scope: svgRef, dependencies: [reduced] },
-  );
+    { scope: svgRef, dependencies: [reduced] });
 
   return (
     <Section id="spine">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>The spine</Eyebrow>
-        {/* Two lines, per DESIGN.md §4 — the measure is set to break it there. */}
+        {/* Two lines, per DESIGN.md §4, the measure is set to break it there. */}
         <SplitHeading size="h1" className="max-w-[21ch]">
           Running the model was never the hard part.
         </SplitHeading>

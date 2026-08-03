@@ -36,7 +36,7 @@ export function Eyebrow({
   );
 }
 
-/** Bare micro-label, no marker — stat captions, meta, categories. */
+/** Bare micro-label, no marker, stat captions, meta, categories. */
 export function Label({
   children,
   className,
@@ -51,7 +51,7 @@ export function Label({
 
 export type HeadingSize = "hero" | "h1" | "h2" | "h3";
 
-/** Exported so SplitHeading shares one scale — it must not drift from this. */
+/** Exported so SplitHeading shares one scale, it must not drift from this. */
 export const HEADING_SIZE: Record<HeadingSize, string> = {
   hero: "text-[clamp(2.75rem,7vw,6.25rem)] tracking-[-0.04em] leading-[0.92]",
   h1: "text-[clamp(2.25rem,5vw,4.25rem)] tracking-[-0.035em] leading-[0.94]",
@@ -76,7 +76,7 @@ export function DisplayHeading({
   );
 }
 
-/** The muted 2–3 line paragraph that follows every heading. Capped at 62ch. */
+/** The muted 2, 3 line paragraph that follows every heading. Capped at 62ch. */
 export function Lede({
   children,
   className,

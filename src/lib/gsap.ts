@@ -6,7 +6,7 @@ import { SplitText } from "gsap/SplitText";
 /**
  * Single registration point for GSAP plugins.
  *
- * All plugins — including SplitText and Flip — have been free under the
+ * All plugins, including SplitText and Flip, have been free under the
  * standard licence since GSAP 3.13 (May 2025). The ui-ux-pro-max skill's
  * motion.csv still describes SplitText as a paid Club plugin; that is stale.
  *

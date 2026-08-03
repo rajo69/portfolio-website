@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   RAJARSHI NANDI — "THE ATTENTION FIELD"
+   RAJARSHI NANDI, "THE ATTENTION FIELD"
    Design tokens. See DESIGN.md for rationale.
    The entire identity swings off --accent. Change it here only.
    ============================================================ */
@@ -19,15 +19,15 @@
   --paper-dim: #a8aaa6; /* body copy */
   --paper-faint: #6b6e6b; /* micro-labels, meta */
 
-  /* --- Accent (SINGLE hot colour — swap this to rebrand) ---
+  /* --- Accent (SINGLE hot colour, swap this to rebrand) ---
      Plasma: the hot end of an attention heatmap. 5.97:1 on --ink-900,
      which clears WCAG AA for normal text. Because it sits lower than a
      lime or cyan would, accent-on-black body copy is capped at label
-     size and headline size — never a paragraph. */
+     size and headline size, never a paragraph. */
   --accent: #ff3d8b; /* Plasma */
   --accent-dim: #c22a69; /* hover / pressed / secondary strokes */
   --accent-ghost: rgb(255 61 139 / 0.08); /* card washes, canvas traces */
-  --on-accent: #08090a; /* text on a filled accent surface — 5.97:1 */
+  --on-accent: #08090a; /* text on a filled accent surface, 5.97:1 */
 
   /* --- Semantic --- */
   --ok: #4ade80;
@@ -108,7 +108,7 @@ body {
 
    These MUST live in @layer components. Un-layered CSS outranks every
    layered rule in the cascade, so as plain top-level classes they beat
-   Tailwind's utilities — `text-accent` on an element that also carries
+   Tailwind's utilities, `text-accent` on an element that also carries
    `t-display` would silently do nothing, as would `group-hover:text-accent`
    on `t-label`. Inside the components layer, utilities win as intended.
    ============================================================ */
@@ -145,7 +145,7 @@ body {
 }
 
 /* ============================================================
-   MOTION SAFETY — non-negotiable
+   MOTION SAFETY, non-negotiable
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {

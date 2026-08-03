@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 /**
  * The 2px accent bar pinned to the top edge, tracking read progress.
- * Lifted straight from the reference — it's a cheap, constant orientation cue.
+ * Lifted straight from the reference, it's a cheap, constant orientation cue.
  *
  * Deliberately not a ScrollTrigger: a transform driven off a passive scroll
  * listener is one line of maths and avoids registering a trigger that would
@@ -52,7 +52,7 @@ export function ScrollProgress() {
         className="h-full w-full origin-left bg-accent"
         // The initial scale is set inline, not with Tailwind's `scale-x-0`:
         // in v4 that utility emits the standalone `scale` property, which
-        // composes with — rather than being overridden by — the `transform`
+        // composes with, rather than being overridden by, the `transform`
         // this component writes, pinning the bar to zero width forever.
         style={{ transform: "scaleX(0)", willChange: "transform" }}
       />

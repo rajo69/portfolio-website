@@ -12,7 +12,7 @@ import { useReducedMotion } from "@/lib/use-reduced-motion";
  * Two engines each running their own rAF loop is the classic way to get
  * scroll-linked animation that lags a frame behind the scroll position. So
  * Lenis is stepped from `gsap.ticker` and ScrollTrigger is updated from Lenis
- * — one clock, no drift.
+ *, one clock, no drift.
  *
  * Renders nothing; it exists for the effect.
  */

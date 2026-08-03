@@ -5,16 +5,16 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 /**
- * THE ATTENTION FIELD — the site's signature ambient layer.
+ * THE ATTENTION FIELD, the site's signature ambient layer.
  *
  * The reference site draws a circuit board: "I build systems that move money."
- * This draws an attention lattice instead — nodes are tokens, edges are
+ * This draws an attention lattice instead, nodes are tokens, edges are
  * attention weights. Three behaviours make it a portrait rather than wallpaper:
  *
  *   1. HEADS FIRE   A node is picked as a query; its edges light up with
  *                   softmax-ish weights and pulses travel along the strongest.
  *   2. GATES CLOSE  Nodes periodically gate off entirely, taking their edges
- *                   with them — the gated-attention finding, rendered.
+ *                   with them, the gated-attention finding, rendered.
  *   3. IT DECAYS    Everything relaxes back to near-invisible, so the field
  *                   never competes with the copy sitting on top of it.
  *
@@ -37,8 +37,8 @@ type Edge = {
   a: number;
   b: number;
   /**
-   * `grid` edges run to the orthogonal neighbour and carry the structure —
-   * they are what makes this read as a lattice rather than a starfield.
+   * `grid` edges run to the orthogonal neighbour and carry the structure.
+   * They are what makes this read as a lattice rather than a starfield.
    * `long` edges skip across the field, which is the defining property of
    * attention: it is not local.
    */
@@ -89,7 +89,7 @@ function parseHex(hex: string): string {
  * Drawing ~900 edges as individual stroke() calls means ~900 CSS colour
  * parses and ~900 state changes per frame, which saturates the main thread.
  * Instead each edge is binned by opacity into one of N Path2Ds and the whole
- * bin is stroked in a single call — ~8 draw calls per frame instead of ~1300.
+ * bin is stroked in a single call, ~8 draw calls per frame instead of ~1300.
  */
 const BUCKETS = 8;
 const EDGE_MAX_ALPHA = 0.5;
@@ -103,7 +103,7 @@ const NODE_MAX_ALPHA = 0.95;
  * alpha of 6.6/255. The structure only ever appeared on the one or two edges
  * that happened to be mid-flash, so it read as a starfield.
  *
- * The lattice has to be legible *at rest* — the whole conceit is that you can
+ * The lattice has to be legible *at rest*, the whole conceit is that you can
  * see the network, then watch a head fire across it. Verified by sampling the
  * canvas rather than by eye; see the budget note in DESIGN.md.
  */
@@ -126,8 +126,7 @@ export function AttentionField() {
     if (!ctx) return;
 
     const accent = parseHex(
-      getComputedStyle(document.documentElement).getPropertyValue("--accent"),
-    );
+      getComputedStyle(document.documentElement).getPropertyValue("--accent"));
 
     let nodes: Node[] = [];
     let edges: Edge[] = [];
@@ -169,7 +168,7 @@ export function AttentionField() {
 
       edges = [];
 
-      // 1. Orthogonal grid edges — the structure. Some are dropped so the
+      // 1. Orthogonal grid edges, the structure. Some are dropped so the
       //    lattice looks woven rather than like graph paper.
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
@@ -272,7 +271,7 @@ export function AttentionField() {
         const alpha = (rest * edge.base + edge.flash * 0.28) * gate;
         if (alpha < 0.002) continue;
 
-        // Strongly-lit edges get their own thicker pass — there are only ever
+        // Strongly-lit edges get their own thicker pass, there are only ever
         // a handful, so drawing them individually is cheap.
         if (edge.flash > 0.3) {
           hot.push(edge);
@@ -281,8 +280,7 @@ export function AttentionField() {
 
         const bucket = Math.min(
           BUCKETS - 1,
-          Math.floor((alpha / EDGE_MAX_ALPHA) * BUCKETS),
-        );
+          Math.floor((alpha / EDGE_MAX_ALPHA) * BUCKETS));
         edgePaths[bucket].moveTo(a.x, a.y);
         edgePaths[bucket].lineTo(b.x, b.y);
       }
@@ -313,8 +311,7 @@ export function AttentionField() {
         if (alpha < 0.004) continue;
         const bucket = Math.min(
           BUCKETS - 1,
-          Math.floor((alpha / NODE_MAX_ALPHA) * BUCKETS),
-        );
+          Math.floor((alpha / NODE_MAX_ALPHA) * BUCKETS));
         const radius = node.r * (1 + node.flash * 0.8);
         nodePaths[bucket].moveTo(node.x + radius, node.y);
         nodePaths[bucket].arc(node.x, node.y, radius, 0, Math.PI * 2);
@@ -414,7 +411,7 @@ export function AttentionField() {
     const onVisibility = () => (document.hidden ? pause() : resume());
     document.addEventListener("visibilitychange", onVisibility);
 
-    // Debounced rebuild — resize fires continuously during a drag.
+    // Debounced rebuild, resize fires continuously during a drag.
     let resizeTimer = 0;
     const onResize = () => {
       window.clearTimeout(resizeTimer);

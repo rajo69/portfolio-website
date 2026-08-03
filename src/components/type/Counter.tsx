@@ -41,7 +41,7 @@ export function Counter({
       if (reduced || prefersReducedMotion()) return;
 
       const state = { n: 0 };
-      const [, prefix, , suffix] = match;
+      const [, prefix, suffix] = match;
 
       gsap.to(state, {
         n: target,
@@ -63,8 +63,7 @@ export function Counter({
         },
       });
     },
-    { scope: ref, dependencies: [reduced, value] },
-  );
+    { scope: ref, dependencies: [reduced, value] });
 
   return (
     <span ref={ref} className={cn(className)}>

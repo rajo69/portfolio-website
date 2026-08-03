@@ -16,7 +16,7 @@ export function prefersReducedMotion(): boolean {
  * The initial value is read synchronously rather than in an effect. Deferring
  * it by one render is not a cosmetic detail: an animation that starts before
  * the preference is known has already written `opacity: 0` onto the element,
- * and tearing the tween down afterwards can leave that value behind — content
+ * and tearing the tween down afterwards can leave that value behind, content
  * permanently invisible for exactly the users who asked for less motion.
  *
  * This does not risk a hydration mismatch: the value only gates animation, it

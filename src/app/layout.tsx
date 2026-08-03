@@ -11,7 +11,7 @@ import { profile } from "@/content/profile";
 
 import "./globals.css";
 
-/* Self-hosted by next/font — no external requests, no CLS.
+/* Self-hosted by next/font, no external requests, no CLS.
    See DESIGN.md §4 for why these three. */
 const display = Archivo({
   variable: "--ff-display",
@@ -68,7 +68,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="relative min-h-full">
-        {/* Ambient layer — fixed, behind everything, pointer-transparent. */}
+        {/* Ambient layer, fixed, behind everything, pointer-transparent. */}
         <AttentionField />
 
         <SmoothScroll />

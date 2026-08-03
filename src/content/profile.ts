@@ -1,122 +1,120 @@
 import type { Profile } from "./types";
 
 /**
- * Identity + the connective copy between sections.
+ * Identity and the connective copy between sections.
  *
- * Seeded from your GitHub profile. Everything marked TODO(rajarshi) is a
- * placeholder I wrote in your voice as a starting point — rewrite or approve.
+ * STYLE RULES (non-negotiable, from Rajarshi):
+ *   1. No em dashes or en dashes anywhere in any copy. Use commas, colons,
+ *      semicolons or full stops. His CV build pipeline enforces the same rule
+ *      on the rendered PDF, so this is a standing convention, not a whim.
+ *   2. Do not oversell. The site states what was built and what it did; it
+ *      does not campaign for the reader's trust.
  */
 export const profile: Profile = {
   name: "Rajarshi Nandi",
 
-  // TODO(rajarshi): confirm. This is the eyebrow above the hero.
-  title: "AI Engineer & Interpretability Researcher",
+  title: "AI Engineer",
 
-  // TODO(rajarshi): the single most important line on the site. 6–10 words.
-  // Candidates, all in the reference's declarative register:
-  //   "I build the model and then open it up."
-  //   "I ship agents and audit what's inside them."
-  //   "Research that ships. Systems that hold."
-  headline: "I build the model, then I open it up.",
+  /**
+   * The thesis, and the thread that actually runs through the whole CV:
+   * an accurate model that nobody trusts does not get used. It shows up at
+   * IBM in 2021 (a churn model ignored until it could explain itself), and
+   * again in 2026 (an accounting agent whose entire design is showing its
+   * working to someone with professional liability).
+   */
+  headline: "I build AI people trust enough to use.",
 
-  // TODO(rajarshi): 2–3 lines. The reference's version is:
-  // "I own both sides: the AI that creates the capability, and the marketing
-  //  that turns it into pipeline and P&L. In production, not slideware."
   subhead:
-    "Most people either study models or deploy them. I do both — interpretability research on what attention heads actually do, and production agents where every invariant is executable. Measured, not asserted.",
+    "A model that cannot show its working does not get adopted, however accurate it is. I build production AI for regulated work in accounting, compliance and financial services, where every decision has to be traceable, checkable and correctable by the person who signs it off.",
 
-  location: "Leeds, United Kingdom",
+  location: "Sheffield, United Kingdom",
 
-  // TODO(rajarshi): confirm the address you want public.
   email: "rajarshin264@gmail.com",
 
   socials: {
     github: "https://github.com/rajo69",
-    // TODO(rajarshi): add these
+    // TODO(rajarshi): send your LinkedIn URL for the footer.
     linkedin: "",
     scholar: "",
   },
 
   /**
-   * Three hero stats, all drawn from the repositories and all checkable.
-   *
-   * "56 public repositories" was here and has been removed: it counts volume
-   * rather than quality, which is the same vanity signal as a star count. A
-   * number is only worth the hero if someone could go and falsify it.
+   * Three stats, all traceable to a repository or a stated engagement.
+   * Deliberately business outcomes rather than volume counts.
    */
   stats: [
-    { value: "30+", caption: "Applications, zero human fields" },
-    { value: "22", caption: "Platforms driven live" },
-    { value: "25,600", caption: "Tokens, bootstrapped CIs" },
+    { value: "14%", caption: "Marketing ROI, forecasting build" },
+    { value: "9%", caption: "Attrition cut, churn model" },
+    { value: "3", caption: "Production AI systems shipped" },
   ],
 
   /**
-   * The spine. The reference: AI → Marketing → Revenue, "one operator owns
-   * all three, nothing leaks in the seams". Yours is the research-to-product
-   * pipeline, owned end to end.
+   * The spine. Reframed away from "Research / Engineering / Product", which
+   * described what the work is rather than what it is for. Trust is the
+   * actual through-line and the actual business value.
    */
   spine: {
     intro:
-      "The hard part was never getting a model to run. It's the line from a research finding to a system someone depends on. That line crosses three jobs most teams split across three people, and the meaning leaks at every handoff. I hold all three.",
+      "Getting a model to be accurate is the part that has a benchmark. The part that decides whether it ever runs in a real workflow is whether the person accountable for the output is willing to put their name on it. That question is answered in the design, not in a rollout meeting.",
     nodes: [
       {
-        label: "Research",
-        body: "Gated attention, sparse autoencoders, robustness. What the model is actually doing, measured rather than assumed.",
+        label: "Build",
+        body: "Agents, retrieval and fine-tuned models in production. LangGraph, Claude, pgvector, FastAPI, on real systems of record.",
       },
       {
-        label: "Engineering",
-        body: "Agents, evals, and harnesses where every invariant is executable. Guards that raise, gates that block.",
+        label: "Explain",
+        body: "Feature importances, calibrated confidence, immutable audit logs. The reasoning ships with the answer, not after it.",
       },
       {
-        label: "Product",
-        body: "RAG systems and tools people use under real constraints. Regulated domains, real latency budgets.",
+        label: "Adopt",
+        body: "Human in the loop by design. The professional reviews, corrects, and signs off, and the system learns from the correction.",
       },
     ],
-    kicker: "One engineer owns all three.\nNothing gets lost in translation.",
+    kicker: "Accuracy gets you a demo.\nExplainability gets you a user.",
   },
 
-  /** TODO(rajarshi): prune to what you genuinely reach for. Honesty > length. */
   stack: [
-    { group: "Models", items: ["PyTorch", "Transformers", "TRL / GRPO", "vLLM", "Unsloth"] },
-    { group: "Agents", items: ["Claude", "LangGraph", "MCP", "Pydantic AI"] },
-    { group: "Retrieval", items: ["Neo4j", "pgvector", "LlamaIndex", "Cohere Rerank"] },
-    { group: "Serving", items: ["FastAPI", "Next.js", "Vercel", "Cloudflare Workers"] },
-    { group: "Analysis", items: ["Jupyter", "scikit-learn", "Polars", "Weights & Biases"] },
+    { group: "Agents", items: ["LangGraph", "Claude", "Instructor", "MCP", "Gymnasium"] },
+    { group: "Models", items: ["PyTorch", "Transformers", "TRL / GRPO", "XGBoost", "Unsloth"] },
+    { group: "Retrieval", items: ["pgvector", "LlamaIndex", "Neo4j", "NVIDIA NIM"] },
+    { group: "Serving", items: ["FastAPI", "Next.js", "Vercel", "Postgres"] },
+    { group: "Interpretability", items: ["InterpretML EBM", "Fuzzy logic", "SHAP", "Forward hooks"] },
+    { group: "Data", items: ["Power BI", "Tableau", "Snowflake", "Power Query", "SQL"] },
   ],
 
-  /** TODO(rajarshi): 4–5, answered in first person, no marketing register. */
   faq: [
     {
-      question: "What do you actually do?",
+      question: "What do you actually build?",
       answer:
-        "TODO(rajarshi) — Two things that are usually separate jobs. I run empirical analysis on how models behave internally, and I build the production systems that come out of it.",
+        "Production AI for work that carries professional liability. The clearest example is an AI accountant built on Xero that categorises transactions, reconciles bank statements and drafts management letters, where every decision stores its own feature importances, a risk score and the model's reasoning in an audit log the accountant can inspect.",
+    },
+    {
+      question: "Why the focus on explainability?",
+      answer:
+        "Because I have watched accurate models get ignored. At IBM I deployed a churn model that the client business team would not act on until I made the driving features legible in plain language. Same pattern with a reporting migration: the analyst adopted it only after seeing both systems reconcile to identical numbers side by side.",
     },
     {
       question: "Research or engineering?",
-      answer: "TODO(rajarshi)",
+      answer:
+        "Both, and they feed each other. The interpretability work on gated attention and sparse autoencoders is the same question as the accounting audit log, asked at a different level: what is this model actually doing, and can I show you?",
     },
     {
       question: "What are you looking for?",
-      answer: "TODO(rajarshi)",
-    },
-    {
-      question: "What's the fastest way to judge the work?",
       answer:
-        "TODO(rajarshi) — Every project here links to the repo. Open one and read the evals.",
+        "TODO(rajarshi): what kind of role, and what you want to be working on. This one should be in your own words.",
     },
   ],
 
   contact: {
-    // TODO(rajarshi): the reference uses "What's stuck? One conversation. No deck."
-    headline: "Working on something hard?",
-    body: "One conversation. No deck.",
+    headline: "Got a workflow that needs to be automated and audited?",
+    body: "One conversation, no deck.",
   },
 
   meta: {
-    // TODO(rajarshi): decide the domain — affects canonical URLs, OG tags, JSON-LD.
+    // TODO(rajarshi): confirm the domain before launch.
     siteUrl: "https://rajarshinandi.com",
     description:
-      "Rajarshi Nandi — AI engineer and interpretability researcher in Leeds, UK. Gated attention, sparse autoencoders, production agents, and RAG in regulated domains.",
-    ogImageAlt: "Rajarshi Nandi — AI Engineer & Interpretability Researcher",
+      "Rajarshi Nandi, AI engineer in Sheffield, UK. Production AI for regulated work: agentic accounting on Xero, compliance retrieval, and interpretability research on gated attention.",
+    ogImageAlt: "Rajarshi Nandi, AI Engineer",
   },
 };

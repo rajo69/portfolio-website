@@ -14,7 +14,7 @@ const NAV = [
 
 /**
  * Sticky header. Transparent over the hero, then picks up a blurred fill and
- * a hairline once scrolled — the reference's behaviour, and it keeps the
+ * a hairline once scrolled, the reference's behaviour, and it keeps the
  * headline uncluttered at the top of the page.
  */
 export function Header() {
@@ -31,8 +31,7 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-40 transition-colors duration-300",
-        scrolled && "border-b border-ink-600 bg-ink-900/80 backdrop-blur-md",
-      )}
+        scrolled && "border-b border-ink-600 bg-ink-900/80 backdrop-blur-md")}
     >
       <div className="flex items-center justify-between px-(--gutter) py-5">
         <a
@@ -71,7 +70,7 @@ export function Header() {
 }
 
 /**
- * Logo mark: three nodes and their attention edges — the site's concept
+ * Logo mark: three nodes and their attention edges, the site's concept
  * compressed into 20px. Currents nodes are the Research/Engineering/Product
  * spine; the filled one is the operator holding all three.
  */

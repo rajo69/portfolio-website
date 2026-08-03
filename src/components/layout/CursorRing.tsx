@@ -8,7 +8,7 @@ import { useReducedMotion } from "@/lib/use-reduced-motion";
 /**
  * The lagging outline ring from the reference.
  *
- * Fine-pointer devices only — on touch there is no cursor to augment, and on
+ * Fine-pointer devices only, on touch there is no cursor to augment, and on
  * reduced-motion the lag is the whole effect, so it's dropped rather than
  * shortened. The native cursor is never hidden: this sits on top of it, so
  * standard affordances (text I-beam, link pointer) still read normally.
@@ -50,12 +50,11 @@ export function CursorRing() {
       // element under the pointer so it survives dynamically added content.
       const target = e.target as HTMLElement | null;
       const interactive = !!target?.closest(
-        'a, button, [role="button"], input, textarea, select, [data-cursor="grow"]',
-      );
+        'a, button, [role="button"], input, textarea, select, [data-cursor="grow"]');
 
       // Only tween on a state *change*. Calling gsap.to() on every pointermove
       // allocates a tween per event and, with overwrite:"auto", kills the
-      // previous one each time — hundreds of allocations a second during a
+      // previous one each time, hundreds of allocations a second during a
       // fast drag, which is enough to stall the main thread.
       if (interactive === overInteractive) return;
       overInteractive = interactive;
