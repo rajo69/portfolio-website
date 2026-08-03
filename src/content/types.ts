@@ -137,6 +137,13 @@ export interface Scar {
 export interface Experience {
   company: string;
   role: string;
+  /**
+   * One or two headline numbers for this role. Rendered large and in accent
+   * above the bullets, because that is what gets read first.
+   */
+  metrics?: { value: string; caption: string }[];
+  /** Kept in the data but not rendered. See the note in experience.ts. */
+  hidden?: boolean;
   /** ISO `YYYY-MM`. */
   start: string;
   /** ISO `YYYY-MM`, or "present". */

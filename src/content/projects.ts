@@ -8,8 +8,8 @@ import type { Project } from "./types";
  * Flagship blocks today: AI Accountant, Clustering Stability, Banking77,
  * Gated Attention. Queued: the dissertation.
  *
- * The IBM engagement stays in Work only until the Experience section exists,
- * which is where it belongs.
+ * The IBM engagement is not here at all: it is told in the Experience
+ * section, where a client engagement belongs.
  *
  * No em dashes anywhere in this file.
  */
@@ -40,26 +40,6 @@ export const projects: Project[] = [
     ],
   },
 
-  {
-    slug: "insurance-analytics-platform",
-    title: "Insurance Analytics Platform",
-    summary:
-      "Moved a US insurance carrier off manual Excel reporting onto an ETL pipeline, a warehouse and dashboards the business actually used.",
-    description:
-      "Three years of policy, claims and campaign data out of the warehouse and into something people could act on. An ETL pipeline feeding Tableau, a Power BI dashboard over Snowflake with computation pushed to the database tier, a churn model, and a demand forecast the client used to redirect marketing spend.",
-    proves:
-      "The pipeline is the product. A twenty-year analyst asked why he should trust my black box, and adopted it only after seeing both systems reconcile to identical numbers side by side. He ended up training his peers on it.",
-    track: "product",
-    capabilities: ["data"],
-    category: "Data platform",
-    period: "2021 to 2023",
-    tech: ["ETL", "Snowflake", "SQL", "Tableau", "Power BI", "Python", "XGBoost"],
-    caseStudy: true,
-    metrics: [
-      { label: "Reporting migrated to Tableau", value: "68%", chart: "gauge", series: [] },
-      { label: "Marketing ROI improvement", value: "14%", chart: "sparkline", series: [] },
-    ],
-  },
 
   {
     slug: "gated-attention",

@@ -4,9 +4,9 @@ import { Label } from "@/components/type";
 import { profile } from "@/content/profile";
 
 const NAV = [
-  { label: "Lab", href: "#lab" },
+  { label: "Projects", href: "#flagship" },
+  { label: "Experience", href: "#experience" },
   { label: "Work", href: "#work" },
-  { label: "About", href: "#about" },
   { label: "Writing", href: "/blog" },
 ];
 

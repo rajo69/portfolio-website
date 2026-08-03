@@ -6,9 +6,9 @@ import { profile } from "@/content/profile";
 import { cn } from "@/lib/cn";
 
 const NAV = [
-  { label: "Lab", href: "#lab" },
+  { label: "Projects", href: "#flagship" },
+  { label: "Experience", href: "#experience" },
   { label: "Work", href: "#work" },
-  { label: "About", href: "#about" },
   { label: "Writing", href: "/blog" },
 ];
 

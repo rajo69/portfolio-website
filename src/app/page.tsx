@@ -1,5 +1,6 @@
 import { About } from "@/components/section/About";
 import { Certifications } from "@/components/section/Certifications";
+import { Experience } from "@/components/section/Experience";
 import { Flagship } from "@/components/section/Flagship";
 import { Hero } from "@/components/section/Hero";
 import { Method } from "@/components/section/Method";
@@ -21,6 +22,7 @@ export default function Home() {
       <Hero />
       <Spine />
       <Flagship />
+      <Experience />
       <Work />
       <Method />
       <About />
