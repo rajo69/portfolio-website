@@ -106,7 +106,7 @@ Placeholders are marked `TODO(rajarshi)`. `npm run check:content` fails the buil
 |---|---|---|
 | **0 — done** | Next.js + TS + Tailwind v4 scaffolded · GSAP/Lenis/Lucide installed · `ui-ux-pro-max` installed · tokens written · content schema written | — |
 | **1 — done** | Fonts wired via `next/font` · layout shell · sticky header · scroll progress · cursor ring · Lenis smooth scroll · `AttentionField` canvas · type primitives · `Reveal` · placeholder page. Verified: 60fps, 0 long tasks, no horizontal overflow at 375/768/1024/1440, reduced-motion path correct. | — |
-| **2** | Hero + logit-lens decode + stat counters; Spine diagram | your headline + stats |
+| **2 — done** | Hero with logit-lens decode + confidence rail · stat counters · Spine triangle diagram · ScrollTrigger refresh on font load. Built against the placeholder headline; swaps to yours with no code change. | — |
 | **3** | Lab cards + 4 SVG chart primitives; Work list + FLIP filter | your project metrics |
 | **4** | Receipts: timeline, education, certifications; Stack grid | **your CV content** |
 | **5** | GitHub proof strip (ISR); FAQ; Contact; Footer | — |
