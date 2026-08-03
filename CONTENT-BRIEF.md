@@ -1,3 +1,9 @@
+> **STALE.** This was written during initial planning and has been overtaken.
+> The structure changed (Lab was removed, Flagship holds the project blocks,
+> Experience was added), the proof strategy was cut, and the accent decision
+> and phases no longer describe the site. Kept for the reasoning trail only.
+> **Read `HANDOFF.md` instead.**
+
 # What I need from you
 
 Paste it in whatever form you have it, a CV, a LinkedIn export, raw notes. I'll normalise it into `src/content/*.ts`. Don't format it nicely for me; that's my job.

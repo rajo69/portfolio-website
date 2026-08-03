@@ -1,3 +1,9 @@
+> **STALE.** This was written during initial planning and has been overtaken.
+> The structure changed (Lab was removed, Flagship holds the project blocks,
+> Experience was added), the proof strategy was cut, and the accent decision
+> and phases no longer describe the site. Kept for the reasoning trail only.
+> **Read `HANDOFF.md` instead.**
+
 # Execution Plan, Rajarshi Nandi Portfolio
 
 Status: **directory prepared, awaiting content.** Read `DESIGN.md` for the visual system, `CONTENT-BRIEF.md` for what you need to send.
