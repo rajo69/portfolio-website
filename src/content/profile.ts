@@ -38,14 +38,16 @@ export const profile: Profile = {
   },
 
   /**
-   * Three hero stats. The reference uses $185M / $850M+ / 9 MO — hard,
-   * checkable numbers. Yours should be equally checkable.
-   * TODO(rajarshi): replace with your strongest three.
+   * Three hero stats, all drawn from the repositories and all checkable.
+   *
+   * "56 public repositories" was here and has been removed: it counts volume
+   * rather than quality, which is the same vanity signal as a star count. A
+   * number is only worth the hero if someone could go and falsify it.
    */
   stats: [
-    { value: "56", caption: "Public repositories" },
-    { value: "<2B", caption: "Params, GRPO-tuned" },
-    { value: "TODO", caption: "TODO(rajarshi)" },
+    { value: "30+", caption: "Applications, zero human fields" },
+    { value: "22", caption: "Platforms driven live" },
+    { value: "25,600", caption: "Tokens, bootstrapped CIs" },
   ],
 
   /**

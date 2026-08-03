@@ -105,7 +105,15 @@ body {
 /* ============================================================
    TYPE PRIMITIVES
    Display headings are tight, heavy, and optically negative-tracked.
+
+   These MUST live in @layer components. Un-layered CSS outranks every
+   layered rule in the cascade, so as plain top-level classes they beat
+   Tailwind's utilities — `text-accent` on an element that also carries
+   `t-display` would silently do nothing, as would `group-hover:text-accent`
+   on `t-label`. Inside the components layer, utilities win as intended.
    ============================================================ */
+
+@layer components {
 
 .t-display {
   font-family: var(--ff-display), sans-serif;
@@ -132,6 +140,8 @@ body {
   line-height: 1.65;
   color: var(--paper-dim);
   max-width: var(--measure);
+}
+
 }
 
 /* ============================================================

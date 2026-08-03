@@ -1,5 +1,7 @@
 import { Section } from "@/components/layout/Section";
+import { Evidence } from "@/components/section/Evidence";
 import { Hero } from "@/components/section/Hero";
+import { Method } from "@/components/section/Method";
 import { Spine } from "@/components/section/Spine";
 import { Reveal } from "@/components/motion/Reveal";
 import { DisplayHeading, Eyebrow, Lede } from "@/components/type";
@@ -13,6 +15,8 @@ export default function Home() {
     <>
       <Hero />
       <Spine />
+      <Evidence />
+      <Method />
 
       {/* Placeholders — Phase 3 replaces these with real Lab cards and the
           filterable Work list. See CONTENT-BRIEF.md. */}

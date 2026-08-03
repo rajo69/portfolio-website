@@ -50,8 +50,36 @@ The reference shows invented dashboards. You have **actual measured results in p
 ### 2.4 Two-track spine
 The reference's spine is AI → Marketing → Revenue, owned by one operator. Yours is **Research → Engineering → Product**, owned by one engineer. The Work list gets a `RESEARCH / SHIPPED / ALL` filter that re-lays out with GSAP FLIP.
 
-### 2.5 Live GitHub proof strip
-Contribution heatmap, public repo count, and language split, fetched from the GitHub API at build time with ISR (`revalidate: 86400`). The reference claims a track record; yours is queryable.
+### 2.5 The measurement wall — *not* a GitHub proof strip
+
+The original plan here was a contribution heatmap, repo count and language split. **That was wrong and has been cut.**
+
+These are personal research and production builds, not libraries chasing adoption. There are no stars, forks or downloads, and a strip of zeroes only draws a line under their absence. Repo count is the same failure in disguise — it measures volume, not quality. (`56 public repositories` was briefly a hero stat for exactly that reason, and has been removed.)
+
+What the repositories *do* contain is stronger:
+
+| Instead of | Show |
+|---|---|
+| Stars | `30+` applications across `22` platforms, no human touching a form field |
+| Forks | `25,600` tokens, Welford aggregation, split-half stability |
+| Downloads | `99.8%` of ablation damage traced to layer 0, bootstrapped CIs |
+| Contribution heatmap | `3 hrs` for the full study on a free Colab T4, reproducible from committed `.pkl` files |
+
+Every tile carries a **mandatory** `source` deep link — README anchor, notebook cell, eval file. `Measurement.source` is non-optional in the type, because a number without a receipt does not belong on this page.
+
+> **Operational rule.** The section's headline is "Nothing here is a claim." A dead link inside it disproves the entire page. Source links are checked as part of verification: the UKGC Swagger deployment was linked as "Live API", found dead (no response in 120s — not a cold start), and repointed at the README. Restore it only when the host is genuinely back up.
+
+### 2.6 Method — scope honesty as the differentiator
+
+The most credible artifact across the repositories is the gated-attention findings table, because it carries a **confidence column** and publishes a row graded `low`. Almost nobody scopes their own claims downward voluntarily; to a hiring manager it reads as someone who won't oversell in a design review.
+
+Rendered as a four-segment meter (`high` 4/4 → `low` 1/4, dimmed) it reads at a glance down the column. Paired with:
+
+- **"Every guard is a scar"** — real failures observed while driving live portals, each with the named guard that killed it: `click_verified`, `set_text`, `probe_limits`, `assert_saved`.
+- **The principle** — *"A rule an agent must remember will eventually be skipped. A rule that raises will not."*
+- **"What this is not"** — limits stated before results.
+
+The `low` row stays. Removing it would make the section look stronger and be worth less.
 
 ---
 
@@ -170,4 +198,6 @@ Skill checklist, plus project-specific gates:
 - [ ] All content in the DOM without JS (animation is enhancement only)
 - [ ] Real `<h1>`–`<h3>` hierarchy; `<nav>`/`<main>`/`<footer>` landmarks
 - [ ] `--paper-faint` never used for body copy
+- [ ] Type primitives (`t-display`, `t-label`, `t-body`) stay inside `@layer components` — un-layered CSS outranks Tailwind utilities, which silently kills `text-accent` and every `group-hover:` colour on those elements
+- [ ] Every `Measurement.source` link resolves 200 — a dead link in "Nothing here is a claim" disproves the page
 - [ ] OG image, favicon, `sitemap.xml`, `robots.txt`, JSON-LD `Person` schema

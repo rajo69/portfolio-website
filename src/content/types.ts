@@ -69,6 +69,51 @@ export interface Project {
   caseStudy?: boolean;
 }
 
+/**
+ * A measurement with a link to whatever produced it.
+ *
+ * This is the site's answer to having no stars, forks or downloads. Those
+ * count how many people noticed; these are falsifiable claims with the
+ * receipt attached. `source` is non-optional on purpose — a number without
+ * one doesn't belong on this page.
+ */
+export interface Measurement {
+  value: string;
+  caption: string;
+  /** Deep link: README anchor, notebook cell, eval file, or live endpoint. */
+  source: string;
+  /** Short human label for the link, e.g. "job-apply-harness README". */
+  sourceLabel: string;
+}
+
+/** How far a finding can actually be pushed. Rendered as a graded bar. */
+export type Confidence = "high" | "moderate-high" | "moderate" | "low";
+
+/**
+ * A research finding carrying its own confidence grade and the evidence
+ * behind it — lifted from the structure of the gate-sparsity README.
+ *
+ * Keeping the `low` rows in is the entire point. Anyone can list results;
+ * publishing the ones you don't yet trust is the part that's hard to fake.
+ */
+export interface Finding {
+  claim: string;
+  confidence: Confidence;
+  evidence: string;
+}
+
+/**
+ * A failure that actually happened, and the mechanism that made it
+ * impossible to repeat. "Every guard here is a scar."
+ */
+export interface Scar {
+  failure: string;
+  /** The guard's name, rendered as code. */
+  mechanism: string;
+  /** What that guard does. */
+  behaviour: string;
+}
+
 export interface Experience {
   company: string;
   role: string;
