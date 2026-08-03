@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { LiveEmbed } from "@/components/section/LiveEmbed";
 import { ClusteringExplorer } from "@/components/projects/ClusteringExplorer";
+import { GatedAttentionExplorer } from "@/components/projects/GatedAttentionExplorer";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Eyebrow, Label, Lede } from "@/components/type";
@@ -241,12 +242,68 @@ export function Flagship() {
             />
           </Reveal>
         </Block>
+
+        {/* ── 03 · GATED ATTENTION ───────────────────────────────────────── */}
+        <Block
+          index="03"
+          capabilities={["Research", "AI & agents"]}
+          period="2026"
+          title="What the Gates Actually Do"
+          lede="A NeurIPS 2025 paper shows that adding a sigmoid gate after attention makes language models better, and reports layer-wise averages. It does not say what the trained gates end up doing, or what happens if you interfere with them. I took the released models and measured."
+          artifact={<GatedAttentionExplorer />}
+          links={[
+            {
+              label: "Read the analysis",
+              href: "https://github.com/rajo69/Gate-Sparsity-and-Functional-Sensitivity-in-Gated-Attention-An-Empirical-Analysis",
+              primary: true,
+              icon: "gh",
+            },
+            {
+              label: "The original paper",
+              href: "https://arxiv.org/abs/2505.06708",
+            },
+          ]}
+        >
+          <Reveal variant="stagger" className="space-y-6">
+            <Label as="h4">How it was measured</Label>
+            <p className="text-sm leading-relaxed text-paper-dim">
+              PyTorch forward hooks on the gate tensor of every layer, aggregated
+              with Welford over 25,600 WikiText-2 tokens so the running statistics
+              stay numerically stable without holding every activation in memory.
+              Then layer-by-layer ablation, a gate value sweep, per-head sensitivity,
+              and the same battery repeated on a code corpus to check the patterns
+              are not an artefact of one domain.
+            </p>
+            <p className="text-sm leading-relaxed text-paper-dim">
+              Bootstrapped confidence intervals throughout, permutation testing on
+              the sparsity-sensitivity correlation, and a split-half check that the
+              gate structure reproduces on disjoint halves of the data. No training
+              was done: this measures a model somebody else trained.
+            </p>
+            <p className="text-sm leading-relaxed text-paper-dim">
+              The whole thing runs on a free Colab T4 in about three hours, and
+              every figure regenerates from the <code className="font-mono text-accent">.pkl</code>{" "}
+              files committed to the repository.
+            </p>
+          </Reveal>
+
+          <Reveal variant="stagger" className="space-y-6">
+            <Label as="h4">Where it broke</Label>
+            <Challenge
+              problem="Layer 0 accounting for 99.8% of ablation damage looked like a bug. A single layer carrying essentially all of the effect is the shape of an indexing error, not a finding."
+              fix="Rather than trusting it, I added the checks that would expose a mistake: bootstrapped CIs, a split-half stability test, and a repeat on a second corpus. It survived all three, which is also where the confidence column came from. Grading every claim was a response to not believing this one."
+            />
+            <Challenge
+              problem="My hypothesis was that layer 0's gate suppresses the attention sink, so forcing it open should restore it. It does not."
+              fix="Published as a null result graded moderate. The hooks are reading what I think they are reading, but the mechanism is unexplained, and it does not contradict the paper's system-level claim. Reporting it as a clean negative was more useful than quietly dropping the experiment."
+            />
+          </Reveal>
+        </Block>
       </div>
 
       <Reveal className="mt-24 border-t border-ink-600 pt-10">
         <Label>
-          Next: the Banking77 fine-tune, the ResNet-18 dissertation, and gated
-          attention
+          Next: the Banking77 fine-tune, and the ResNet-18 dissertation
         </Label>
       </Reveal>
     </Section>

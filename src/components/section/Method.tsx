@@ -2,8 +2,7 @@ import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Eyebrow, Label, Lede } from "@/components/type";
-import { findings, method, scars } from "@/content/proof";
-import type { Confidence } from "@/content/types";
+import { method, scars } from "@/content/proof";
 
 /**
  * METHOD, how the work gets built.
@@ -14,43 +13,7 @@ import type { Confidence } from "@/content/types";
  * shows the engineering position and lets it speak.
  */
 
-const CONFIDENCE_STEPS: Record<Confidence, number> = {
-  high: 4,
-  "moderate-high": 3,
-  moderate: 2,
-  low: 1,
-};
 
-const CONFIDENCE_LABEL: Record<Confidence, string> = {
-  high: "High",
-  "moderate-high": "Mod-high",
-  moderate: "Moderate",
-  low: "Low",
-};
-
-/** Four segments, filled to the grade. Reads at a glance down the column. */
-function ConfidenceMeter({ level }: { level: Confidence }) {
-  const filled = CONFIDENCE_STEPS[level];
-  return (
-    <span className="inline-flex items-center gap-2" title={CONFIDENCE_LABEL[level]}>
-      <span aria-hidden="true" className="flex gap-0.5">
-        {[0, 1, 2, 3].map((i) => (
-          <span
-            key={i}
-            className={
-              i < filled
-                ? level === "low"
-                  ? "block h-3 w-1 bg-accent-dim"
-                  : "block h-3 w-1 bg-accent"
-                : "block h-3 w-1 bg-ink-500"
-            }
-          />
-        ))}
-      </span>
-      <Label className="whitespace-nowrap">{CONFIDENCE_LABEL[level]}</Label>
-    </span>
-  );
-}
 
 export function Method() {
   return (
@@ -111,32 +74,6 @@ export function Method() {
         </ul>
       </Reveal>
 
-      {/* --- Findings with their confidence grades --- */}
-      <Reveal className="mt-24">
-        <div className="mb-6 flex items-baseline justify-between gap-4">
-          <Label as="h3">Gated attention, findings</Label>
-          <Label>25,600 tokens</Label>
-        </div>
-
-        <ul className="border-t border-ink-600">
-          {findings.map((f) => (
-            <li
-              key={f.claim}
-              className="grid gap-3 border-b border-ink-600 py-5 md:grid-cols-[1fr_auto] md:items-start md:gap-8"
-            >
-              <div>
-                <p className="text-sm leading-snug text-paper">{f.claim}</p>
-                <p className="mt-1.5 text-xs leading-relaxed text-paper-faint">
-                  {f.evidence}
-                </p>
-              </div>
-              <div className="md:pt-0.5">
-                <ConfidenceMeter level={f.confidence} />
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Reveal>
     </Section>
   );
 }

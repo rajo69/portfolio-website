@@ -5,8 +5,8 @@ import type { Project } from "./types";
  * Flagship section". Work renders everything else, so flipping the flag before
  * the block exists would make a project disappear from the site entirely.
  *
- * Flagship blocks today: AI Accountant, Clustering Stability.
- * Queued: Banking77 fine-tune, the dissertation, gated attention.
+ * Flagship blocks today: AI Accountant, Clustering Stability, Gated Attention.
+ * Queued: Banking77 fine-tune, the dissertation.
  *
  * The IBM engagement stays in Work only until the Experience section exists,
  * which is where it belongs.
@@ -75,6 +75,7 @@ export const projects: Project[] = [
     category: "Interpretability",
     period: "2026",
     tech: ["PyTorch", "Transformers", "Forward hooks", "Bootstrapped CIs"],
+    featured: true,
     repo:
       "https://github.com/rajo69/Gate-Sparsity-and-Functional-Sensitivity-in-Gated-Attention-An-Empirical-Analysis",
     caseStudy: true,
