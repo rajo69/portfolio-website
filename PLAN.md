@@ -105,7 +105,7 @@ Placeholders are marked `TODO(rajarshi)`. `npm run check:content` fails the buil
 | Phase | Work | Blocked on |
 |---|---|---|
 | **0 — done** | Next.js + TS + Tailwind v4 scaffolded · GSAP/Lenis/Lucide installed · `ui-ux-pro-max` installed · tokens written · content schema written | — |
-| **1** | Accent colour locked; fonts wired via `next/font`; layout shell, header, scroll progress, cursor ring, Lenis, `AttentionField` canvas | your accent pick |
+| **1 — done** | Fonts wired via `next/font` · layout shell · sticky header · scroll progress · cursor ring · Lenis smooth scroll · `AttentionField` canvas · type primitives · `Reveal` · placeholder page. Verified: 60fps, 0 long tasks, no horizontal overflow at 375/768/1024/1440, reduced-motion path correct. | — |
 | **2** | Hero + logit-lens decode + stat counters; Spine diagram | your headline + stats |
 | **3** | Lab cards + 4 SVG chart primitives; Work list + FLIP filter | your project metrics |
 | **4** | Receipts: timeline, education, certifications; Stack grid | **your CV content** |
@@ -129,6 +129,11 @@ Phase 1 can start the moment you pick an accent. Phases 2–4 need your content 
 | **Contact** | Mailto only — zero backend, zero spam surface. Same as the reference. Say the word if you want a form instead. |
 
 **What "hiring first" changes concretely:** Receipts (§6) moves above the Work list rather than below it, so experience/education/certifications are reachable in one scroll. The FAQ answers "what are you looking for" directly. The contact CTA reads as an invitation to talk, not a pitch.
+
+### Known gaps carried into Phase 2
+
+- **No mobile navigation.** The nav links are `hidden md:flex`, so below 768px only the "Talk to me" CTA is reachable — the four section anchors aren't. Deliberately deferred until the section list is final rather than built twice, but it must ship before launch: hiring-first means recruiters on phones.
+- **Dev-mode automation quirk.** Chrome-extension script injection intermittently times out against this page while Lenis is active. Playwright over CDP shows 60fps and `evaluate()` in 6ms, so this is a tooling artifact, not a user-facing defect. Use `?field=off` to disable the canvas when profiling.
 
 ### Still open
 

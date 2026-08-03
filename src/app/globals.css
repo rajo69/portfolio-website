@@ -65,9 +65,11 @@
   --color-background: var(--ink-900);
   --color-foreground: var(--paper);
 
-  --font-display: var(--font-display), "Arial Black", sans-serif;
-  --font-sans: var(--font-sans), system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, monospace;
+  /* --ff-* are injected on <html> by next/font. Named distinctly from the
+     --font-* Tailwind tokens below, otherwise the tokens self-reference. */
+  --font-display: var(--ff-display), "Arial Black", sans-serif;
+  --font-sans: var(--ff-sans), system-ui, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, monospace;
 }
 
 /* ============================================================
@@ -83,7 +85,7 @@ html {
 body {
   background: var(--ink-900);
   color: var(--paper-dim);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--ff-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -106,7 +108,7 @@ body {
    ============================================================ */
 
 .t-display {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--ff-display), sans-serif;
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 0.94;
@@ -117,7 +119,7 @@ body {
 /* The tracked-out uppercase micro-label. Used everywhere for
    eyebrows, stat captions, categories, footer meta. */
 .t-label {
-  font-family: var(--font-mono), monospace;
+  font-family: var(--ff-mono), monospace;
   font-size: 0.6875rem; /* 11px */
   font-weight: 500;
   letter-spacing: 0.18em;
