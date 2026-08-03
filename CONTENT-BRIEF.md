@@ -8,7 +8,7 @@ Ordered by how much it unblocks.
 
 ## 1 — Blocks the whole build (send first)
 
-**Accent colour.** Signal Lime `#C8FF3D` / Ion Cyan `#3DE1FF` / Ember `#FF5C1A` / Plasma `#FF3D8B`. See `DESIGN.md §3`. Everything — canvas, cursor, charts, pills, progress bar — inherits it.
+> Accent is locked to **Plasma `#FF3D8B`**. Audience: all three, hiring first. Case studies: full pages for the 4 Lab projects. Phase 1 of the build is unblocked and can start now.
 
 **Your headline.** 6–10 words, declarative, no hedging. It runs the logit-lens decode animation and it's the first thing anyone reads. My draft is *"I build the model, then I open it up."* — approve it or replace it.
 
@@ -93,10 +93,24 @@ You have 56 public repos. I've drafted 16 into `projects.ts`. **A portfolio that
 |---|---|
 | **Domain** | `rajarshinandi.com`? `rajarshi.dev`? Affects canonical URLs, OG tags, JSON-LD. |
 | **LinkedIn / Scholar / X** | URLs for the footer. |
-| **Case studies** | Full `/work/[slug]` pages, or link straight to repos? Full pages are far stronger for hiring but need ~300 words each from you. |
 | **CV download** | PDF at `/cv`? |
-| **Contact** | Mailto only (reference's approach, zero backend) or a real form? I'd say mailto — a form adds a provider dependency and spam surface for no gain at this scale. |
 | **Photo** | The reference has none, and it works. Your call. |
+
+Already decided: accent (Plasma), audience (hiring first), case studies (full pages for the 4 Lab projects), contact (mailto only).
+
+### Case study write-ups — 4 × ~300 words
+
+One per Lab project, in this shape. Bullets and fragments are fine; I'll write the prose.
+
+```
+Problem   ·  what was actually hard, and why the obvious approach fails
+Approach  ·  what you did, and the one non-obvious decision you made
+Shipped   ·  what exists now that didn't before
+Result    ·  the measured outcome + how it was measured
+Honest    ·  what didn't work, or what you'd do differently
+```
+
+That last line is worth including. Every portfolio claims success; almost none says where the edges were, and to a technical reader that reads as confidence rather than weakness.
 
 ---
 

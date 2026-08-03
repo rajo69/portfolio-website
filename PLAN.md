@@ -117,10 +117,22 @@ Phase 1 can start the moment you pick an accent. Phases 2–4 need your content 
 
 ---
 
-## 6. Open decisions
+## 6. Decisions
 
-1. **Accent colour** — Signal Lime `#C8FF3D` / Ion Cyan `#3DE1FF` / Ember `#FF5C1A` / Plasma `#FF3D8B`. One line to change, but it defines everything. *(asking now)*
-2. **Domain** — `rajarshinandi.com`? `rajarshi.dev`? Affects OG/canonical/JSON-LD.
-3. **Case studies** — full `/work/[slug]` pages, or link straight to repos? Full pages are much stronger for hiring but need ~300 words each from you.
-4. **CV download** — do you want a PDF served at `/cv`?
-5. **Contact** — mailto only (reference's approach, zero backend), or a real form? Mailto is my recommendation; a form needs a provider and adds spam surface for no gain at this scale.
+### Locked
+
+| | |
+|---|---|
+| **Accent** | **Plasma `#FF3D8B`** — attention-heatmap hot end. See `DESIGN.md §3` for the contrast constraint it carries. |
+| **Audience** | All three, **hiring first**. Balanced register; the experience timeline and the Lab carry the most weight. Copy is rigorous and measured, not salesy — but every section still ends somewhere a reader can act. |
+| **Case studies** | **Full `/work/[slug]` pages for the 4 Lab projects.** Work-list rows link to repos. Needs ~300 words from you per Lab project (§5 of `CONTENT-BRIEF.md`). |
+| **Contact** | Mailto only — zero backend, zero spam surface. Same as the reference. Say the word if you want a form instead. |
+
+**What "hiring first" changes concretely:** Receipts (§6) moves above the Work list rather than below it, so experience/education/certifications are reachable in one scroll. The FAQ answers "what are you looking for" directly. The contact CTA reads as an invitation to talk, not a pitch.
+
+### Still open
+
+1. **Domain** — `rajarshinandi.com`? `rajarshi.dev`? Affects canonical URLs, OG tags, JSON-LD.
+2. **CV download** — PDF served at `/cv`?
+3. **Photo** — the reference has none and it works. Your call.
+4. **Curation** — which of the 56 repos make the cut. See `CONTENT-BRIEF.md §6`.

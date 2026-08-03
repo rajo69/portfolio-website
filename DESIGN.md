@@ -76,18 +76,20 @@ Defined once in `src/app/globals.css`. Nothing in a component may hardcode a hex
 | `--paper-faint` | `#6B6E6B` | Micro-labels ≥11px | 3.6:1 ⚠️ decorative/meta only — never body copy |
 
 ### Accent — one hue, no exceptions
-Current default: **Signal Lime `#C8FF3D`** (16.8:1 on `--ink-900`).
+**Locked: Plasma `#FF3D8B`.** The hot end of an attention heatmap — thematically exact for interpretability work, and nowhere near the reference's orange.
 
-Candidates considered — all pass AA large at ≥8:1:
+| Token | Hex | Use |
+|---|---|---|
+| `--accent` | `#FF3D8B` | Headlines-in-accent, numbers, pills, cursor, progress bar, canvas |
+| `--accent-dim` | `#C22A69` | Hover / pressed / secondary strokes |
+| `--accent-ghost` | `rgb(255 61 139 / 0.08)` | Card washes, lattice traces |
+| `--on-accent` | `#08090A` | Text on a filled accent surface |
 
-| Name | Hex | Reads as | Note |
-|---|---|---|---|
-| **Signal Lime** | `#C8FF3D` | eval logs, terminal, ML tooling | Furthest from the reference. Recommended. |
-| Ion Cyan | `#3DE1FF` | scientific instrument, clinical | Cooler, more "lab" |
-| Ember | `#FF5C1A` | energy, urgency | Closest to reference — most derivative |
-| Plasma | `#FF3D8B` | attention-heatmap hot end | Boldest, least conventional |
+**Contrast: 5.97:1 on `--ink-900`.** Clears WCAG AA for normal text, and AAA for large. This is lower than a lime (16.8:1) or cyan (11.4:1) would have been, so one constraint follows and is not optional:
 
-> Swap = one line in `globals.css`. The canvas, cursor, pills, charts and progress bar all read `--accent`.
+> **Accent is never used for paragraph copy.** It is permitted at label size (11px mono, ≥500 weight) and at headline size (≥24px), and for graphical marks. Running body text is always `--paper-dim`. The reference follows the same rule with its orange — accent is used to spike numbers inside a sentence, never to set the sentence.
+
+Alternates, if it ever needs to change — a one-line swap in `globals.css`: Signal Lime `#C8FF3D`, Ion Cyan `#3DE1FF`, Ember `#FF5C1A`.
 
 ---
 

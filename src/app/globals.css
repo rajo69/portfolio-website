@@ -19,11 +19,15 @@
   --paper-dim: #a8aaa6; /* body copy */
   --paper-faint: #6b6e6b; /* micro-labels, meta */
 
-  /* --- Accent (SINGLE hot colour — swap this to rebrand) --- */
-  --accent: #c8ff3d; /* Signal Lime */
-  --accent-dim: #93bd23;
-  --accent-ghost: rgb(200 255 61 / 0.08);
-  --on-accent: #08090a;
+  /* --- Accent (SINGLE hot colour — swap this to rebrand) ---
+     Plasma: the hot end of an attention heatmap. 5.97:1 on --ink-900,
+     which clears WCAG AA for normal text. Because it sits lower than a
+     lime or cyan would, accent-on-black body copy is capped at label
+     size and headline size — never a paragraph. */
+  --accent: #ff3d8b; /* Plasma */
+  --accent-dim: #c22a69; /* hover / pressed / secondary strokes */
+  --accent-ghost: rgb(255 61 139 / 0.08); /* card washes, canvas traces */
+  --on-accent: #08090a; /* text on a filled accent surface — 5.97:1 */
 
   /* --- Semantic --- */
   --ok: #4ade80;
