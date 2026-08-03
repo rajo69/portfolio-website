@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
+/* ============================================================
+   RAJARSHI NANDI — "THE ATTENTION FIELD"
+   Design tokens. See DESIGN.md for rationale.
+   The entire identity swings off --accent. Change it here only.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Surface: warm near-black, never pure #000 (OLED smear) --- */
+  --ink-900: #08090a; /* page base */
+  --ink-800: #0c0e10; /* raised surface */
+  --ink-700: #121517; /* card fill */
+  --ink-600: #1a1e21; /* hairline / border */
+  --ink-500: #2a2f34; /* strong border, dividers */
+
+  /* --- Type --- */
+  --paper: #f4f3f0; /* headline white, slightly warm */
+  --paper-dim: #a8aaa6; /* body copy */
+  --paper-faint: #6b6e6b; /* micro-labels, meta */
+
+  /* --- Accent (SINGLE hot colour — swap this to rebrand) --- */
+  --accent: #c8ff3d; /* Signal Lime */
+  --accent-dim: #93bd23;
+  --accent-ghost: rgb(200 255 61 / 0.08);
+  --on-accent: #08090a;
+
+  /* --- Semantic --- */
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --err: #f87171;
+
+  /* --- Motion --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --dur-fast: 180ms;
+  --dur-base: 300ms;
+  --dur-slow: 700ms;
+
+  /* --- Layout --- */
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+  --measure: 62ch;
+  --shell: 1240px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink-900: var(--ink-900);
+  --color-ink-800: var(--ink-800);
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-ink-500: var(--ink-500);
+
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-paper-faint: var(--paper-faint);
+
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-on-accent: var(--on-accent);
+
+  --color-background: var(--ink-900);
+  --color-foreground: var(--paper);
+
+  --font-display: var(--font-display), "Arial Black", sans-serif;
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html {
+  background: var(--ink-900);
+  /* Lenis drives smooth scroll; native smooth would fight it. */
+  scroll-behavior: auto;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ink-900);
+  color: var(--paper-dim);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   TYPE PRIMITIVES
+   Display headings are tight, heavy, and optically negative-tracked.
+   ============================================================ */
+
+.t-display {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.94;
+  color: var(--paper);
+  text-wrap: balance;
+}
+
+/* The tracked-out uppercase micro-label. Used everywhere for
+   eyebrows, stat captions, categories, footer meta. */
+.t-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+.t-body {
+  font-size: clamp(0.9375rem, 0.9rem + 0.3vw, 1.0625rem);
+  line-height: 1.65;
+  color: var(--paper-dim);
+  max-width: var(--measure);
+}
+
+/* ============================================================
+   MOTION SAFETY — non-negotiable
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
