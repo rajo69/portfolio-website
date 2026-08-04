@@ -44,11 +44,16 @@ const SINK_H = 46;
 /**
  * Colour encodes KIND and nothing else.
  *
- * The first version also turned the selected node accent, and since --accent
- * (#ff3d8b) and --series-1 (#e82d77) are all but the same pink, there was no
- * way to tell "this node has a model in it" from "this node is the one you are
- * pointing at". Selection is now carried by weight and an underline instead, so
- * the one thing the diagram exists to show stays unambiguous.
+ * The first version also turned the selected node accent, and back when
+ * --accent was Plasma pink (#ff3d8b) it was all but the same colour as
+ * --series-1 (#e82d77), so there was no way to tell "this node has a model in
+ * it" from "this node is the one you are pointing at". Selection is carried by
+ * weight and an underline instead.
+ *
+ * The accent went green on 4 August 2026, so that collision no longer exists
+ * and hue would now be safe here. Leaving it as weight anyway: the underline
+ * reads fine, and selection-by-weight is the convention HarnessMap copied, so
+ * changing one of them alone would make the two diagrams disagree.
  */
 function strokeFor(kind: NodeKind) {
   return kind === "model" ? "var(--series-1)" : "var(--ink-500)";

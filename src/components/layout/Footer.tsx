@@ -83,7 +83,7 @@ export function Footer() {
       <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
         <Label>{profile.location}</Label>
         <Label>
-          {`${profile.name} · MMXXVI · Built with Next.js, GSAP & a canvas`}
+          {`${profile.name} · 2026 · Built with Next.js, GSAP & a canvas`}
         </Label>
       </div>
     </footer>

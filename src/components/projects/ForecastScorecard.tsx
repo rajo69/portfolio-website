@@ -262,7 +262,7 @@ function ScoredView() {
         <p className="mt-4 text-sm leading-relaxed text-paper-dim">
           {f.insideBand95
             ? "This is the one month of eleven where the outturn landed inside the 95% interval, and only just, with 9.25 to spare."
-            : "The outturn is above the top of the 95% interval. A 95% interval should be breached about one month in twenty, not ten in eleven, so the intervals were too narrow and not just the point forecast too low."}
+            : "The outturn is above the top of the 95% interval. A 95% interval should be breached about one month in twenty. This one was breached ten times in eleven, so the intervals themselves were too narrow."}
         </p>
       )}
 
@@ -357,11 +357,10 @@ function HorizonView() {
       <p className="mt-7 border-t border-line pt-5 text-sm leading-relaxed text-paper-dim">
         Holt&apos;s error is {horizonEffect.rmse.toFixed(2)} times lower on RMSE
         and {horizonEffect.mape.toFixed(2)} times lower on MAPE when the horizon
-        drops from the full holdout to one month. Bars share a scale so the
-        collapse is visible rather than tabulated. The lesson is the one the
-        coursework did not draw: a one step ahead score is not evidence that a
-        model can forecast a year out, and the published eleven month forecast
-        is the case in point.
+        drops from the full holdout to one month. The bars share a scale so the
+        collapse is visible. A one step ahead score is no evidence that a model
+        can forecast a year out, and my eleven month forecast is the case in
+        point.
       </p>
     </div>
   );
@@ -470,9 +469,8 @@ function TopicsView() {
               ))}
             </ul>
             <p className="mt-4 text-xs leading-relaxed text-paper-faint">
-              Frequency and topic disagree, which is the point of running LDA at
-              all. &quot;hotel&quot; and &quot;room&quot; dominate the counts in both corpora and
-              separate nothing.
+              Frequency and topic disagree. &quot;hotel&quot; and &quot;room&quot; dominate the
+              counts in both corpora and separate nothing.
             </p>
           </div>
         </div>

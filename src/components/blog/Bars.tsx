@@ -3,12 +3,19 @@ import { cn } from "@/lib/cn";
 /**
  * Horizontal bar chart for use inside posts.
  *
- * PALETTE. Validated, not chosen by eye. The brand accent #FF3D8B sits at
- * OKLCH L 0.673, just outside the dark-mode band of 0.48 to 0.67, and pairing
- * it with a neutral grey failed CVD separation outright at deutan dE 5.5: a
- * red-green colourblind reader could not tell the two series apart. The pair
- * below was stepped until all six checks passed against this site's chart
- * surface (#0C0E10):
+ * PALETTE. Validated, not chosen by eye, and NOT the brand accent.
+ *
+ * This validation was run when the accent was Plasma pink (#FF3D8B). That
+ * accent sat at OKLCH L 0.673, just outside the dark-mode band of 0.48 to
+ * 0.67, and pairing it with a neutral grey failed CVD separation outright at
+ * deutan dE 5.5: a red-green colourblind reader could not tell the two series
+ * apart. The pair below was stepped until all six checks passed against this
+ * site's chart surface (#0C0E10).
+ *
+ * The accent went green (#00E88C) on 4 August 2026 and these did not move.
+ * The six checks below are of the two series against each other and against
+ * the surface, so none of them depended on the accent. Re-running the
+ * validator would be needed only if these two values change.
  *
  *   Lightness band      PASS   both inside L 0.48-0.67
  *   Chroma floor        PASS   both >= 0.10

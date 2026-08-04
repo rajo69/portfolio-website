@@ -35,8 +35,10 @@ export const projects: Project[] = [
     featured: true,
     caseStudy: true,
     metrics: [
-      { label: "Categorisation accuracy", value: "94%", chart: "gauge", series: [] },
-      { label: "Per transaction", value: "<2s", chart: "sparkline", series: [] },
+      // From backend/evals/README.md. The old 94% and "<2s" were in no repo
+      // artifact anywhere; see the note on the block's stats in Flagship.tsx.
+      { label: "Categorisation accuracy, 44 of 50 fixtures", value: "88%", chart: "gauge", series: [] },
+      { label: "Accuracy above the 0.85 auto-accept threshold", value: "95%", chart: "gauge", series: [] },
     ],
   },
 
@@ -151,9 +153,27 @@ export const projects: Project[] = [
   },
   {
     slug: "job-apply-harness",
-    title: "Job Apply Harness",
+    title: "The Application Harness",
+    /**
+     * Retitled twice on 4 August 2026, and this is the settled name because it
+     * is the one his own vault uses.
+     *
+     * It was "Job Apply Harness", and the summary led with "thirty-plus
+     * applications across twenty-two portals". Two of three cold reviewers read
+     * that as a job-hunting funnel rather than a project: the hiring manager
+     * wondered whether the page was written for him or for a pipeline, and the
+     * prospective client worried the freelancer would take a salaried role in
+     * month two. The portal count stays, because it is the evidence of
+     * robustness rather than of applying.
+     *
+     * `featured: true` here is the real thing, not the exception the
+     * dissertation makes: this now HAS a hand-written flagship block, number 05,
+     * built on HarnessMap. Without the flag it would render both as block 05 and
+     * as a Work row, which is the duplication rule 10 exists to prevent.
+     */
     summary:
-      "An autonomous agent that completes a job application end to end and stops at the review page. Thirty-plus applications across twenty-two portals.",
+      "An autonomous agent that drives long multi-step forms end to end and stops before submitting, hardened against twenty-two different portal implementations. Every action verifies that the page actually changed.",
+    featured: true,
     track: "engineering",
     capabilities: ["ai"],
     category: "Agents",

@@ -250,7 +250,7 @@ function AblateView() {
         {sel.kind === "tail"
           ? layerTail.note
           : chosen?.layer === 0
-            ? `Layer 0 is in a category of its own. Cook's distance is ${discontinuity.cooksD} against a threshold of ${discontinuity.cooksThreshold}, so it is not an extreme point on a trend, it is off the trend. It is not one bottleneck head either: opening all ${headAblation.tested / 3} heads in layer 0 costs +${fmt(headAblation.allHeadsLayer0)} perplexity, while killing the single most important one, head ${headAblation.mostCritical.head}, costs +${headAblation.mostCritical.delta}. The sensitivity is collective. The control experiment matters too: the ungated baseline puts ${architectural.baselineShare}% of its sensitivity at layer 0 against ${architectural.gatedShare}% for the gated model, so the concentration is architectural and gating actually reduces it.`
+            ? `Layer 0 sits apart from every other layer. Cook's distance is ${discontinuity.cooksD} against a threshold of ${discontinuity.cooksThreshold}, so it is off the trend rather than an extreme point on it. Nor is it one bottleneck head: opening all ${headAblation.tested / 3} heads in layer 0 costs +${fmt(headAblation.allHeadsLayer0)} perplexity, while killing the single most important one, head ${headAblation.mostCritical.head}, costs +${headAblation.mostCritical.delta}. The sensitivity is collective. The control experiment matters too: the ungated baseline puts ${architectural.baselineShare}% of its sensitivity at layer 0 against ${architectural.gatedShare}% for the gated model, so the concentration is architectural and gating reduces it.`
             : `Damage falls off a cliff after layer 0. Layers 0 to 2 account for almost everything, and from layer 6 onward opening the gates barely registers against a baseline of ${baseline.ppl}.`}
       </p>
     </div>
@@ -406,8 +406,7 @@ function SweepView() {
       <p className="mt-5 max-w-[62ch] text-sm leading-relaxed text-paper-dim">
         The sweet spot is narrow and off-centre. {bestFixed.value} is the best
         constant available and it is still {bestFixed.gapToLearned} perplexity
-        worse than the learned gates, which is the cost of throwing away the
-        token-by-token pattern. The damage is also lopsided: moving from{" "}
+        worse than the learned gates. The damage is also lopsided: moving from{" "}
         {bestFixed.value} to 0.30 costs roughly 9,300 perplexity, moving to 0.10
         costs roughly 500. The model minds gates being too open far more than
         too closed.

@@ -125,9 +125,9 @@ export function ModelCard() {
         </div>
 
         <p className="mt-4 text-xs leading-relaxed text-paper-faint">
-          Evaluated on the full Banking77 test split. Constrained decoding uses a
-          token-level prefix trie over all 77 valid label names, which makes an
-          invalid label impossible to generate.
+          Evaluated on the full Banking77 test split. Constrained decoding walks
+          a trie of the valid label names, so the model cannot spell its way to
+          a class that does not exist.
         </p>
       </div>
     </a>

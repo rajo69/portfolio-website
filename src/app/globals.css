@@ -20,21 +20,35 @@
   --paper-faint: #6b6e6b; /* micro-labels, meta */
 
   /* --- Accent (SINGLE hot colour, swap this to rebrand) ---
-     Plasma: the hot end of an attention heatmap. 5.97:1 on --ink-900,
-     which clears WCAG AA for normal text. Because it sits lower than a
-     lime or cyan would, accent-on-black body copy is capped at label
-     size and headline size, never a paragraph.
+     Changed from Plasma pink (#ff3d8b) to green on 4 August 2026 at his
+     request. Everything downstream reads these five tokens, so the swap was
+     genuinely one edit here plus the four places that cannot see CSS
+     variables: the OG card, the DotGrid fallback, and two stale comments.
+
+     Measured, not picked by eye:
+       --accent on --ink-900   12.26:1   (pink was 5.97:1, AA needs 4.5)
+       --accent on --ink-700   11.28:1   (on a card fill)
+       --on-accent on --accent 12.26:1   (dark text on a filled button)
+       --accent-dim on --ink-900 7.04:1  (pink's dim was only 3.63:1)
+
+     The old note here said accent-on-black copy had to stay at label or
+     headline size because the pink sat low. That constraint is gone: green
+     has more than double the headroom. The size discipline is now a taste
+     decision rather than a contrast one.
+
+     Green does NOT collide with --ok (#4ade80): those semantic tokens are
+     declared below but unused anywhere in the site. Check before using one.
 
      ACCENT BUDGET. Roughly one accent element per screenful. It earns its
      place on numbers, on the single active state in a control group, and
      on one mark per section. Everywhere else uses --line or --paper-faint.
-     Before this rule the page was pink on pink and the numbers, which are
-     the thing worth reading, had nothing to stand against. */
-  --accent: #ff3d8b; /* Plasma */
-  --accent-dim: #c22a69; /* hover / pressed / secondary strokes */
-  --accent-ghost: rgb(255 61 139 / 0.07); /* card washes */
-  --accent-glow: rgb(255 61 139 / 0.14); /* atmospheric bloom only */
-  --on-accent: #08090a; /* text on a filled accent surface, 5.97:1 */
+     Before this rule the page was accent on accent and the numbers, which
+     are the thing worth reading, had nothing to stand against. */
+  --accent: #00e88c; /* Signal green */
+  --accent-dim: #00b06a; /* hover / pressed / secondary strokes */
+  --accent-ghost: rgb(0 232 140 / 0.07); /* card washes */
+  --accent-glow: rgb(0 232 140 / 0.14); /* atmospheric bloom only */
+  --on-accent: #08090a; /* text on a filled accent surface, 12.26:1 */
 
   /* --- Structure: neutral, so accent stays scarce --- */
   --line: rgb(244 243 240 / 0.09); /* default hairline */
@@ -49,9 +63,21 @@
   /* --- Data series ---
      Categorical chart colours, NOT the brand accent. Validated with the
      dataviz skill's checker: these three stay separable under deuteranopia
-     and protanopia, which --accent plus a second pink did not. Charts are the
-     one place the accent budget does not apply, because a series colour is
-     carrying data rather than drawing attention.
+     and protanopia, which the old pink --accent plus a second pink did not.
+     Charts are the one place the accent budget does not apply, because a
+     series colour is carrying data rather than drawing attention.
+
+     THESE DID NOT CHANGE WITH THE GREEN REBRAND, deliberately. They are
+     validated as a set against this site's chart surface, and the validation
+     is of the three against each other, not of any of them against --accent.
+     Recolouring them to match the brand would mean re-running the dataviz
+     validator from scratch, and "make the charts green too" is exactly the
+     by-eye change that rule exists to stop.
+
+     One thing the swap improved for free: --accent and --series-1 used to be
+     near-identical pinks, which is why ArchitectureDiagram carries selection
+     on weight rather than hue. Green against #e82d77 is now unambiguous, so
+     that constraint could be relaxed if anyone wants to.
 
      Used by Clusters3D (canvas) and ForecastScorecard (SVG). If a fourth
      series is ever needed, re-run the validator; do not extend by eye. */

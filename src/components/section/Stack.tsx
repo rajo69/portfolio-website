@@ -20,12 +20,12 @@ export function Stack() {
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Stack</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">
-          One foundation, four specialisms.
+          One row runs under all the others.
         </SplitHeading>
         <Lede className="max-w-[56ch]">
-          The row across the top runs under everything below it. A retrieval
-          system is a data pipeline with a language model on the end, and it
-          fails for the same reasons a dashboard fails.
+          The tools across the top are the ones I use on every job. Most of my
+          time goes there, whichever of the four specialisms underneath the work
+          calls for.
         </Lede>
       </Reveal>
 

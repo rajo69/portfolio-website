@@ -48,7 +48,7 @@ export function Work() {
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Work</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">
-          Everything else, by capability.
+          Everything else I have built.
         </SplitHeading>
         <Lede className="max-w-[54ch]">
           Retrieval systems, fine-tuning studies, statistical analysis and

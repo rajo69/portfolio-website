@@ -110,11 +110,11 @@ Defined once in `src/app/globals.css`. Nothing in a component may hardcode a hex
 | `--paper-faint` | `#6B6E6B` | Micro-labels ≥11px | 3.6:1 ⚠️ decorative/meta only, never body copy |
 
 ### Accent, one hue, no exceptions
-**Locked: Plasma `#FF3D8B`.** The hot end of an attention heatmap, thematically exact for interpretability work, and nowhere near the reference's orange.
+**Signal green `#00E88C`**, changed from Plasma pink `#FF3D8B` on 4 August 2026 at Rajarshi's request. Measured on `--ink-900`: 12.26:1, against the pink's 5.97:1, so accent-on-black copy is no longer contrast-capped at label and headline size. `--accent-dim` went to `#00B06A`, 7.04:1, where the pink's dim managed only 3.63:1. The data series did **not** move with it: they are validated as a set and recolouring them by eye is exactly what the dataviz rule forbids.
 
 | Token | Hex | Use |
 |---|---|---|
-| `--accent` | `#FF3D8B` | Headlines-in-accent, numbers, pills, cursor, progress bar, canvas |
+| `--accent` | `#00E88C` | Headlines-in-accent, numbers, pills, cursor, progress bar, canvas |
 | `--accent-dim` | `#C22A69` | Hover / pressed / secondary strokes |
 | `--accent-ghost` | `rgb(255 61 139 / 0.08)` | Card washes, lattice traces |
 | `--on-accent` | `#08090A` | Text on a filled accent surface |

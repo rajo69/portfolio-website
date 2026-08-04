@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 
-import { AttentionField } from "@/components/layout/AttentionField";
 import { CursorRing } from "@/components/layout/CursorRing";
+import { DotGrid } from "@/components/layout/DotGrid";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
@@ -111,8 +111,13 @@ export default function RootLayout({
           }}
         />
 
-        {/* Ambient layer, fixed, behind everything, pointer-transparent. */}
-        <AttentionField />
+        {/* Ambient layer, fixed, behind everything, pointer-transparent.
+            Swapped from AttentionField to DotGrid on 4 August 2026 at his
+            request, from a React Bits snippet. AttentionField.tsx is left in
+            the tree, unused: this is the third background this site has had and
+            the previous two were both reverted, so deleting it would be
+            optimistic. See HANDOFF §4. */}
+        <DotGrid />
 
         <SmoothScroll />
         <ScrollProgress />

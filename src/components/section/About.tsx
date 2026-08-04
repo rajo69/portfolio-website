@@ -49,7 +49,7 @@ export function About() {
           <Reveal variant="stagger" className="space-y-8">
             <Eyebrow>About</Eyebrow>
             <SplitHeading size="h1" className="max-w-[18ch]">
-              Accuracy gets a demo. Explainability gets a user.
+              The churn model nobody would use.
             </SplitHeading>
           </Reveal>
 
@@ -71,11 +71,12 @@ export function About() {
             <p className="text-sm leading-relaxed text-paper-dim">
               Since then I have taken an MSc in Data Science at Leeds, handled
               special category health data and its access controls at an NHS
-              ADHD provider, and built production AI for regulated work. The
-              current one is an AI accountant on Xero where every decision
-              stores its own feature importances, a risk score and its reasoning
-              in an audit log. Alongside that I run interpretability research on
-              gated attention, which is the same question one level down.
+              ADHD provider, and built AI for work that carries professional
+              liability. The current one is an AI accountant on Xero, built so
+              the person signing the accounts can open up any decision it made.
+              Alongside that I run interpretability research on gated attention,
+              pulling apart models somebody else trained to see what the pieces
+              are doing.
             </p>
           </Reveal>
         </div>

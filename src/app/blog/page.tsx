@@ -21,14 +21,21 @@ export default async function BlogIndex() {
     <Section id="writing">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Writing</Eyebrow>
+        {/*
+          The cadence promise is gone. It read "One paper a week, read
+          properly", which a professor reviewing the site cold pointed out is
+          falsified by the page itself: the posts carry dates, and two written
+          on consecutive days are not a weekly practice. A claim a reader can
+          disprove from the same screen costs more than it earns. Put it back
+          once there are eight weeks of posts to stand behind it.
+        */}
         <SplitHeading size="h1" className="max-w-[17ch]">
-          One paper a week, read properly.
+          Papers, read closely.
         </SplitHeading>
         <Lede className="max-w-[56ch]">
-          Each week I take one AI or machine learning paper, work through what it
-          actually claims, and write up what I think it means. Where I can run
-          something myself, the numbers and the charts are mine rather than
-          reprinted from the paper.
+          I take an AI or machine learning paper, work through what it claims,
+          and write up what I think it means. Where I can run something myself,
+          the numbers and the charts are mine.
         </Lede>
       </Reveal>
 

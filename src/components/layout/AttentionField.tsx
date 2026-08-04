@@ -125,7 +125,7 @@ const DRIFT_SPEED = 0.00035; // rad per ms
  */
 function parseHex(hex: string): string {
   const clean = hex.trim().replace("#", "");
-  if (clean.length !== 6) return "255 61 139"; // --accent fallback
+  if (clean.length !== 6) return "0 232 140"; // --accent fallback, #00e88c
   return [0, 2, 4].map((i) => parseInt(clean.slice(i, i + 2), 16)).join(" ");
 }
 

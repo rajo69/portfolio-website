@@ -45,27 +45,56 @@ TypeScript, Tailwind v4, GSAP, Lenis, MDX.
 | Section | Component | State |
 |---|---|---|
 | Hero | `Hero.tsx` | Done. Logit-lens decode, parallax, 3 stat counters |
+
+**Accent is green (`#00E88C`) as of 4 August 2026**, changed from Plasma pink.
+Everything reads the five `--accent*` tokens in `globals.css`; the only places
+that cannot are `opengraph-image.tsx`, the `DotGrid` fallback and the
+`AttentionField` fallback, all updated. Data series deliberately unchanged, see
+the note in `globals.css`.
 | Spine | `Spine.tsx` | Done |
-| Flagship projects | `Flagship.tsx` | **5 blocks, all done** |
-| Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, education |
+| Flagship projects | `Flagship.tsx` | **6 blocks, all done** |
+| Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, 3 freelance, education |
 | Work | `Work.tsx` | Done. Filterable by capability |
-| Method | `Method.tsx` | Done |
+| Method | `Method.tsx` | Done. Rebuilt around `HarnessMap`, see §8d |
 | About | `About.tsx` | Done |
 | Stack | `Stack.tsx` | Done, rendered as a literal T |
 | Certifications | `Certifications.tsx` | Done. 4 surfaced, 13 total, links 200 |
 
-Plus `/blog`, `/blog/[slug]`, `/sitemap.xml`, `/robots.txt`. One **draft** post.
+Plus `/blog`, `/blog/[slug]`, `/sitemap.xml`, `/robots.txt`. **Two published
+posts**, gated attention and adversarial training, both undrafted on 4 August
+2026 at his request and now building as static pages.
 
-### The five flagship blocks
+> **Both posts were drafted by an assistant, not written by him.** Every number
+> in them is his and traceable, but the prose is first person under his name and
+> he had not read it line by line at the point it was published. If anything in
+> them reads wrong, that is the reason. The cadence promise ("one paper a week")
+> was removed from the index because the post dates disprove it.
+
+### The freelance engagements
+
+Three, filled in on 4 August 2026 from what he sent plus the Hertfordshire KTP
+supporting statement. **Anonymised to sector**, not named: he gave the business
+owners' first names, all friends, and naming a private individual as your
+client is a claim about someone else. Swap real names in only on his say-so.
+The e-commerce one carries **no metrics**, because he stated no outcome number
+for it and inventing one is rule 5.
+
+### The six flagship blocks
 
 Skeleton: **one-sentence lede → interactive artifact → three big numbers →
 bullets → where it broke → links.**
 
-1. **AI Accountant**: live iframe + architecture diagram. `94% · <2s · 3+ hrs`
+1. **AI Accountant**: live iframe + architecture diagram. `88% · 95% · 33%`
 2. **Clustering Stability**: 3D draggable PCA. `0.526 · 53→6 · 3/3`
-3. **Banking77 LoRA**: HF model card. `0%→90.21% · 77 · ~50 min`
+3. **Banking77 LoRA**: HF model card. `90.21% · 77 · ~50 min`
 4. **The Forecast I Got Wrong**: 3-view scorecard. `10/11 · 49% · 0.50%`
-5. **What the Gates Actually Do**: 3-instrument explorer. `99.8% · 48.3% · 25,600`
+5. **The Application Harness**: pipeline/graph map. `15 · 22 · 0`
+6. **What the Gates Actually Do**: 3-instrument explorer. `99.8% · 48.3% · 100%→79.6%`
+
+Block 05 was promoted out of the Method section on 4 August 2026, at his
+request, and placed **after** the time series and NLP block deliberately. Its
+project entry in `projects.ts` carries `featured: true` for the ordinary reason
+(it now has a hand-written block), unlike the dissertation's exception.
 
 ### The dissertation is NOT a flagship block
 
@@ -124,12 +153,37 @@ Six commits on `feat/block-04-mobile-nav`, branched off `c6d07b4`.
 
 ## 4. THE BACKGROUND: read before touching
 
-**He has rejected two background designs. Do not redesign it again without
-asking him first.**
+**He has now rejected two background designs and replaced a third. Do not
+redesign it again without asking him first.**
 
-What ships is `AttentionField.tsx`, the **attention lattice**: token nodes,
-attention edges, gates closing, and the cursor acting as the query token so most
-heads fire from the node nearest the pointer.
+**What ships as of 4 August 2026 is `DotGrid.tsx`**, which he asked for by
+pasting a React Bits snippet. A grid of dots, an accent proximity halo that
+follows the pointer, and a click shockwave that pushes dots outward and springs
+them home.
+
+- **Colours come from tokens, not from his snippet.** The paste carried React
+  Bits' demo palette (`#2F293A` base, `#5227FF` violet active), which is a
+  second unrelated hue against this site's near-black and one accent. `readToken`
+  reads `--ink-600` and `--accent` out of globals.css at mount. Flip
+  `DEMO_PALETTE = true` in that file for the literal snippet colours.
+- **The physics are hand-rolled, not copied.** React Bits drives each dot with a
+  GSAP InertiaPlugin tween; at this density that is thousands of live tweens on
+  a page already running Lenis and ScrollTrigger. A per-dot critically damped
+  spring in the rAF loop does the same job far cheaper. His `resistance` and
+  `returnDuration` still mean what they meant.
+- **React Bits is MIT + Commons Clause.** Using it in a site is fine, reselling
+  it is not. Credited in the file header.
+- **Measured, per the rule below:** 8.0% lit pixels, mean alpha 158. Zero
+  accent-tinted pixels with the pointer away, 512 with it on the page, zero
+  again when it leaves, which is how the proximity halo was verified. Alpha
+  alone cannot see it, because lit dots change hue rather than opacity.
+
+`AttentionField.tsx` is **still in the tree, unused**. Three backgrounds, two
+reverted, so deleting it would be optimistic.
+
+The previous shipped background was `AttentionField.tsx`, the **attention
+lattice**: token nodes, attention edges, gates closing, and the cursor acting as
+the query token so most heads fire from the node nearest the pointer.
 
 The history, so it is not repeated:
 
@@ -190,10 +244,17 @@ bend the text inside the card. Full reasoning in the `globals.css` comment.
 
 | Item | Needed for |
 |---|---|
-| **"What are you looking for?"** FAQ answer | `profile.ts:122`. **The last TODO blocking a real `npm run build`, and therefore the deploy.** His own note says it must be in his words. |
-| **Domain** | `profile.ts:132`. Drives sitemap, robots, JSON-LD, OG and canonical URLs. One-line change, everything else reads from it. |
-| **Freelance engagements** | `experience.ts:107`. Client or sector (anonymised fine), what was built, roughly when, one outcome. |
-| **94% vs 88%** | Block 01 shows **94%** with no traceable source. `evals/README.md` reports **88.0%** (44/50 fixtures, Haiku alone) and **95.0%** on the auto-accepted subset. Tiered routing, which production actually runs, is **not measured**. Recommendation given and not yet answered: change to 88% with the basis named, add 95% as a second stat. |
+| **Domain** | **No longer blocking.** He does not own one. `profile.ts` now resolves `siteUrl` from `NEXT_PUBLIC_SITE_URL`, then Vercel's `VERCEL_PROJECT_PRODUCTION_URL`, then localhost. `npm run build` passes with no placeholders. Set the env var if he buys a domain; nothing else changes. |
+| **An FAQ section, or not** | `profile.faq` is written and **rendered nowhere**: grep it, the only hits are `profile.ts` and `types.ts`. The placeholder fourth answer was removed on 4 August 2026 because it was failing the build over copy no visitor could see. Either build the section (research in this file, below) and write that answer, or delete the block. |
+| **Freelance detail** | Filled in, but thin in two places. The food waste app lists **only Google Cloud** for tech, because he named no other tool, and the e-commerce one has no outcome number. Both would carry more weight with one more line each. |
+| **"What are you looking for?"** | **Now the highest-value missing thing on the site.** The hiring manager's biggest unresolved question was "IC or lead, AI engineering or data engineering, I cannot tell which he would accept". The professor's was "I still do not know what he wants to work on". One paragraph answers both, and it has to be his. Where it goes is open, since `profile.faq` renders nowhere. |
+| **A research question, stated** | The professor could not state in one sentence what Rajarshi is intellectually interested in, and said the page gave him "a disposition, not a question". He named `Adversarial Robustness of SAE Interpretations` as the best question on the site, currently one line in a list of thirteen. |
+| **The Holt claim** | Block 04 says `Holt still beat Drift and ARIMA on both horizons, so model selection was sound and the horizon was the problem`. The professor says that does not follow: ten breaches in eleven months is evidence the model class is wrong, because exponential smoothing with a fixed linear trend cannot represent the post-pandemic level shift in PCE. He would spend ten minutes of a first meeting there. **Decide whether you agree before someone asks live.** |
+| **What "production" means** | The hiring manager will probe it: who actually uses the AI Accountant, what breaks at 3am. A `vercel.app` URL is not evidence anyone depends on it. Nothing on the site mentions on-call, incidents, uptime or a system that has run for a year, and for a mid-level req that was the gap he said he would push hardest on. |
+| **Cutting the Work list** | Both the hiring manager and the professor read thirteen projects as breadth anxiety, and named `European Football Analytics` and `Brexit Breakdown` as dragging the average down. Which ones go is his call. There is no `hidden` flag on `Project` yet; adding one is the clean way, since `featured: true` deletes rather than demotes. |
+| **CV as a document** | Both the hiring manager and the professor stopped on this. "I cannot forward a website to a funding panel." Already queued below as `/cv`. |
+| **Right to work** | The hiring manager has to resolve it before an interview and the page's silence costs a round trip. **Do not put it on the site.** Visa status is named explicitly in rule 7 as personal data that must never ship. It belongs in the CV or the first reply, not on a public page. |
+| ~~94% vs 88%~~ | **Fixed 4 August 2026, and it was worse than this row said.** **All three** of block 01's stats were unsourced, not just the first: `94%`, `<2s` and `3+ hrs` appear nowhere in the repo. It now shows `88%` (44/50), `95%` (auto-accept band) and `33%` (below 0.5, where it defers), all from `backend/evals/README.md`, plus a "where it broke" entry saying tiered routing is what production runs and has never been measured against the fixtures. |
 | **Supervisor names** | Block 06 claims "an academic and an industrial supervisor" with no names. The repo acknowledges two GitHub handles, but naming someone as your supervisor is a claim about a real person, so nothing is named. |
 
 ### Queued, unblocked
@@ -203,8 +264,9 @@ bend the text inside the card. Full reasoning in the `globals.css` comment.
    Dataset**. Why it matters: every flagship is a research spike, so the T's
    crossbar of SQL, ETL and statistics is claimed in `Stack` and demonstrated
    nowhere. Volume is the point, because it forces the engineering to be
-   visible. The rendered "Next" line under the flagship blocks already promises
-   this.
+   visible. **The rendered "Next" line that used to promise this is gone**, he
+   removed it on 4 August 2026: the page should not advertise work that does
+   not exist. If the block ships it goes into the list, not under it.
 2. **CV PDF** at `/cv`. He has a build pipeline that produces one.
 3. **Services/process block** for the client audience.
 4. **RSS + per-post OG images** for the blog.
@@ -280,6 +342,7 @@ src/content/            All copy. Nothing inlined in components.
   data/gates.ts         Gated-attention measurements, tagged by experiment
   data/robustness.ts    Dissertation matrix. Comparisons computed, not typed.
   data/architecture.ts  AI Accountant graph, from its workflow.add_node calls
+  data/harness.ts       The application harness, from the Obsidian vault. §8d
 
 src/app/globals.css     Every token. Accent budget and glass documented here.
                         --series-1/2/3 are dataviz-validated chart colours,
@@ -293,6 +356,115 @@ src/components/projects/                    The six flagship artifacts
 
 ---
 
+## 8b. The voice pass, 4 August 2026
+
+The whole rendered corpus was audited for machine-sounding prose and rewritten
+in place. Measured on the rendered text, not the source:
+
+| Tic | Before | After |
+|---|---|---|
+| Antithesis ("rather than", ", not", ", never") | 22 | 12 |
+| "actually" | 9 | 2 |
+| Epigram closers ("which is what…", "that is why…") | 12 | 6 |
+| Section headings in the comma-pivot mould | 7 of 10 | 2 of 10 |
+| Verbatim repeats within one scroll | 6 | 0 |
+
+**Do not undo these by writing more of the same.** The failure mode was one
+rhythm applied to everything: every heading a comma-pivot fragment, every
+paragraph landing on a maxim, every contrast phrased as "X, not Y". The
+substance was never the problem. Some of the tics remain on purpose, where the
+contrast is genuinely the finding ("stability is not correctness", "a trade,
+not a win").
+
+Repeats that were killed: the retrieval-pipeline sentence appeared **word for
+word** in Spine and Stack; "Accuracy gets a demo" ran as both the Spine kicker
+and the About heading; "prose is read partially and remembered selectively"
+appeared twice inside Method, inches apart.
+
+Still unfixed, deliberately: `projects.ts` `proves` and `description` fields
+carry the same repetitions, but **nothing renders them today**. Fix them if a
+`/work/[slug]` case study page is ever built.
+
+## 8c. The cold-read pass, 4 August 2026
+
+Three reviewers were shown the rendered site and **nothing else**: no repo, no
+brief, no idea who Rajarshi is. A hiring manager with an open mid-level AI req,
+a professor fielding a PhD enquiry, and the owner of a 35-person non-tech
+business he had approached for freelance work.
+
+Verdicts: **interview**, **worth a meeting**, **probably would not reply**.
+
+Their agreements were the useful part, because none could see the others:
+
+| Finding | Acted on |
+|---|---|
+| The hero stat row failed **all three** as unattributed claims | Yes, replaced with checkable numbers, see `profile.ts` |
+| The best sentences sat behind tab clicks nobody makes | Yes, reconciler and ungated control promoted |
+| `William Hill` unframed, all three inferred something worse than the truth | Yes, one clause added |
+| 13 certifications actively subtract | Yes, toggle removed, four only |
+| `Job Apply Harness` read as a job-hunting funnel, not a project | Yes, retitled and rewritten |
+| `0% → 90.21%` is debunked by its own block four lines below | Yes, stat is now `90.21%` |
+| "One paper a week" is falsified by the post dates on the same screen | Yes, cadence promise removed |
+
+**Two of their complaints were artefacts of the capture, not the site.** The
+transcript walker skipped `<span>`, and `Label` renders as a span, so the
+reviewers could not see the date rails or the filter counts. Both render
+correctly. Do not "fix" them.
+
+**The professor challenged a claim on its merits**, which is a content question
+rather than a presentation one and is still open. See §6.
+
+## 8d. The harness map, 4 August 2026
+
+The Method section's "Every guard is a scar" table is gone. It listed four
+failures and four function names **with no subject**: the reader was never told
+what the agent was, so it opened on the consequences of a system it had not
+introduced. Rajarshi could not read his own section, which settled it.
+
+Replaced by `HarnessMap.tsx`, built from **his Obsidian vault** at
+`C:\Users\Rajo\Desktop\harness-system-vault`: 41 notes, 170 wikilinks, tagged
+stage / component / store / principle / gate / skill. `content/data/harness.ts`
+transcribes 40 of those notes plus all 15 rows of `Failure Modes Ledger.md`.
+
+**Two views over one data set, toggled**, because he asked for both:
+
+- **Pipeline**: the 10 stages, the Scout fan-out to Statement and CV, the human
+  handover, and the dashed write-back loop. This is the one that explains.
+- **Graph**: all 40 notes force-directed, drag a node, Obsidian-style.
+
+Three things that were measured, not eyeballed, and must not be undone:
+
+1. **Force constants.** The first attempt (rep 5200, att 260, gravity 0.012)
+   collapsed all 40 nodes into a third of the canvas. Now rep 62000, att 700,
+   gravity 0.0035, plus a **bounding-box normalisation** so the layout fills the
+   canvas regardless of the constants. Measured: min pair distance 58.8px, zero
+   pairs under 40px.
+2. **Labels are selective.** All 40 at once was unreadable soup. The 10 stages
+   stay named; everything else names itself when selected or adjacent. That is
+   also what Obsidian does when zoomed out.
+3. **The graph needs a lighter neutral than the pipeline.** `--ink-500` is fine
+   on a 104px box and invisible on a 6px dot over glass. Graph nodes use
+   `--paper-faint`, edges use `--line-strong`. Hue still encodes kind and
+   nothing else.
+
+**The layout is precomputed deterministically at module load**, not simulated
+live: server and client produce identical coordinates, so there is no hydration
+mismatch, no animation loop, and nothing to disable for reduced motion. There is
+no `Math.random` anywhere in it, deliberately.
+
+**Publishing this is safe because the vault already solved it.** Its
+`Personal Data Boundary` note states that it documents the machine and contains
+no candidate data and no job data; every store note gives schema and disciplines,
+never values. All 41 notes were read before anything shipped. That boundary is
+itself a node in the map rather than being quietly omitted.
+
+**One thing worth knowing:** `Component - style_lint.py` in that vault is a
+deterministic AI-writing linter that flags balanced antithesis frames,
+summary-bow endings, three-part parallel structures and uniform sentence rhythm
+by coefficient of variation. It is the tool that would have caught the site's
+own copy problems in §8b. If the voice ever needs re-auditing, run his linter
+rather than re-deriving the checks.
+
 ## 9. Hard rules
 
 Full list in `AGENTS.md`. The ones that bite most often:
@@ -303,7 +475,8 @@ Full list in `AGENTS.md`. The ones that bite most often:
 4. **Accent budget: roughly one accent element per screenful.** Numbers earn it.
    Pills, bullet markers and rails do not.
 5. **Never invent a number.** If it is not in a repo, a README or something he
-   sent, it does not ship. The 94% on block 01 currently violates this.
+   sent, it does not ship. Block 01 violated this with three invented numbers
+   until 4 August 2026; see §6.
 6. **Animation is enhancement, never structure.** Everything readable without
    JS, `prefers-reduced-motion` fully honoured and read synchronously.
 7. **Never put personal data on the site.** The source profile holds NI number,

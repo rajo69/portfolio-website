@@ -84,7 +84,7 @@ export const scars: Scar[] = [
     behaviour: "Reads the real cap before writing",
   },
   {
-    failure: "A saved value was never actually verified",
+    failure: "A saved value was never verified",
     mechanism: "assert_saved",
     behaviour: "Checks the portal's own printout, never the page",
   },
@@ -94,7 +94,7 @@ export const method = {
   principle: {
     quote:
       "A rule an agent must remember will eventually be skipped.\nA rule that raises will not.",
-    body: "Most agent pipelines are a long prose runbook and a hopeful model. They demo well and rot in production, because prose is read partially and remembered selectively. The fix is not a longer runbook. It is converting memory into mechanism: every rule that gets violated once becomes code that raises when it is violated again.",
+    body: "Most agent pipelines are a long prose runbook and a hopeful model. They demo well and fail quietly later, because prose is read partially and remembered selectively. So every rule that gets violated once becomes code that raises when it is violated again.",
   },
   taxonomy: {
     title: "Failures sorted by how they announce themselves",

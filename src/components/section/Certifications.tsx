@@ -1,7 +1,4 @@
-"use client";
-
 import { ArrowUpRight } from "lucide-react";
-import { useState } from "react";
 
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
@@ -13,10 +10,23 @@ import type { Certification } from "@/content/types";
 /**
  * Certifications.
  *
- * Four surfaced, the rest behind a toggle. That split is not a layout
- * preference: Rajarshi's own application profile carries an explicit rule
- * against listing every credential he holds, because the full pile dilutes
- * the signal and reads as padding.
+ * FOUR. THE "SHOW ALL 13" TOGGLE WAS REMOVED on 4 August 2026 and should not
+ * come back. Rajarshi's own application profile already carried a rule against
+ * listing every credential he holds, and the toggle quietly broke it: showing
+ * four by default while parking nine behind a button still put thirteen on the
+ * page, one click away.
+ *
+ * Three cold reviewers were shown the site with no context and all three
+ * independently named this section as damaging. The hiring manager read four
+ * Oracle exams stamped in one month as a junior signal, "I need credentials"
+ * rather than "I have output". The professor called it the single worst signal
+ * on the page for an academic reader, on the grounds that a certification
+ * measures compliance with a syllabus and a PhD is the opposite exercise. The
+ * prospective client said thirteen certificates read like someone building a
+ * CV rather than someone running a practice.
+ *
+ * The other nine are still in certifications.ts and belong on the CV, where a
+ * reader is expecting a complete list. They do not belong here.
  *
  * Every link here was checked and returns 200 with a page title matching the
  * certificate. Re-check before launch; an unverifiable credential link is
@@ -77,22 +87,18 @@ function Row({ cert }: { cert: Certification }) {
 }
 
 export function Certifications() {
-  const [expanded, setExpanded] = useState(false);
-
   const featured = certifications.filter((c) => c.featured);
-  const rest = certifications.filter((c) => !c.featured);
 
   return (
     <Section id="certifications" marker="Certifications">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Certifications</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">
-          Verifiable, not decorative.
+          All of these link to the issuer.
         </SplitHeading>
         <Lede className="max-w-[54ch]">
-          Every one of these links to its issuer. The four below are the ones
-          that bear on the work; the rest are available underneath rather than
-          stacked up front.
+          These four bear on the work. I hold others, and listing them all would
+          only dilute these.
         </Lede>
       </Reveal>
 
@@ -101,17 +107,7 @@ export function Certifications() {
           {featured.map((c) => (
             <Row key={c.name} cert={c} />
           ))}
-          {expanded && rest.map((c) => <Row key={c.name} cert={c} />)}
         </ul>
-
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-          className="mt-6 inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2 text-xs tracking-wide text-paper-dim transition-colors duration-200 hover:border-accent hover:text-paper"
-        >
-          {expanded ? "Show fewer" : `Show all ${certifications.length}`}
-        </button>
       </Reveal>
     </Section>
   );

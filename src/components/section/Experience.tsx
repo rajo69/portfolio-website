@@ -52,12 +52,12 @@ export function Experience() {
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Experience</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">
-          Consulting, then the NHS, then building my own.
+          Most of these jobs started with somebody else&apos;s spreadsheet.
         </SplitHeading>
         <Lede className="max-w-[56ch]">
           Six years across insurance analytics, healthcare data and independent
-          AI engineering. The through-line is the same one everywhere: get the
-          pipeline right, then make the output something a person will act on.
+          AI engineering. The pipeline work is the part that never changes, and
+          it is usually most of the job.
         </Lede>
       </Reveal>
 

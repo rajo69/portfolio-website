@@ -1,7 +1,7 @@
 import { Bars } from "@/components/blog/Bars";
 
 export const meta = {
-  title: "What the gates in gated attention actually do",
+  title: "What I found when I opened the gates",
   summary:
     "The paper shows that gating helps. It does not say what the trained gates are doing. I ran the released models over 25,600 tokens to find out, and one layer turned out to account for almost all of it.",
   date: "2026-08-03",
@@ -13,15 +13,11 @@ export const meta = {
     venue: "NeurIPS 2025",
     url: "https://arxiv.org/abs/2505.06708",
   },
-  // DRAFT. Scaffold written from the repository README so the blog has a real
-  // post to render. Every number below is from the analysis and is correct,
-  // but the argument and the voice are placeholders: rewrite before publishing.
-  draft: true,
 };
 
 The original paper establishes something useful: putting a sigmoid gate after
 attention makes language models better. It reports aggregate statistics about
-those gates, layer-wise means, attention sink percentages, and it stops there.
+those gates, layer-wise means and attention sink percentages, then stops there.
 
 What it does not answer is the question I care about. Once training is done,
 what are the individual gates doing, and what breaks if you interfere with
@@ -62,9 +58,8 @@ start opening gates.
 />
 
 Ablating layer 0's gate accounts for 99.8% of the perplexity damage. Everything
-else is rounding error. That is a strong enough result that my first assumption
-was a bug in the harness, which is most of why the confidence grades in the
-repository exist at all.
+else is rounding error. My first assumption was a bug in the harness, and that
+is most of why the confidence grades in the repository exist.
 
 ## What did not work
 

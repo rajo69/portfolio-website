@@ -1,0 +1,91 @@
+import { Bars } from "@/components/blog/Bars";
+
+export const meta = {
+  title: "My hybrid schedule lost to the simpler baseline",
+  summary:
+    "Madry et al. established that training on the attack makes a model resist it. My own MSc numbers say the resistance is real, the bill is paid in clean accuracy, and the hybrid schedule I proposed loses to the simpler thing it was meant to beat.",
+  date: "2026-08-04",
+  topic: "Robustness",
+  paper: {
+    title: "Towards Deep Learning Models Resistant to Adversarial Attacks",
+    authors: "Madry et al.",
+    year: 2018,
+    venue: "ICLR 2018",
+    url: "https://arxiv.org/abs/1706.06083",
+  },
+};
+
+The paper makes a clean claim. Train against the worst perturbation you can find
+inside an epsilon ball, and you get a model that holds up inside that ball.
+Projected gradient descent is the strong first-order adversary, so it is what
+you evaluate against. That second half is why "adversarial accuracy" now means
+"accuracy under PGD" by default.
+
+What the paper does not settle is what the defence costs you, and whether you
+can keep most of the robustness while paying less of it. That is what my MSc
+dissertation measured: a ResNet-18 on CIFAR-10, three training regimes, every
+hyperparameter held fixed across all three so the comparison could not drift,
+then attacked with FGSM and with PGD at epsilon 8 over thirty iterations.
+
+## The test set ranks the models in exactly the wrong order
+
+<Bars
+  caption="ResNet-18 on CIFAR-10, 100 epochs, identical hyperparameters. v1 is trained on clean data only, v2 entirely on FGSM examples at epsilon 2, v3 on 50 clean epochs then 50 adversarial. PGD is epsilon 8, alpha 8, 30 iterations. Full matrix in the repository README."
+  data={[
+    { label: "v1 clean-trained, on clean data", value: 91.58, series: 0 },
+    { label: "v1 clean-trained, under PGD", value: 0.57, series: 1 },
+    { label: "v2 adversarial, on clean data", value: 85.81, series: 0 },
+    { label: "v2 adversarial, under PGD", value: 38.75, series: 1 },
+    { label: "v3 hybrid, on clean data", value: 88.75, series: 0 },
+    { label: "v3 hybrid, under PGD", value: 35.66, series: 1 },
+  ]}
+  max={100}
+/>
+
+The clean-trained baseline is the best model in the set on the test set, 91.58%,
+and it scores 0.57% under PGD. Ten classes, so that is worse than guessing.
+The two adversarially trained models give up between 2.83 and 5.77 points of
+clean accuracy and come back with 35 to 39 points under attack, a factor of 68
+on the baseline.
+
+Nothing there contradicts the paper, but it lands differently when the numbers
+are yours. Ranked on clean accuracy the models go v1, v3, v2. Ranked under
+attack they go v2, v3, v1. The order reverses completely, so a single reported
+accuracy figure gets the answer exactly backwards.
+
+## The hybrid schedule lost, and it was mine
+
+v3 was the proposed contribution: 50 clean epochs then 50 adversarial ones,
+rather than adversarial throughout. The argument was that you could hold on to
+clean accuracy without conceding much robustness.
+
+It does the first half. 88.75% clean is 2.94 points above fully adversarial
+training. It also hands back 3.09 points under PGD, 35.66 against v2's 38.75.
+So it trades at close to one for one, and if the attacker is real, v2 is the
+model to pick. The dissertation's own conclusion reads more warmly toward the
+hybrid than these three numbers support, which is the main reason I am writing
+it up again.
+
+## FGSM flatters everyone
+
+Both adversarially trained models were trained on FGSM at epsilon 2, so their
+FGSM scores are partly a result about their own training distribution. The
+repository reports FGSM as a band across epsilon rather than per step: 16.84%
+to 61.31% for the baseline, 46.01% to 76.00% for v2, 43.78% to 77.30% for the
+hybrid. Even the undefended model survives a single gradient step reasonably
+often. PGD is where the gap between "trained against this attack" and "robust"
+becomes visible.
+
+Grad-CAM agrees with the accuracy numbers. Saliency on v2 and v3 spreads over
+broader and more relevant regions of the image than on v1. That is the only
+qualitative claim here, so I am not leaning on it.
+
+## What this does not show
+
+One architecture, one dataset, one training epsilon and one test epsilon.
+No PGD-trained model, which is the obvious missing cell: everything here is
+trained on FGSM and evaluated under PGD, so these robustness figures are a
+generalisation result rather than the best the method can do. The whole study
+ran on Leeds' ARC4 cluster in MATLAB, and the model-by-attack matrix, all nine
+cells of it, is in the
+[repository](https://github.com/rajo69/Enhancing-Neural-Network-Robustness-using-Hybrid-Adversarial-Training).

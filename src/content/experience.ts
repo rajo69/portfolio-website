@@ -21,6 +21,16 @@ import type { Experience } from "./types";
  *     recall it, and an honest gap beats a guess.
  *   - The 17% decision-making figure has no baseline and is omitted. Do not
  *     reintroduce it without one.
+ *   - The three freelance engagements are anonymised to sector. Rajarshi named
+ *     each business owner, all friends of his, but naming a private individual
+ *     as your client on a public page is a claim about someone else, and the
+ *     brief for this section said anonymised was fine. Swap in real business
+ *     names only once he confirms he has their permission.
+ *   - The plastics engagement is transcribed from his Hertfordshire KTP
+ *     supporting statement: roughly 8,000 images, about a third fewer faulty
+ *     caps reaching packing. Both stay hedged because that is how he wrote
+ *     them. The other two carry only what he stated directly, which is why
+ *     the e-commerce one has no metrics at all.
  *
  * The source file also holds NI number, date of birth, home address, visa
  * status, salary, health and equality data, and referee contacts. None of it
@@ -28,13 +38,28 @@ import type { Experience } from "./types";
  */
 export const experience: Experience[] = [
   {
+    company: "Freelance, e-commerce intelligence",
+    role: "Data Engineer",
+    start: "2026-06",
+    end: "2026-08",
+    location: "Remote",
+    summary:
+      "Owned the collection and structuring of category data behind a pet products seller's competitor research.",
+    highlights: [
+      "Scraped several e-commerce platforms in Python to collect the raw category and competitor data.",
+      "Structured it into market intelligence and competitor analysis datasets the owner could work from directly, for a pet products range sold on Amazon.",
+    ],
+    tech: ["Python", "Web scraping", "ETL"],
+  },
+
+  {
     company: "William Hill",
     role: "Customer Service Representative",
     start: "2025-10",
     end: "present",
     location: "Bradford, UK",
     summary:
-      "Current employment, alongside independent AI engineering work.",
+      "Current employment, and it pays for the rest of this page. The freelance engagements above and below it ran at the same time, and so did the projects.",
     highlights: [
       "Regulated retail environment: betting and gaming queries, transactions, responsible-gambling procedure at point of service.",
     ],
@@ -42,11 +67,38 @@ export const experience: Experience[] = [
     /**
      * Rendered, but last and without metrics.
      *
+     * FRAMING ADDED 4 August 2026. All three cold reviewers stopped on this
+     * row, and all three filled the silence with something worse than the
+     * truth: redundancy, a visa problem, "not employed in the field", "would
+     * he even be available on a Tuesday". The dates on this page already
+     * disprove that reading, since two freelance engagements overlap this
+     * role, so the summary now says out loud what the chronology already
+     * shows. It does not explain or apologise, which he has not asked for and
+     * which would read worse than the fact.
+     *
      * It does not sell the AI or data story, and Rajarshi did not name it when
      * scoping this section. It stays because it is current employment and
      * silently dropping it leaves an unexplained gap on a page that otherwise
      * runs to the present day. Set `hidden: true` to remove it.
      */
+  },
+
+  {
+    company: "Freelance, food waste app",
+    role: "Backend and AI Engineer",
+    start: "2025-09",
+    end: "2026-02",
+    location: "Remote",
+    summary:
+      "Owned the backend of an AI powered food waste saving app, from prototype to the first clients live on it.",
+    metrics: [
+      { value: "1,000", caption: "Clients onboarded from prototype" },
+    ],
+    highlights: [
+      "Built the backend for an AI powered app that saves food from being thrown away.",
+      "Ran it on Google Cloud, taking it from working prototype through to the initial 1,000 client onboarding.",
+    ],
+    tech: ["Google Cloud"],
   },
 
   {
@@ -81,6 +133,27 @@ export const experience: Experience[] = [
   },
 
   {
+    company: "Freelance, plastics manufacturing",
+    role: "Computer Vision Engineer",
+    start: "2024-01",
+    end: "2024-04",
+    location: "On site",
+    summary:
+      "Built an inline defect inspector for a plastic closures factory, on the industrial cameras already sitting over the conveyor.",
+    metrics: [
+      { value: "~8,000", caption: "Cap images hand-labelled" },
+      { value: "~1/3", caption: "Cut in faulty caps reaching packing" },
+    ],
+    highlights: [
+      "Captured and hand-labelled roughly 8,000 cap images into good and several defect types.",
+      "Trained a convolutional classifier in PyTorch against the cameras already over the line, so the factory bought no new capture hardware.",
+      "Quantised the model to run in real time on a Jetson Nano on the line itself, with no cloud link.",
+      "Flagged faulty caps as they passed, cutting the share that reached packing by about a third.",
+    ],
+    tech: ["PyTorch", "CNNs", "Quantisation", "Jetson Nano", "Edge inference"],
+  },
+
+  {
     company: "IBM",
     role: "Application Developer",
     start: "2021-02",
@@ -103,9 +176,4 @@ export const experience: Experience[] = [
     ],
     tech: ["Python", "XGBoost", "Tableau", "Power BI", "Snowflake", "SQL", "ETL"],
   },
-
-  // TODO(rajarshi): freelance engagements. For each one I need the client or
-  // sector (anonymised is fine), what you built, roughly when, and one
-  // outcome. Nothing is rendered for freelance until that arrives, because a
-  // placeholder row would look worse than its absence.
 ];

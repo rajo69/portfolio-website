@@ -118,7 +118,7 @@ export const paths: FlowPath[] = [
     to: "Matched or not",
     modelInPath: false,
     verdict:
-      "No LLM is invoked at any stage, including the explanation. Identical inputs give an identical answer every time, which is what makes a reconciliation defensible.",
+      "No LLM is invoked at any stage, including the explanation. Identical inputs give an identical answer every time.",
     source: "backend/app/agents/reconciler.py",
     nodes: [
       {
