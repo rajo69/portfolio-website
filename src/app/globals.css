@@ -115,14 +115,68 @@
    the page rather than being drawn on it.
    ============================================================ */
 
-.surface {
+/* ============================================================
+   GLASS
+
+   `.surface` carries the liquid-glass treatment, so every panel on the
+   site picks it up from one place. `.glass` is the same rule under a
+   second name, which the background lab toggles against `.surface`.
+
+   Three things separate this from the flat "frosted panel" that
+   glassmorphism usually means:
+
+     1. A rim. Real glass catches light on its top edge and bounces a
+        weaker line off the bottom. Two inset shadows, and it is most of
+        the effect.
+     2. A sheen. One gradient down from the top edge, standing in for the
+        curvature of a thick pane.
+     3. Saturation. `saturate()` in the backdrop pulls colour out of what
+        is behind, which stops it reading as grey gauze.
+
+   WHAT IS DELIBERATELY NOT HERE: `backdrop-filter: url(#svg)` with an
+   feDisplacementMap, which is the only route to true refraction on the
+   web and is what Apple's Liquid Glass and React Bits' GlassSurface use.
+     - Chromium only. Safari and Firefox fall back to plain blur anyway.
+     - SVG displacement has no super-sampling, so edges go pixelated at
+       the sizes these cards run at.
+     - It only works on a fixed-size rounded rect, and every panel here is
+       content-sized and reflows.
+   It would also bend the text inside the card, which on a page whose job
+   is being read is a bad trade.
+
+   REQUIRES SOMETHING BEHIND IT. Glass over near-black is just a paler
+   box. It only earns its place with a background dense enough to refract,
+   which is why the background lab exists.
+   ============================================================ */
+
+.surface,
+.glass {
   background:
-    linear-gradient(to bottom, rgb(244 243 240 / 0.028), transparent 120px),
-    var(--ink-800);
-  border: 1px solid var(--line);
+    linear-gradient(
+      to bottom,
+      rgb(244 243 240 / 0.07),
+      rgb(244 243 240 / 0.02) 38%,
+      transparent 72%
+    ),
+    color-mix(in srgb, var(--ink-800) 52%, transparent);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgb(244 243 240 / 0.11);
   box-shadow:
-    0 1px 0 0 rgb(244 243 240 / 0.04) inset,
+    inset 0 1px 0 0 rgb(244 243 240 / 0.15),
+    inset 0 -1px 0 0 rgb(244 243 240 / 0.04),
     0 24px 48px -32px rgb(0 0 0 / 0.9);
+}
+
+/* No backdrop-filter support: fall back to the opaque panel, because a
+   transparent card over a busy field would be unreadable. */
+@supports not (backdrop-filter: blur(1px)) {
+  .surface,
+  .glass {
+    background:
+      linear-gradient(to bottom, rgb(244 243 240 / 0.028), transparent 120px),
+      var(--ink-800);
+  }
 }
 
 /* A single soft bloom, used once per major section to give the flat black
