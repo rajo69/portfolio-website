@@ -15,6 +15,7 @@ export function Footer() {
   const socials = [
     { label: "GitHub", href: profile.socials.github },
     { label: "LinkedIn", href: profile.socials.linkedin },
+    { label: "Kaggle", href: profile.socials.kaggle },
     { label: "Scholar", href: profile.socials.scholar },
   ].filter((s): s is { label: string; href: string } => Boolean(s.href));
 

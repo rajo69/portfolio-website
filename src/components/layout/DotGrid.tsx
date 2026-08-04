@@ -130,7 +130,16 @@ export function DotGrid() {
     function build() {
       const c = canvasRef.current;
       if (!c || !ctx) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      /* RESOLUTION. This was hard-clamped to 2, which on a 3x phone rendered
+         the grid at two thirds scale and let the browser upscale it: the dots
+         came out visibly soft. The clamp existed because a full-resolution
+         repaint 60 times a second is expensive.
+
+         That trade no longer applies. Since the loop idles where there is no
+         hovering pointer, a phone paints this canvas ONCE, so it can afford
+         every pixel the screen has. Devices that do run the loop stay at 2,
+         where the cost is per frame rather than per page load. */
+      dpr = Math.min(window.devicePixelRatio || 1, hasHover ? 2 : 3);
       w = window.innerWidth;
       h = window.innerHeight;
       c.width = Math.floor(w * dpr);

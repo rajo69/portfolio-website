@@ -84,12 +84,17 @@ export function Work() {
 
       <ul className="mt-10 border-t border-line">
         {visible.map((project) => {
-          const Wrapper = project.repo ? "a" : "div";
+          /* Fall back to `demo` when there is no repo. Not everything here is
+             a repository: the Kaggle competition has a profile link and no
+             source, and before this it rendered as a row that looked clickable
+             and was not. */
+          const href = project.repo ?? project.demo;
+          const Wrapper = href ? "a" : "div";
           return (
             <li key={project.slug} className="border-b border-line">
               <Wrapper
-                {...(project.repo
-                  ? { href: project.repo, target: "_blank", rel: "noreferrer" }
+                {...(href
+                  ? { href, target: "_blank", rel: "noreferrer" }
                   : {})}
                 className="group grid gap-4 py-6 md:grid-cols-[1fr_auto] md:items-baseline md:gap-10"
               >
@@ -107,7 +112,7 @@ export function Work() {
                     {project.category}
                   </span>
                   <Label>{project.period}</Label>
-                  {project.repo && (
+                  {href && (
                     <ArrowUpRight
                       className="size-3.5 shrink-0 text-paper-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
                       aria-hidden="true"

@@ -50,6 +50,7 @@ export const profile: Profile = {
   socials: {
     github: "https://github.com/rajo69",
     linkedin: "https://www.linkedin.com/in/rajarshi-nandi/",
+    kaggle: "https://www.kaggle.com/rajo1909",
     scholar: "",
   },
 

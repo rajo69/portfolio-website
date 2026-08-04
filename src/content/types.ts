@@ -228,7 +228,13 @@ export interface Profile {
   subhead: string;
   location: string;
   email: string;
-  socials: { github: string; linkedin?: string; scholar?: string; x?: string };
+  socials: {
+    github: string;
+    linkedin?: string;
+    kaggle?: string;
+    scholar?: string;
+    x?: string;
+  };
   stats: Stat[];
   spine: { intro: string; nodes: SpineNode[]; kicker: string };
   /** Tools you genuinely work in. Rendered as a tracked-out mono grid. */

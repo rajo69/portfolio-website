@@ -2,6 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { SectionLink } from "@/components/layout/SectionLink";
 import { Label } from "@/components/type";
@@ -24,6 +25,22 @@ import { lockScroll } from "@/lib/scroll-lock";
  * SCROLL LOCK. See lib/scroll-lock.ts. Lenis is paused rather than the
  * document being given `overflow: hidden`, because Lenis measures its limit
  * off the document element.
+ *
+ * THE PANEL IS PORTALLED TO <body>, AND IT HAS TO BE.
+ *
+ * It used to render in place, inside <header>. The header is sticky and picks
+ * up `backdrop-blur-md` once the page is scrolled, and **an ancestor with a
+ * backdrop-filter becomes the containing block for any `position: fixed`
+ * descendant**. So the moment a visitor had scrolled anywhere, `fixed inset-0`
+ * stopped meaning "the viewport" and started meaning "the header box", roughly
+ * 64px tall. The menu collapsed into a strip at the top with the page showing
+ * around and over it. Unscrolled it was fine, which is what made it look
+ * intermittent.
+ *
+ * `transform`, `filter`, `perspective`, `contain` and `will-change` do the same
+ * thing. A full-screen overlay cannot be nested inside a header that carries
+ * any of them, so it goes to the body instead of relying on that never
+ * changing. `z-80` clears ScrollProgress and CursorRing, both fixed at z-50.
  */
 
 export function MobileNav({
@@ -34,6 +51,9 @@ export function MobileNav({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  // createPortal needs a real document, so nothing is portalled until mounted.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   // Crossing to the desktop layout leaves an overlay with no way to close it.
   useEffect(() => {
@@ -97,7 +117,7 @@ export function MobileNav({
         <span className="sr-only">Open menu</span>
       </button>
 
-      {open && (
+      {open && mounted && createPortal(
         <div
           ref={panelRef}
           tabIndex={-1}
@@ -122,7 +142,7 @@ export function MobileNav({
             nobody could see through an opaque panel anyway.
           */
           style={{ background: "var(--ink-900)" }}
-          className="fixed inset-0 z-50 flex flex-col overscroll-contain outline-none md:hidden"
+          className="fixed inset-0 z-[80] flex flex-col overscroll-contain outline-none md:hidden"
         >
           <div className="flex items-center justify-between px-(--gutter) py-5">
             <Label>Menu</Label>
@@ -169,7 +189,8 @@ export function MobileNav({
               <Label>{profile.location}</Label>
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

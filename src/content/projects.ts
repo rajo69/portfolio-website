@@ -268,6 +268,34 @@ export const projects: Project[] = [
     tech: ["Python", "Polars", "Statistics"],
     repo: "https://github.com/rajo69/football-analytics-data",
   },
+  /**
+   * KAGGLE. Added 4 August 2026 from the profile he pasted.
+   *
+   * ONE competition is evidenced there, and only one: March Machine Learning
+   * Mania 2026 is his single pinned entry, at 841st of 3,462. That is the
+   * placement below, unrounded.
+   *
+   * The other competitions visible on his profile page, AI Agent Security,
+   * ROGII Wellbore Geology, the Gemma 4 hackathon, sit under "Your Work →
+   * Viewed", which is browsing history rather than participation. One of the
+   * items in that list is somebody else's 1st-place notebook. None of them is
+   * claimed here. If he actually entered any of them, they need a placement
+   * before they can ship, per rule 5.
+   */
+  {
+    slug: "march-mania-2026",
+    title: "March Machine Learning Mania 2026",
+    summary:
+      "Kaggle competition forecasting the NCAA basketball tournament. Finished 841st of 3,462 teams.",
+    track: "research",
+    capabilities: ["data", "research"],
+    category: "Competition",
+    period: "2026",
+    // Deliberately empty. Kaggle shows the placement, not the stack, and he
+    // has not said what he used.
+    tech: [],
+    demo: "https://www.kaggle.com/rajo1909",
+  },
   {
     slug: "brexit-breakdown",
     title: "Brexit Breakdown",
