@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 
+import { SectionLink } from "@/components/layout/SectionLink";
 import { Label } from "@/components/type";
 import { profile } from "@/content/profile";
 
@@ -40,12 +41,12 @@ export function Footer() {
             <ul className="space-y-2.5">
               {NAV.map((item) => (
                 <li key={item.href}>
-                  <a
+                  <SectionLink
                     href={item.href}
                     className="text-sm text-paper-dim transition-colors duration-200 hover:text-paper"
                   >
                     {item.label}
-                  </a>
+                  </SectionLink>
                 </li>
               ))}
             </ul>

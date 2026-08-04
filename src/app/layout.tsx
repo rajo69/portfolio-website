@@ -64,10 +64,14 @@ export default function RootLayout({
   return (
     <html
       lang="en-GB"
-      className={`${display.variable} ${sans.variable} ${mono.variable} h-full`}
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body className="relative min-h-full">
+      {/* No height on <html> or <body>. Lenis observes documentElement with a
+          ResizeObserver, so pinning it to 100% means the observer never fires
+          and the scroll limit stays frozen at whatever the first page measured.
+          The sticky footer comes from min-h-screen on the flex column below. */}
+      <body className="relative">
         {/* Ambient layer, fixed, behind everything, pointer-transparent. */}
         <AttentionField />
 
@@ -83,7 +87,7 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        <div className="relative z-10 flex min-h-full flex-col">
+        <div className="relative z-10 flex min-h-screen flex-col">
           <Header />
           <main id="main" className="flex-1">
             {children}

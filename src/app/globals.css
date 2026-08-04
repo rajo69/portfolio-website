@@ -46,6 +46,23 @@
   --warn: #fbbf24;
   --err: #f87171;
 
+  /* --- Data series ---
+     Categorical chart colours, NOT the brand accent. Validated with the
+     dataviz skill's checker: these three stay separable under deuteranopia
+     and protanopia, which --accent plus a second pink did not. Charts are the
+     one place the accent budget does not apply, because a series colour is
+     carrying data rather than drawing attention.
+
+     Used by Clusters3D (canvas) and ForecastScorecard (SVG). If a fourth
+     series is ever needed, re-run the validator; do not extend by eye. */
+  --series-1: #e82d77;
+  --series-2: #2aa0d0;
+  --series-3: #b08a00;
+
+  /* Interval bands, drawn under their series line. */
+  --series-1-band: rgb(232 45 119 / 0.16);
+  --series-1-band-wide: rgb(232 45 119 / 0.08);
+
   /* --- Motion --- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -75,6 +92,10 @@
   --color-on-accent: var(--on-accent);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
+
+  --color-series-1: var(--series-1);
+  --color-series-2: var(--series-2);
+  --color-series-3: var(--series-3);
 
   --color-background: var(--ink-900);
   --color-foreground: var(--paper);

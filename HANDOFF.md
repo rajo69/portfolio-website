@@ -2,7 +2,8 @@
 
 **Read this first in a new session.** It is the single source of truth for where this project is. `AGENTS.md` carries the hard rules, `DESIGN.md` the visual system. `PLAN.md` and `CONTENT-BRIEF.md` are older and partly stale; trust this file where they disagree.
 
-Last updated: 4 August 2026, at commit `fbb2652`.
+Last updated: 4 August 2026. Working tree is ahead of commit `c6d07b4`: scroll and
+nav fixes, flagship block 04, and the rebuilt block 05 explorer are uncommitted.
 
 ---
 
@@ -38,7 +39,7 @@ The site is balanced as a **T**: broad foundations (SQL, ETL, Python, statistics
 |---|---|---|
 | Hero | `Hero.tsx` | Done. Logit-lens decode, parallax, 3 stat counters |
 | Spine | `Spine.tsx` | Done. Pipeline / Model / Trust, animated triangle |
-| Flagship projects | `Flagship.tsx` | **4 of 5 blocks done.** Dissertation block outstanding |
+| Flagship projects | `Flagship.tsx` | **5 of 6 blocks done.** Dissertation block outstanding |
 | Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, education on one rail |
 | Work | `Work.tsx` | Done. 13 rows, filterable by capability |
 | Method | `Method.tsx` | Done. Principle + "every guard is a scar" |
@@ -48,14 +49,30 @@ The site is balanced as a **T**: broad foundations (SQL, ETL, Python, statistics
 
 Plus `/blog` (MDX) and `/blog/[slug]`, with one **draft** post.
 
-### The four flagship blocks
+### The five flagship blocks
 
 Each follows one skeleton: **one-sentence lede → interactive artifact → three big numbers → bullets → where it broke → links.**
 
-1. **AI Accountant** — live `<iframe>` of the real app. `94% · <2s · 3+ hrs`
-2. **Clustering Stability** — 3D draggable PCA projection. `0.526 · 53→6 · 3/3`
-3. **Banking77 LoRA** — native HF model card. `0%→90.21% · 77 · ~50 min`
-4. **Gated Attention** — interactive gate diagram with a force-open toggle. `99.8% · 48.3% · 25,600`
+1. **AI Accountant**: live `<iframe>` of the real app. `94% · <2s · 3+ hrs`
+2. **Clustering Stability**: 3D draggable PCA projection. `0.526 · 53→6 · 3/3`
+3. **Banking77 LoRA**: native HF model card. `0%→90.21% · 77 · ~50 min`
+4. **The Forecast I Got Wrong**: three-view scorecard. `10/11 · 49% · 0.50%`
+5. **Gated Attention**: three-instrument explorer. `99.8% · 48.3% · 25,600`
+
+**Block 04 is the 2024 RPubs coursework, reframed.** He chose to ship it knowing
+the Oct 2024 point forecast is now falsified, so the block scores it instead of
+publishing it bare. Data is in `src/content/data/forecast.ts`: his forecast table
+verbatim from RPubs, joined to FRED series `PCE`. The outturn lands outside the
+95% band in **10 of 11 months**, and **320.0 of the final 659.08 gap is BEA
+revising the forecast origin after the model was fitted**, which the block says
+out loud rather than charging the whole miss to the model. Every summary figure
+is computed from the two arrays at module load, so none can drift.
+
+**Block 05's explorer was rebuilt.** It was one boolean driving a diagram. It is
+now three instruments over real measurements in `src/content/data/gates.ts`:
+layer ablation, the fixed-gate sweep, and the attention-sink null result.
+Layers 5 to 27 render as a band because the README reports a range, not per
+layer values. Do not fill those in.
 
 ---
 
@@ -92,6 +109,10 @@ Do not repeat these.
 - **Turbopack cannot serialise imported MDX plugin functions.** Name them as strings or the dev server dies.
 - **Chrome-extension screenshots are not ground truth.** Several "the page is frozen" and "the element is invisible" alarms were artifacts of the tooling, not real. Playwright over CDP disagreed every time.
 
+- **`h-full` on `<html>` froze Lenis's scroll limit.** Lenis watches `document.documentElement` with a ResizeObserver, and a height of 100% means that box never changes size, so the observer never fires. On a fresh load it measured once and was correct; on a client-side nav it kept the *previous* route's limit. A blog post stranded at 19% of its length. Fixed by taking the height off `<html>` and `<body>` (sticky footer now comes from `min-h-screen` on the flex column) and calling `lenis.resize()` plus `ScrollTrigger.refresh()` on pathname change, after two frames. **If you ever put a height back on `<html>`, this returns.**
+
+- **Fragment nav links are dead off the home page.** The header wordmark pointed at `#top` and the nav at `#flagship`/`#experience`/`#work`. None of those exist on `/blog`, so Writing was a one-way trip with no route home but the back button. `SectionLink`/`HomeLink` now rewrite a bare fragment to `/#work` when `usePathname() !== "/"`, and leave it a native anchor on the home page so the existing jump is untouched.
+
 ---
 
 ## 5. Hard rules
@@ -115,8 +136,8 @@ Do not repeat these.
 | Item | Needed for |
 |---|---|
 | **Freelance engagements** | Experience section. Client/sector (anonymised fine), what was built, when, one outcome |
-| **Dissertation v1/v2/v3 accuracies** under clean/FGSM/PGD, from `Project_Report.pdf` | Flagship block 05 |
-| **Supervisor names**, and whether the industrial partner can be named | Block 05 |
+| **Dissertation v1/v2/v3 accuracies** under clean/FGSM/PGD, from `Project_Report.pdf` | Flagship block 06 |
+| **Supervisor names**, and whether the industrial partner can be named | Block 06 |
 | **94% vs 88% contradiction** | His accounting landing page claims 94%; the eval README says Haiku 88% (93.5% easy, 75% hard) and marks tiered routing as *not yet measured*. Site currently shows 94%. |
 | **Domain** | CSP allowlist, canonical URLs, OG, JSON-LD |
 | **"What are you looking for?"** FAQ answer | Last `TODO` blocking a production build |
@@ -124,15 +145,26 @@ Do not repeat these.
 
 ### Queued work
 
-1. **Flagship block 05**, the dissertation. Agreed approach: a hand-built interactive ResNet-18 layer strip in SVG (not Netron), above the real v1/v2/v3 robustness matrix.
-2. **Mobile navigation.** Still missing below 768px. Overdue.
-3. **Design pass, part 2:** scrub-linked rail through the flagship blocks, sticky section eyebrows, larger/tighter hero type.
-4. **Architecture diagram** for AI Accountant. Named explicitly in hiring-manager research; still absent.
-5. **CV PDF** at `/cv`. He has a build pipeline that produces one.
-6. **Services/process block** for the client audience.
-7. **RSS + per-post OG images** for the blog.
-8. **SEO finish:** sitemap, robots, JSON-LD `Person`.
-9. **Deploy to Vercel.**
+1. **Flagship block 06**, the dissertation. Agreed approach: a hand-built interactive ResNet-18 layer strip in SVG (not Netron), above the real v1/v2/v3 robustness matrix.
+
+2. **Flagship block 07, a UK public data set at scale.** Agreed 4 August 2026, and
+   the rendered "Next" line under the flagship blocks already promises it. Either
+   **HM Land Registry Price Paid** (roughly 30M transactions since 1995, open
+   licence) or the **NHS English Prescribing Dataset** (hundreds of millions of
+   rows a year). Why it matters: every flagship is a research spike, so the T's
+   crossbar of SQL, ETL and statistics is claimed in `Stack` and demonstrated
+   nowhere. Volume is the point, because volume is what forces the engineering to
+   become visible. Needs one non-obvious defensible finding, not a tour of the
+   data.
+
+3. **Mobile navigation.** Still missing below 768px. Overdue.
+4. **Design pass, part 2:** scrub-linked rail through the flagship blocks, sticky section eyebrows, larger/tighter hero type.
+5. **Architecture diagram** for AI Accountant. Named explicitly in hiring-manager research; still absent.
+6. **CV PDF** at `/cv`. He has a build pipeline that produces one.
+7. **Services/process block** for the client audience.
+8. **RSS + per-post OG images** for the blog.
+9. **SEO finish:** sitemap, robots, JSON-LD `Person`.
+10. **Deploy to Vercel.**
 
 ---
 
@@ -166,7 +198,7 @@ Always check: rendered em dashes (`document.body.innerText.match(/[—–]/g)`),
 
 ## 8. External state he owns
 
-- **`rajo69/agentic-ai-accounting`** — two commits pushed by me to `frontend/vercel.json`. The catch-all is `/:path+` so the root is excluded and framable; dashboard, OAuth and API keep `X-Frame-Options: DENY`. Allowlist is currently **localhost only**. Adding a production domain means editing **both** that file and `FRAMEABLE_FROM` in `LiveEmbed.tsx`, or the live embed silently switches off.
+- **`rajo69/agentic-ai-accounting`**: two commits pushed by me to `frontend/vercel.json`. The catch-all is `/:path+` so the root is excluded and framable; dashboard, OAuth and API keep `X-Frame-Options: DENY`. Allowlist is currently **localhost only**. Adding a production domain means editing **both** that file and `FRAMEABLE_FROM` in `LiveEmbed.tsx`, or the live embed silently switches off.
 - **`rajo0113/banking77-llama-1b-lora`** on Hugging Face. Published, public, 90.21% / 90.28%.
 - His **UKGC LCCP Render demo is dead** (no response in 120s). His README still advertises it as live, so anyone evaluating him from GitHub hits a dead link.
 
@@ -182,10 +214,17 @@ src/content/          All copy. Nothing is inlined in components.
   certifications.ts   13, all verification links checked 200
   data/clustering.ts  Verbatim from his results.json
   data/clusters3d.json  Generated, ARI-asserted against his CSV
+  data/forecast.ts    RPubs forecast + FRED outturn. Scoring computed, not typed.
+  data/gates.ts       Gated-attention measurements, tagged by experiment number.
   posts/*.mdx         Blog. Each exports its own `meta`.
 
 src/app/globals.css   Every token. Accent budget documented here.
+                      --series-1/2/3 are the dataviz-validated chart colours,
+                      deliberately NOT the accent. Do not extend by eye.
 src/components/section/FlagshipParts.tsx   Block, Points, Fixes, Stats
+src/components/layout/SectionLink.tsx      Route-aware nav links, see §4
+src/components/projects/ForecastScorecard.tsx    Block 04 artifact, 3 views
+src/components/projects/GatedAttentionExplorer.tsx  Block 05 artifact, 3 views
 ```
 
 ---

@@ -1,9 +1,11 @@
 "use client";
 
 import Lenis from "lenis";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { setLenis } from "@/lib/scroll-lock";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
 
 /**
@@ -18,6 +20,8 @@ import { useReducedMotion } from "@/lib/use-reduced-motion";
  */
 export function SmoothScroll() {
   const reduced = useReducedMotion();
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Honouring the preference means native scroll, not slower smooth scroll.
@@ -31,6 +35,8 @@ export function SmoothScroll() {
       syncTouch: false,
     });
 
+    lenisRef.current = lenis;
+    setLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
 
     const tick = (time: number) => lenis.raf(time * 1000); // GSAP: s, Lenis: ms
@@ -50,8 +56,36 @@ export function SmoothScroll() {
       cancelled = true;
       gsap.ticker.remove(tick);
       lenis.destroy();
+      lenisRef.current = null;
+      setLenis(null);
     };
   }, [reduced]);
+
+  /**
+   * App Router swaps the tree without remounting this component, so both
+   * engines are still holding the previous route's measurements. Lenis clamps
+   * to a stale limit, which strands a long page part-way down, and every
+   * ScrollTrigger start/end still points at the old layout.
+   *
+   * Two frames, because the first only guarantees the new tree is committed;
+   * layout is not final until the one after it.
+   */
+  useEffect(() => {
+    let outer = 0;
+    let inner = 0;
+
+    outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => {
+        lenisRef.current?.resize();
+        ScrollTrigger.refresh();
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [pathname]);
 
   return null;
 }

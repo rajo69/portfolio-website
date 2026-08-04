@@ -2,11 +2,13 @@ import { Section } from "@/components/layout/Section";
 import { LiveEmbed } from "@/components/section/LiveEmbed";
 import { Block, Points, Fixes } from "@/components/section/FlagshipParts";
 import { Clusters3D } from "@/components/projects/Clusters3D";
+import { ForecastScorecard } from "@/components/projects/ForecastScorecard";
 import { GatedAttentionExplorer } from "@/components/projects/GatedAttentionExplorer";
 import { ModelCard } from "@/components/projects/ModelCard";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Eyebrow, Label, Lede } from "@/components/type";
+import { models, scoreSummary } from "@/content/data/forecast";
 
 /**
  * FLAGSHIP PROJECTS.
@@ -29,9 +31,10 @@ export function Flagship() {
           What I built, and where it broke.
         </SplitHeading>
         <Lede className="max-w-[58ch]">
-          Four things you can open and poke at: a running product, a clustering
-          study in 3D, a published model, and an interpretability experiment you
-          can trigger yourself.
+          Five things you can open and poke at: a running product, a clustering
+          study in 3D, a published model, a forecast scored against what
+          actually happened, and an interpretability experiment you can run
+          yourself.
         </Lede>
       </Reveal>
 
@@ -163,13 +166,68 @@ export function Flagship() {
           />
         </Block>
 
-        {/* ── 04 · GATED ATTENTION ───────────────────────────────────────── */}
+        {/* ── 04 · FORECASTING, SCORED ───────────────────────────────────── */}
         <Block
           index="04"
+          capabilities={["Data & pipelines", "Research"]}
+          period="2024, scored 2026"
+          title="The Forecast I Got Wrong"
+          lede="I published a forecast for US consumption in 2024. Two years of data have arrived since, so here it is scored against what actually happened, month by month, including the part that was not the model's fault."
+          artifact={<ForecastScorecard />}
+          stats={[
+            {
+              value: `${scoreSummary.outside95} / ${scoreSummary.horizons}`,
+              caption: "Months outside its own 95% band",
+            },
+            {
+              value: `${scoreSummary.revisionShare.toFixed(0)}%`,
+              caption: "Of the gap is post-fit data revision",
+            },
+            {
+              value: `${models[1].rolling.mape.toFixed(2)}%`,
+              caption: "Same model, one month ahead",
+            },
+          ]}
+          links={[
+            { label: "Read the full analysis", href: "https://rpubs.com/rajo2024/1249519", primary: true },
+            { label: "Check it against FRED", href: "https://fred.stlouisfed.org/series/PCE" },
+          ]}
+        >
+          <Points
+            title="What the scoring shows"
+            items={[
+              "The outturn sits above the 95% upper bound in 10 of the 11 forecast months, so the intervals were miscalibrated, not merely the point forecast low",
+              "Error grows with horizon, 1.87% at one month to 3.26% at eleven, and every miss runs the same direction, which rules out noise",
+              "320.0 of the final 659.08 gap is the forecast origin itself being revised upward by BEA after the model was fitted",
+              "Holt still beat Drift and ARIMA on both horizons, so model selection was sound and the horizon was the problem",
+              "Method held up: 779 monthly readings from 1959, Stineman interpolation over 43 gaps, multiplicative decomposition, 80:20 split",
+            ]}
+          />
+          <Fixes
+            items={[
+              {
+                problem: "The original analysis ends on a point forecast and never returns to it. That number is checkable, and it is now wrong.",
+                fix: "Scored the whole path against FRED and published the decomposition, so a reader who checks the series finds the page already agrees with them.",
+              },
+              {
+                problem: "A one step ahead MAPE of 0.50% reads like proof the model forecasts well. It is not.",
+                fix: "Both horizons on one shared scale. Same model, same parameters, 5.75 times the RMSE once the horizon stretches to the full window.",
+              },
+              {
+                problem: "1,760 positive reviews against 240 negative, and LDA still fitted 11 topics to the smaller set.",
+                fix: "Roughly 22 documents per negative topic. Stated on the block rather than left for a reader to work out.",
+              },
+            ]}
+          />
+        </Block>
+
+        {/* ── 05 · GATED ATTENTION ───────────────────────────────────────── */}
+        <Block
+          index="05"
           capabilities={["Research", "AI & agents"]}
           period="2026"
           title="What the Gates Actually Do"
-          lede="A NeurIPS 2025 paper adds a gate after attention and shows it helps. It does not say what the trained gates do. Force one open and find out."
+          lede="A NeurIPS 2025 paper adds a gate after attention and shows it helps. It does not say what the trained gates do. Open a layer, swap the gates for a constant, or watch my own hypothesis fail."
           artifact={<GatedAttentionExplorer />}
           stats={[
             { value: "99.8%", caption: "Of ablation damage from layer 0" },
@@ -211,8 +269,23 @@ export function Flagship() {
         </Block>
       </div>
 
+      {/*
+        QUEUED, AFTER GATED ATTENTION.
+
+        Block 06 is the dissertation. Block 07 is meant to be a large scale UK
+        public data project, either HM Land Registry Price Paid (roughly 30M
+        transactions since 1995) or the NHS English Prescribing Dataset
+        (hundreds of millions of rows a year). Reason it matters: every
+        flagship here is a research spike, so the T's crossbar of SQL, ETL and
+        statistics is claimed in the Stack section and demonstrated nowhere.
+        Volume is the point, because it is what forces the engineering to
+        become visible. See HANDOFF.md section 6.
+      */}
       <Reveal className="mt-24 border-t border-line pt-10">
-        <Label>Next: the ResNet-18 dissertation</Label>
+        <Label as="p">Next: the ResNet-18 dissertation</Label>
+        <Label as="p" className="mt-2 text-paper-faint">
+          Then a UK public data set at scale, Land Registry or NHS prescribing
+        </Label>
       </Reveal>
     </Section>
   );

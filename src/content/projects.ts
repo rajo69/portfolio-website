@@ -66,6 +66,29 @@ export const projects: Project[] = [
   },
 
   {
+    slug: "pce-forecast-scored",
+    title: "The Forecast I Got Wrong",
+    summary:
+      "A 2024 forecast of US consumption expenditure, scored two years later against the actual outturn, with the miss decomposed into model error and data revision.",
+    description:
+      "Three forecasting models over 779 monthly readings from 1959: drift, Holt exponential smoothing and an auto-selected ARIMA(3,2,2). Holt won and produced an eleven month forecast to October 2024. FRED has since published what happened, so the forecast is scored here rather than left standing. A second half applies LDA topic modelling to 10,000 hotel reviews.",
+    proves:
+      "The same argument as the audit log, turned on my own work. A forecast nobody scores is a claim, not a result, and the honest version of this project is the one where the reader can check it in thirty seconds and find the page already agrees with them.",
+    track: "research",
+    capabilities: ["data", "research"],
+    category: "Time series and NLP",
+    period: "2024, scored 2026",
+    tech: ["R", "forecast", "imputeTS", "topicmodels", "ldatuning", "tm"],
+    demo: "https://rpubs.com/rajo2024/1249519",
+    featured: true,
+    caseStudy: true,
+    metrics: [
+      { label: "Months outside the 95% interval", value: "10 / 11", chart: "gauge", series: [] },
+      { label: "One step ahead MAPE, same model", value: "0.50%", chart: "sparkline", series: [] },
+    ],
+  },
+
+  {
     slug: "adversarial-robustness-dissertation",
     title: "Hybrid Adversarial Training",
     summary:

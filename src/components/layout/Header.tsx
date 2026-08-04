@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { MobileNav } from "@/components/layout/MobileNav";
+import { HomeLink, SectionLink } from "@/components/layout/SectionLink";
 import { profile } from "@/content/profile";
 import { cn } from "@/lib/cn";
 
@@ -34,25 +36,23 @@ export function Header() {
         scrolled && "border-b border-line bg-ink-900/80 backdrop-blur-md")}
     >
       <div className="flex items-center justify-between px-(--gutter) py-5">
-        <a
-          href="#top"
-          className="group flex items-center gap-2.5 text-[0.95rem] font-bold tracking-tight text-paper"
-          style={{ fontFamily: "var(--ff-display), sans-serif" }}
-        >
+        <HomeLink className="group flex items-center gap-2.5 text-[0.95rem] font-bold tracking-tight text-paper">
           <Mark />
-          {profile.name}
-        </a>
+          <span style={{ fontFamily: "var(--ff-display), sans-serif" }}>
+            {profile.name}
+          </span>
+        </HomeLink>
 
-        <nav aria-label="Primary" className="flex items-center gap-7">
+        <nav aria-label="Primary" className="flex items-center gap-4 md:gap-7">
           <ul className="hidden items-center gap-7 md:flex">
             {NAV.map((item) => (
               <li key={item.href}>
-                <a
+                <SectionLink
                   href={item.href}
                   className="t-label transition-colors duration-200 hover:text-paper"
                 >
                   {item.label}
-                </a>
+                </SectionLink>
               </li>
             ))}
           </ul>
@@ -63,6 +63,9 @@ export function Header() {
           >
             Talk to me
           </a>
+
+          {/* Below md the list above is hidden and this replaces it. */}
+          <MobileNav items={NAV} />
         </nav>
       </div>
     </header>
