@@ -1,14 +1,20 @@
 # Handoff
 
-**Read this first in a new session.** It is the single source of truth for where this project is. `AGENTS.md` carries the hard rules, `DESIGN.md` the visual system. `PLAN.md` and `CONTENT-BRIEF.md` are older and partly stale; trust this file where they disagree.
+**Read this first in a new session.** It is the single source of truth for where
+this project is. `AGENTS.md` carries the hard rules, `DESIGN.md` the visual
+system. `PLAN.md` and `CONTENT-BRIEF.md` are older and partly stale; trust this
+file where they disagree.
 
-Last updated: 4 August 2026, at commit `42b7e70` plus the dissertation block.
+Last updated: 4 August 2026. Branch `feat/block-04-mobile-nav`, seven commits
+ahead of `master`, not yet merged or pushed. Run `git log --oneline master..HEAD`
+for the list; §3 explains what each one did.
 
 ---
 
 ## 1. The end goal
 
-A personal portfolio site for **Rajarshi Nandi**, Data & AI engineer in Sheffield, UK. It exists to get him hired or hired-for-work, fast.
+A personal portfolio site for **Rajarshi Nandi**, Data & AI engineer in
+Sheffield, UK. It exists to get him hired or hired-for-work, fast.
 
 Three audiences, in priority order:
 
@@ -16,123 +22,158 @@ Three audiences, in priority order:
 2. **Professors / PhD supervisors.** Care about research fit and demonstrated capability.
 3. **SMB clients** wanting data insight or AI integration.
 
-The design inspiration is <https://jeffbrokaw.com>: near-black, one hot accent, heavy grotesque display type, animated canvas background, per-section rhythm. **The structure is the inspiration, not the content.** Copying its orange would make it a clone.
+Design inspiration is <https://jeffbrokaw.com>: near-black, one hot accent, heavy
+grotesque display type, animated canvas background, per-section rhythm. **The
+structure is the inspiration, not the content.**
 
 ### The positioning
 
 > **"I build AI people trust enough to use."**
 
-The thesis, which is genuinely evidenced across his CV: *a model that cannot show its working does not get adopted, however accurate it is.* It runs from IBM in 2021 (a churn model the business ignored until he made the features legible) to 2026 (an accounting agent designed entirely around showing its working to someone with professional liability).
-
-The site is balanced as a **T**: broad foundations (SQL, ETL, Python, statistics) as the crossbar, with four specialism spikes (AI & agents, data & pipelines, research, vision). The unifying argument is his own and it is correct: *the pipeline that cleans and structures data is the same pipeline whether it ends in a dashboard or an LLM's context window.*
+*A model that cannot show its working does not get adopted, however accurate it
+is.* It runs from IBM in 2021 (a churn model the business ignored until he made
+the features legible) to 2026 (an accounting agent designed entirely around
+showing its working to someone with professional liability).
 
 ---
 
 ## 2. Current state
 
-**Working, committed, builds clean.** Next.js 16 App Router, TypeScript, Tailwind v4, GSAP, Lenis, MDX.
-
-### Page order (`src/app/page.tsx`)
+**Working, builds clean** with `CONTENT_DRAFT=1`. Next.js 16 App Router,
+TypeScript, Tailwind v4, GSAP, Lenis, MDX.
 
 | Section | Component | State |
 |---|---|---|
 | Hero | `Hero.tsx` | Done. Logit-lens decode, parallax, 3 stat counters |
-| Spine | `Spine.tsx` | Done. Pipeline / Model / Trust, animated triangle |
-| Flagship projects | `Flagship.tsx` | **6 blocks, all done.** Next is a UK big-data block |
-| Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, education on one rail |
-| Work | `Work.tsx` | Done. 13 rows, filterable by capability |
-| Method | `Method.tsx` | Done. Principle + "every guard is a scar" |
-| About | `About.tsx` | Done. Portrait + three paragraphs |
-| Stack | `Stack.tsx` | Done. Rendered as a literal T |
-| Certifications | `Certifications.tsx` | Done. 4 surfaced, 13 total, all links verified 200 |
+| Spine | `Spine.tsx` | Done |
+| Flagship projects | `Flagship.tsx` | **6 blocks, all done** |
+| Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, education |
+| Work | `Work.tsx` | Done. Filterable by capability |
+| Method | `Method.tsx` | Done |
+| About | `About.tsx` | Done |
+| Stack | `Stack.tsx` | Done, rendered as a literal T |
+| Certifications | `Certifications.tsx` | Done. 4 surfaced, 13 total, links 200 |
 
-Plus `/blog` (MDX) and `/blog/[slug]`, with one **draft** post.
+Plus `/blog`, `/blog/[slug]`, `/sitemap.xml`, `/robots.txt`. One **draft** post.
 
 ### The six flagship blocks
 
-Each follows one skeleton: **one-sentence lede → interactive artifact → three big numbers → bullets → where it broke → links.**
+Skeleton: **one-sentence lede → interactive artifact → three big numbers →
+bullets → where it broke → links.**
 
-1. **AI Accountant**: live `<iframe>` of the real app. `94% · <2s · 3+ hrs`
-2. **Clustering Stability**: 3D draggable PCA projection. `0.526 · 53→6 · 3/3`
-3. **Banking77 LoRA**: native HF model card. `0%→90.21% · 77 · ~50 min`
-4. **The Forecast I Got Wrong**: three-view scorecard. `10/11 · 49% · 0.50%`
-5. **Gated Attention**: three-instrument explorer. `99.8% · 48.3% · 25,600`
+1. **AI Accountant**: live iframe + architecture diagram. `94% · <2s · 3+ hrs`
+2. **Clustering Stability**: 3D draggable PCA. `0.526 · 53→6 · 3/3`
+3. **Banking77 LoRA**: HF model card. `0%→90.21% · 77 · ~50 min`
+4. **The Forecast I Got Wrong**: 3-view scorecard. `10/11 · 49% · 0.50%`
+5. **What the Gates Actually Do**: 3-instrument explorer. `99.8% · 48.3% · 25,600`
 6. **The Model That Scored 91% and 0.57%**: robustness matrix. `0.57% · 63x · 2.83 pts`
 
-**Block 06 was never actually blocked.** HANDOFF listed the v1/v2/v3 accuracies as
-needing `Project_Report.pdf`. They are not in the PDF only: the repository README
-publishes all nine cells of the model-by-attack matrix, and they are now in
-`src/content/data/robustness.ts`. The PDF would add the per-epsilon FGSM curve,
-which is the one thing still missing, so FGSM renders as a band rather than a
-line. **Check the README before believing a "blocked" row in this file.**
+> **Block 06 is the Leeds dissertation, and he has asked twice where it is.**
+> It is the **last block of the Flagship section**. "MSc dissertation at Leeds"
+> is in the lede and "University of Leeds HPC" in the setup footer, but **Leeds
+> appears nowhere in the title or the capability pills**, which is almost
+> certainly why he keeps missing it. If he asks a third time, surface Leeds in
+> the title or add a pill, do not just point at it again.
 
-**Block 04 is the 2024 RPubs coursework, reframed.** He chose to ship it knowing
-the Oct 2024 point forecast is now falsified, so the block scores it instead of
-publishing it bare. Data is in `src/content/data/forecast.ts`: his forecast table
-verbatim from RPubs, joined to FRED series `PCE`. The outturn lands outside the
-95% band in **10 of 11 months**, and **320.0 of the final 659.08 gap is BEA
-revising the forecast origin after the model was fitted**, which the block says
-out loud rather than charging the whole miss to the model. Every summary figure
-is computed from the two arrays at module load, so none can drift.
-
-**Block 05's explorer was rebuilt.** It was one boolean driving a diagram. It is
-now three instruments over real measurements in `src/content/data/gates.ts`:
-layer ablation, the fixed-gate sweep, and the attention-sink null result.
-Layers 5 to 27 render as a band because the README reports a range, not per
-layer values. Do not fill those in.
+**Block 06 was never actually blocked.** An earlier handoff said the v1/v2/v3
+accuracies needed `Project_Report.pdf`. They did not: the repository README
+publishes all nine cells of the model-by-attack matrix. Only the per-epsilon
+FGSM curve is PDF-only, so FGSM renders as a band rather than a line.
+**Check the README before believing a "blocked" row in this file.**
 
 ---
 
-## 3. What worked
+## 3. What was done this session
 
-- **Reading the repos properly.** Almost every good line on the site came out of Rajarshi's own READMEs, not from invention. The "every guard is a scar" table, the confidence-graded findings, the tiered-routing story.
-- **Verifying with Playwright, not screenshots.** Repeatedly caught things that looked fine.
-- **Computing colour instead of eyeballing it.** The `dataviz` skill's validator caught a chart palette where a red-green colourblind reader could not separate two series (deutan ΔE 5.5).
-- **Regenerating data with an assertion.** The 3D cluster generator refuses to write its file unless every ARI reproduces `results_summary.csv`. All 8 match, so the visual is genuinely his result.
-- **The accent budget.** One accent element per screenful. Fixed the "AI slop" feel more than anything else.
-- **Bullets over paragraphs.** His instruction, and correct: prose belongs in the README.
+Six commits on `feat/block-04-mobile-nav`, branched off `c6d07b4`.
 
-## 4. What did not work
-
-Do not repeat these.
-
-| Attempt | Outcome |
+| Commit | What |
 |---|---|
-| GitHub proof strip (stars, forks, heatmap) | **Cut.** Personal research repos have no stars; a strip of zeroes underlines the absence. Repo count is the same vanity signal. |
-| "Nothing here is a claim" Evidence section | **Cut.** Argued with a reader who had not objected. Read as insecure. |
-| Iframing `huggingface.co` | **Impossible.** Returns `X-Frame-Options: DENY`, not ours to change. A Gradio Space would work (`*.hf.space` is frameable). |
-| Netron for the dissertation | **Rejected.** Needs an exported model file; the repo is MATLAB scripts. Also looks like someone else's tool. |
-| Flourish for charts | **Rejected.** Free tier stamps "Made with Flourish", third-party iframe, cannot read his repo data. |
-| Tuning the canvas by eye | **Failed 3 rounds.** It was invisible: 1.22% of pixels lit, mean alpha 6.6/255. Only `getImageData` sampling caught it. |
-| `"//"` comment keys in `vercel.json` | **Broke his production build.** Vercel validates strictly. |
-| Em dashes | **Banned.** 159 purged. His CV pipeline enforces the same rule. |
+| `50106af` | Scroll + nav fixes, flagship block 04, rebuilt block 05 explorer, mobile nav |
+| `e44045c` | sitemap, robots, JSON-LD `Person` |
+| `a805180` | Section rail, larger hero, design pass 2 |
+| `42b7e70` | AI Accountant architecture diagram |
+| `5a1a3e9` | Dissertation block 06, cursor-as-query background, "Data & AI Engineer" |
+| `5114291` | Glass panels + background lab (**lab since deleted, see §4**) |
 
-### Bugs that cost real time
+### Bugs fixed that were real
 
-- **Un-layered CSS beats Tailwind utilities.** `t-display` outside `@layer components` silently killed `text-accent` and every `group-hover:` colour on those elements. Now inside the layer, and it is in the pre-delivery checklist.
-- **Tailwind v4 `scale-x-0`** emits the standalone `scale` property, which *composes with* rather than being overridden by an inline `transform`. Pinned the scroll-progress bar to zero width.
-- **Canvas colour strings.** `rgb(255, 61, 139 / 0.5)` mixes legacy commas with slash-alpha and is invalid. Canvas silently keeps the previous style, so it renders black on black rather than erroring.
-- **`prefers-reduced-motion` read one render too late.** `gsap.from` had already written `opacity: 0`, leaving the hero permanently invisible for exactly the users who asked for less motion. Now read synchronously.
-- **Turbopack cannot serialise imported MDX plugin functions.** Name them as strings or the dev server dies.
-- **Chrome-extension screenshots are not ground truth.** Several "the page is frozen" and "the element is invisible" alarms were artifacts of the tooling, not real. Playwright over CDP disagreed every time.
-
-- **`h-full` on `<html>` froze Lenis's scroll limit.** Lenis watches `document.documentElement` with a ResizeObserver, and a height of 100% means that box never changes size, so the observer never fires. On a fresh load it measured once and was correct; on a client-side nav it kept the *previous* route's limit. A blog post stranded at 19% of its length. Fixed by taking the height off `<html>` and `<body>` (sticky footer now comes from `min-h-screen` on the flex column) and calling `lenis.resize()` plus `ScrollTrigger.refresh()` on pathname change, after two frames. **If you ever put a height back on `<html>`, this returns.**
-
-- **Fragment nav links are dead off the home page.** The header wordmark pointed at `#top` and the nav at `#flagship`/`#experience`/`#work`. None of those exist on `/blog`, so Writing was a one-way trip with no route home but the back button. `SectionLink`/`HomeLink` now rewrite a bare fragment to `/#work` when `usePathname() !== "/"`, and leave it a native anchor on the home page so the existing jump is untouched.
+- **`h-full` on `<html>` froze Lenis's scroll limit.** Lenis watches
+  `documentElement` with a ResizeObserver; a fixed height means it never fires.
+  Correct on first load, stale on every client-side nav: a blog post stranded at
+  **19% of its length**. Fixed by removing the height and calling
+  `lenis.resize()` + `ScrollTrigger.refresh()` on pathname change.
+  **If you ever put a height back on `<html>`, this returns.**
+- **Header/footer fragment links were dead off the home page.** `#flagship` and
+  friends do not exist on `/blog`, so Writing was a one-way trip with no route
+  home but the back button. `SectionLink` / `HomeLink` rewrite them to `/#work`
+  when off home, and leave them native anchors on home.
+- **Mobile nav did not exist below 768px.** Now `MobileNav.tsx`: dialog, Escape
+  to close, focus trapped and returned to the trigger, scroll locked by pausing
+  Lenis rather than setting `overflow` on the document element, which is the
+  thing Lenis measures against.
 
 ---
 
-## 5. Hard rules
+## 4. THE BACKGROUND: read before touching
 
-1. **No em dashes or en dashes.** Anywhere. Use commas, colons, full stops.
-2. **Bullets, not paragraphs**, in project and experience blocks.
-3. **No hardcoded colours.** Tokens in `globals.css` only.
-4. **Accent budget:** roughly one accent element per screenful. Numbers get it; pills, bullets and rails do not.
-5. **Never invent a number.** If it is not in a repo, a README or something he sent, it does not go on the site. A rendered `TODO` is worse than a smaller true number.
-6. **Honour the profile guardrails** (documented in `experience.ts`): real job titles, D365 *supported* not led, 13% as a contributing driver, no ISO compliance claim, forecasting algorithm unnamed, EMIS not claimed, 17% figure omitted for having no baseline.
-7. **Animation is enhancement.** Everything readable without JS. `prefers-reduced-motion` fully honoured.
-8. **`featured: true` means "has a hand-written flagship block".** Setting it early *deletes* a project from the site, because `Work` renders everything unfeatured.
-9. **Never put personal data on the site.** The source profile holds NI number, DOB, address, visa status, salary, health and equality data, and referee contacts. None of it is imported.
+**He has rejected two background designs. Do not redesign it again without
+asking him first.**
+
+What ships is `AttentionField.tsx`, the **attention lattice**: token nodes,
+attention edges, gates closing, and the cursor acting as the query token so most
+heads fire from the node nearest the pointer.
+
+The history, so it is not repeated:
+
+1. Original lattice, no pointer interaction. He said it was "not mouse reactive
+   and not animated enough".
+2. Cursor-as-query and per-node drift added (`5a1a3e9`). Measured 2.8x lit
+   pixels around the cursor. **He still did not like it.**
+3. Four candidates built and compared in a lab at `/lab/field`, with density
+   measured for each. He chose **embedding drift**.
+4. Embedding drift shipped and tuned twice. **He then asked to revert to the
+   lattice.** Reverted.
+
+**Everything from steps 3 and 4 is deleted and lives in commit `5114291`:**
+`EmbeddingField`, `MatrixField`, `FlowField`, `FieldLab`, the `/lab/field`
+route, and the `useFieldCanvas` hook. `git show 5114291` recovers any of it.
+
+Measured density, lit fraction times mean alpha over lit pixels:
+
+| Field | Total light | Verdict |
+|---|---|---|
+| **Lattice (shipped)** | **82** | What he settled on |
+| Embedding drift | 175 | Built, shipped, reverted |
+| Gradient flow | 284 | Best looking, least on-thesis |
+| Attention matrix | 447 | Most literal, busiest |
+
+> **Tune the canvas by sampling `getImageData`, never by eye.** It shipped
+> invisible for three rounds at 1.22% lit pixels. DESIGN.md §2.1 has the method.
+
+---
+
+## 5. Glass panels
+
+`.surface` carries a liquid-glass treatment: translucent fill, `backdrop-filter:
+blur(20px) saturate(1.6)`, a bright rim on the top edge, a weaker one on the
+bottom, and a sheen gradient. `@supports` falls back to the opaque panel.
+
+He asked for this explicitly and it was **not** reverted with the background.
+Two things to know:
+
+- **It is subtle over the lattice.** Glass needs something behind it to refract,
+  and the lattice is sparse (82 total light against embedding drift's 175). This
+  is why the background and the glass were worked on together.
+- **The GPU blur cost is UNMEASURED.** `chrome-headless-shell` does not
+  implement `backdrop-filter`, so Playwright cannot see it. Translucency alone
+  costs nothing (glass 14.9fps vs opaque 14.4fps at the same scroll position),
+  but **measure the real blur cost in a real browser before deploying.**
+
+The SVG `feDisplacementMap` refraction that Apple's Liquid Glass and React Bits'
+`GlassSurface` use was deliberately not shipped: Chromium only, no
+super-sampling so edges pixelate, fixed-size rounded rects only, and it would
+bend the text inside the card. Full reasoning in the `globals.css` comment.
 
 ---
 
@@ -142,137 +183,139 @@ Do not repeat these.
 
 | Item | Needed for |
 |---|---|
-| **Freelance engagements** | Experience section. Client/sector (anonymised fine), what was built, when, one outcome |
-| **Supervisor names**, and whether the industrial partner can be named | Block 06 currently claims "an academic and an industrial supervisor" with no names. The repo's acknowledgments thank two GitHub handles, but naming someone as your supervisor is a claim about a real person, so nothing is named until he confirms. |
-| **94% vs 88% contradiction** | His accounting landing page claims 94%; the eval README says Haiku 88% (93.5% easy, 75% hard) and marks tiered routing as *not yet measured*. Site currently shows 94%. |
-| **Domain** | CSP allowlist, canonical URLs, OG, JSON-LD |
-| **"What are you looking for?"** FAQ answer | Last `TODO` blocking a production build |
-| **Gradio Space** (optional) | Would make block 03 a live demo instead of a card |
+| **"What are you looking for?"** FAQ answer | `profile.ts:122`. **The last TODO blocking a real `npm run build`, and therefore the deploy.** His own note says it must be in his words. |
+| **Domain** | `profile.ts:132`. Drives sitemap, robots, JSON-LD, OG and canonical URLs. One-line change, everything else reads from it. |
+| **Freelance engagements** | `experience.ts:107`. Client or sector (anonymised fine), what was built, roughly when, one outcome. |
+| **94% vs 88%** | Block 01 shows **94%** with no traceable source. `evals/README.md` reports **88.0%** (44/50 fixtures, Haiku alone) and **95.0%** on the auto-accepted subset. Tiered routing, which production actually runs, is **not measured**. Recommendation given and not yet answered: change to 88% with the basis named, add 95% as a second stat. |
+| **Supervisor names** | Block 06 claims "an academic and an industrial supervisor" with no names. The repo acknowledges two GitHub handles, but naming someone as your supervisor is a claim about a real person, so nothing is named. |
 
-### Queued work
+### Queued, unblocked
 
-1. **Flagship block 07, a UK public data set at scale.** Agreed 4 August 2026, and
-   the rendered "Next" line under the flagship blocks already promises it. Either
-   **HM Land Registry Price Paid** (roughly 30M transactions since 1995, open
-   licence) or the **NHS English Prescribing Dataset** (hundreds of millions of
-   rows a year). Why it matters: every flagship is a research spike, so the T's
+1. **UK public data set at scale**, flagship block 07. Either **HM Land Registry
+   Price Paid** (~30M transactions since 1995) or the **NHS English Prescribing
+   Dataset**. Why it matters: every flagship is a research spike, so the T's
    crossbar of SQL, ETL and statistics is claimed in `Stack` and demonstrated
-   nowhere. Volume is the point, because volume is what forces the engineering to
-   become visible. Needs one non-obvious defensible finding, not a tour of the
-   data.
+   nowhere. Volume is the point, because it forces the engineering to be
+   visible. The rendered "Next" line under the flagship blocks already promises
+   this.
+2. **CV PDF** at `/cv`. He has a build pipeline that produces one.
+3. **Services/process block** for the client audience.
+4. **RSS + per-post OG images** for the blog.
+5. **Deploy to Vercel.** Blocked by the three TODOs above.
 
-3. **Design pass, part 2:** scrub-linked rail through the flagship blocks, sticky section eyebrows, larger/tighter hero type.
-4. **CV PDF** at `/cv`. He has a build pipeline that produces one.
-5. **Services/process block** for the client audience.
-6. **RSS + per-post OG images** for the blog.
-7. **Deploy to Vercel.**
+### FAQ, researched but not written
 
-### Done since `c6d07b4`
+The current FAQ has three thesis questions. Research finding: the questions that
+earn their place are the ones a reader is **already silently asking and would
+otherwise have to email to resolve**. For his audiences: work authorisation and
+location, notice period, remote/hybrid/on-site, whether he is seeking a PhD and
+in what area, and how he scopes and prices client work. The best pattern found
+(Daniel Spatzek's) attributes each question to who asks it, "asked by a client",
+"asked by a designer".
 
-- **Mobile navigation.** `MobileNav.tsx`, below 768px only. Dialog panel, Escape
-  to close, focus trapped and returned to the trigger, scroll locked by pausing
-  Lenis (`lib/scroll-lock.ts`) rather than setting `overflow` on the document
-  element, which is the thing Lenis measures against. Not rendered while closed,
-  so no server markup carries invisible strings.
-- **AI Accountant architecture diagram.** `ArchitectureDiagram.tsx`, stacked
-  under the live embed in block 01. It deliberately does **not** draw
-  infrastructure, because Next to FastAPI to Postgres is true of every app ever
-  built. It draws **where the model is allowed to be**: three paths through the
-  same system, colour marking LLM presence. Reconcile has no accent anywhere
-  and that absence is the argument. Node names in
-  `src/content/data/architecture.ts` are the literal `workflow.add_node` calls
-  from the repo, cited by file and line.
-  **Note the repo's own `docs/ARCHITECTURE.md` is stale**: dated 2026-03-22, it
-  still says embeddings are 1536-dim in section 6.3 and invariant 9, but
-  `embedding_service.py` pins all-MiniLM-L6-v2 at 384 and there is a migration
-  renaming it. The code wins. Worth telling Rajarshi so he can fix his doc.
-- **Design pass 2.** Hero to 116px at 1440, and `SectionRail`, a gutter marker
-  that pins for the life of its section with a scrubbed fill and a step count.
-  See DESIGN.md section 5.1.
-- **The cursor is now the query token.** `AttentionField` tracks the pointer and
-  most heads fire from the node nearest it, with structure brightening in a
-  300px falloff. Proximity brightens in **neutral**, never accent, so the cursor
-  reveals the lattice instead of dragging a pink blob across the page. Nodes
-  also drift on per-node phases so the field is alive between events. Measured,
-  not eyeballed: 2.8x the lit pixels around the cursor against an unattended box
-  the same size, whole-canvas resting density unchanged at 6.8%. Fine pointers
-  only, and reduced motion attaches no listener at all.
-- **Title is now "Data & AI Engineer"** in `profile.ts`, which flows to the hero
-  eyebrow, the metadata title template and the JSON-LD `jobTitle`.
-- **SEO base.** `app/sitemap.ts`, `app/robots.ts`, and a JSON-LD `Person` in the
-  root layout. All three read `profile.meta.siteUrl`, so **confirming the domain
-  is a one-line change in `profile.ts` and nothing else**. The sitemap filters
-  drafts explicitly rather than trusting `getPosts`, which keeps drafts visible
-  in development. `knowsAbout` is derived from `profile.stack` so it cannot
-  drift from what the Stack section claims. Still outstanding for SEO: per-post
-  OG images, which is item 7 above.
+### React Bits, researched, verdict: do not install
+
+All 139 components were downloaded and their imports inspected. **37 of 45
+backgrounds need WebGL** (`ogl` or `three`), and 20 components need `motion`.
+Only 62 need nothing new. Licence is **MIT + Commons Clause**: using components
+in a website is fine, reselling them is not, and the notice must ship with
+copied code. The site already implements better-motivated equivalents of their
+`SplitText`, `CountUp`, `DecryptedText`, `Particles` and `TargetCursor`. The
+only ideas judged worth stealing: `StaggeredMenu`'s layered reveal, and
+`GlassSurface`'s CSS glass, which is what shipped in §5.
 
 ---
 
-## 7. Running it
+## 7. Running and verifying
 
 ```bash
-npm run dev                 # localhost:3000
+npm run dev                      # localhost:3000
 npm run typecheck
-CONTENT_DRAFT=1 npm run build   # env var bypasses the TODO gate
-npm run build               # fails on any surviving TODO(rajarshi)
+npm run lint                     # 3 PRE-EXISTING errors, see below
+CONTENT_DRAFT=1 npm run build    # bypasses the TODO gate
+npm run build                    # exits 1 on the 3 surviving TODOs
 ```
 
-**Verify with Playwright, not the Chrome extension.** Pattern used throughout:
+**Lint has 3 known errors, all pre-existing, none introduced this session:**
+`CursorRing.tsx`, `LiveEmbed.tsx` and `use-reduced-motion.ts`, all
+`react-hooks/set-state-in-effect`. The `use-reduced-motion` one is deliberate:
+AGENTS.md requires it be read synchronously.
+
+**Verify with Playwright, not the Chrome extension.** There is no local
+dependency; the global `@playwright/cli` bundles one, and the browser must be
+pinned because the default revision is not installed:
 
 ```js
-const b = await chromium.launch();
-const p = await b.newPage({ viewport: { width: 1440, height: 950 } });
-await p.goto("http://localhost:3000", { waitUntil: "load" });
-for (let i = 0; i < 60; i++) { await p.mouse.wheel(0, 450); await p.waitForTimeout(30); }
-await p.locator("#flagship").screenshot({ path: "out.png" });
+const PW = process.env.APPDATA + "/npm/node_modules/@playwright/cli/node_modules/playwright";
+const { chromium } = require(PW);
+const b = await chromium.launch({ executablePath:
+  process.env.LOCALAPPDATA + "/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-win64/chrome-headless-shell.exe" });
 ```
 
-Always check: rendered em dashes (`document.body.innerText.match(/[—–]/g)`), console errors, horizontal overflow at 375/768/1024/1440.
-
-### Skills
-
-- **`ui-ux-pro-max`** at `.agents/skills/`, symlinked to `.claude/skills/`. `npm run design -- "<query>" --domain gsap|typography|color`
-- **`dataviz`** (bundled). **Run its validator before shipping any chart palette.** Current validated pairs: `#E82D77` + `#2AA0D0` (2 series), plus `#B08A00` (3 series).
+Always check: rendered em dashes (`document.body.innerText.match(/[—–]/g)`),
+console errors, horizontal overflow at 375/768/1024/1280/1440/1920, the mobile
+panel at 360 to 767, and reduced motion. Note `chrome-headless-shell` has **no
+GPU and no `backdrop-filter`**, so FPS numbers from it are software-rendered and
+pessimistic; do not treat them as real-browser figures.
 
 ---
 
-## 8. External state he owns
-
-- **`rajo69/agentic-ai-accounting`**: two commits pushed by me to `frontend/vercel.json`. The catch-all is `/:path+` so the root is excluded and framable; dashboard, OAuth and API keep `X-Frame-Options: DENY`. Allowlist is currently **localhost only**. Adding a production domain means editing **both** that file and `FRAMEABLE_FROM` in `LiveEmbed.tsx`, or the live embed silently switches off.
-- **`rajo0113/banking77-llama-1b-lora`** on Hugging Face. Published, public, 90.21% / 90.28%.
-- His **UKGC LCCP Render demo is dead** (no response in 120s). His README still advertises it as live, so anyone evaluating him from GitHub hits a dead link.
-
----
-
-## 9. Key files
+## 8. Key files
 
 ```
-src/content/          All copy. Nothing is inlined in components.
-  profile.ts          Headline, subhead, stats, spine, stack, FAQ
-  projects.ts         featured = has a flagship block
-  experience.ts       Guardrails documented at the top. Read them.
-  certifications.ts   13, all verification links checked 200
-  data/clustering.ts  Verbatim from his results.json
+src/content/            All copy. Nothing inlined in components.
+  profile.ts            Headline, subhead, stats, spine, stack, FAQ, meta
+  projects.ts           featured = has a hand-written flagship block
+  experience.ts         Guardrails documented at the top. Read them.
+  data/clustering.ts    Verbatim from his results.json
   data/clusters3d.json  Generated, ARI-asserted against his CSV
-  data/forecast.ts    RPubs forecast + FRED outturn. Scoring computed, not typed.
-  data/gates.ts       Gated-attention measurements, tagged by experiment number.
-  posts/*.mdx         Blog. Each exports its own `meta`.
+  data/forecast.ts      RPubs forecast + FRED outturn. Scoring computed.
+  data/gates.ts         Gated-attention measurements, tagged by experiment
+  data/robustness.ts    Dissertation matrix. Comparisons computed, not typed.
+  data/architecture.ts  AI Accountant graph, from its workflow.add_node calls
 
-src/app/globals.css   Every token. Accent budget documented here.
-                      --series-1/2/3 are the dataviz-validated chart colours,
-                      deliberately NOT the accent. Do not extend by eye.
-src/components/section/FlagshipParts.tsx   Block, Points, Fixes, Stats
-src/components/layout/SectionLink.tsx      Route-aware nav links, see §4
-src/components/projects/ForecastScorecard.tsx    Block 04 artifact, 3 views
-src/components/projects/GatedAttentionExplorer.tsx  Block 05 artifact, 3 views
+src/app/globals.css     Every token. Accent budget and glass documented here.
+                        --series-1/2/3 are dataviz-validated chart colours,
+                        deliberately NOT the accent. Do not extend by eye.
+src/components/layout/AttentionField.tsx    The background. See §4.
+src/components/layout/SectionRail.tsx       Gutter marker, xl+ only
+src/components/layout/SectionLink.tsx       Route-aware nav links
+src/components/layout/MobileNav.tsx         Below 768px
+src/components/projects/                    The six flagship artifacts
 ```
+
+---
+
+## 9. Hard rules
+
+Full list in `AGENTS.md`. The ones that bite most often:
+
+1. **No em dashes or en dashes anywhere.** 159 were purged once.
+2. **Bullets, not paragraphs**, in project and experience blocks.
+3. **No hardcoded colours.** Tokens in `globals.css` only.
+4. **Accent budget: roughly one accent element per screenful.** Numbers earn it.
+   Pills, bullet markers and rails do not.
+5. **Never invent a number.** If it is not in a repo, a README or something he
+   sent, it does not ship. The 94% on block 01 currently violates this.
+6. **Animation is enhancement, never structure.** Everything readable without
+   JS, `prefers-reduced-motion` fully honoured and read synchronously.
+7. **Never put personal data on the site.** The source profile holds NI number,
+   DOB, address, visa status, salary, health and equality data, and referees.
+8. **`featured: true` means "has a hand-written flagship block."** Setting it
+   early *deletes* a project from the site, because `Work` renders everything
+   unfeatured.
 
 ---
 
 ## 10. Working style he asked for
 
-- Brief. He has said "briefly" more than once.
-- Evidence over opinion. He explicitly asked for researched, cited answers rather than preference.
+- **Brief.** He has said "briefly" more than once.
+- Evidence over opinion. Researched, cited answers rather than preference.
 - Do not over-explain or pad. Show the thing.
-- He pushes back well and is usually right. The proof-screaming, the invisible background, the duplicated project, the pink-on-pink: all his catches.
+- **He pushes back well and is usually right.** The proof-screaming, the
+  invisible background, the duplicated project, the pink-on-pink and both
+  background rejections were all his catches.
+- **He changes his mind on aesthetics, and that is fine.** Two backgrounds were
+  built and reverted. For a taste decision, **build the comparison and let him
+  look** rather than shipping one and defending it. That is what the background
+  lab was for and it worked, right up until he preferred the original.
