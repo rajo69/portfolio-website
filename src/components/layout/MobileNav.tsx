@@ -51,9 +51,10 @@ export function MobileNav({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  // createPortal needs a real document, so nothing is portalled until mounted.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  /* No `mounted` guard needed before the portal. `open` starts false and can
+     only be set by a click, so by the time anything is portalled we are on the
+     client and `document` exists. Server and first client render both produce
+     nothing here, so there is no hydration mismatch to avoid. */
 
   // Crossing to the desktop layout leaves an overlay with no way to close it.
   useEffect(() => {
@@ -117,7 +118,7 @@ export function MobileNav({
         <span className="sr-only">Open menu</span>
       </button>
 
-      {open && mounted && createPortal(
+      {open && createPortal(
         <div
           ref={panelRef}
           tabIndex={-1}
