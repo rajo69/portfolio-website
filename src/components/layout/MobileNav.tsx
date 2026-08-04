@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -51,6 +51,15 @@ export function MobileNav({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  /* Same shape and same filter as the footer's list, so an empty entry in
+     profile.socials never renders a dead link in one place and not the other. */
+  const socials = [
+    { label: "GitHub", href: profile.socials.github },
+    { label: "LinkedIn", href: profile.socials.linkedin },
+    { label: "Kaggle", href: profile.socials.kaggle },
+    { label: "Scholar", href: profile.socials.scholar },
+  ].filter((s): s is { label: string; href: string } => Boolean(s.href));
   /* No `mounted` guard needed before the portal. `open` starts false and can
      only be set by a click, so by the time anything is portalled we are on the
      client and `document` exists. Server and first client render both produce
@@ -186,7 +195,31 @@ export function MobileNav({
             >
               Talk to me
             </a>
-            <p className="mt-5">
+            {/* Profile links live here as well as in the footer. On a phone
+                the footer is 34 screens down a 34,000px page, so in practice
+                nobody was ever going to reach them, and the menu is the one
+                surface a visitor deliberately opens. */}
+            <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-3">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setOpen(false)}
+                    className="group inline-flex items-center gap-1 text-sm text-paper-dim transition-colors duration-200 hover:text-paper motion-reduce:transition-none"
+                  >
+                    {s.label}
+                    <ArrowUpRight
+                      className="size-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-6">
               <Label>{profile.location}</Label>
             </p>
           </div>

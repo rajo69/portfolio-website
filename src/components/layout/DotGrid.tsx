@@ -130,16 +130,18 @@ export function DotGrid() {
     function build() {
       const c = canvasRef.current;
       if (!c || !ctx) return;
-      /* RESOLUTION. This was hard-clamped to 2, which on a 3x phone rendered
-         the grid at two thirds scale and let the browser upscale it: the dots
-         came out visibly soft. The clamp existed because a full-resolution
-         repaint 60 times a second is expensive.
+      /* RESOLUTION. Full device pixel ratio, capped at 3, unconditionally.
+         Two earlier versions of this line were both wrong. First it was a hard
+         clamp to 2, so a 3x phone rendered at two thirds scale and let the
+         browser upscale: soft dots. Then it was `hasHover ? 2 : 3`, which is
+         fragile in exactly the way media queries about input are always
+         fragile. iPadOS and several Android browsers report `hover: hover`,
+         and any device that does went straight back to the blurry path.
 
-         That trade no longer applies. Since the loop idles where there is no
-         hovering pointer, a phone paints this canvas ONCE, so it can afford
-         every pixel the screen has. Devices that do run the loop stay at 2,
-         where the cost is per frame rather than per page load. */
-      dpr = Math.min(window.devicePixelRatio || 1, hasHover ? 2 : 3);
+         Capping at 3 is safe on its own. Retina desktops are DPR 2 and most
+         PC monitors are 1, so this only ever reaches 3 on a phone, which is
+         also the case where the loop idles and the canvas is painted once. */
+      dpr = Math.min(window.devicePixelRatio || 1, 3);
       w = window.innerWidth;
       h = window.innerHeight;
       c.width = Math.floor(w * dpr);
@@ -148,7 +150,18 @@ export function DotGrid() {
       c.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const pitch = CONFIG.dotSize + CONFIG.gap;
+      /* DENSITY IS RELATIVE TO THE SCREEN, NOT ABSOLUTE.
+         His settings give a 20px pitch, which is 72 dots across a 1440px
+         desktop and only 20 across a 390px phone. Same spacing, but three and
+         a half times coarser as a proportion of what you are looking at, and
+         on a phone it reads as a chunky low-resolution pattern rather than as
+         a fine field. Shrinking the pitch below 640px keeps the texture
+         looking like the same design at both sizes. */
+      const narrow = w < 640;
+      const dotSize = narrow ? 3.5 : CONFIG.dotSize;
+      const pitch = dotSize + (narrow ? 9 : CONFIG.gap);
+      radius = dotSize / 2;
+
       const cols = Math.ceil(w / pitch) + 1;
       const rows = Math.ceil(h / pitch) + 1;
       // Centre the lattice so the margins match on both edges.
@@ -165,7 +178,8 @@ export function DotGrid() {
       }
     }
 
-    const radius = CONFIG.dotSize / 2;
+    // Set by build(), because the dot shrinks with the pitch on narrow screens.
+    let radius = CONFIG.dotSize / 2;
 
     function draw() {
       if (!ctx) return;
