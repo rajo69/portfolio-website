@@ -105,11 +105,17 @@ export const projects: Project[] = [
     repo:
       "https://github.com/rajo69/Enhancing-Neural-Network-Robustness-using-Hybrid-Adversarial-Training",
     caseStudy: true,
+    // `featured: true` here is deliberate but does NOT mean a flagship block.
+    // This one renders as a compact card under the University of Leeds entry
+    // in Experience, because a taught dissertation is education rather than a
+    // flagship project. The flag stays true only to keep it out of the Work
+    // list, since it already has a hand-written surface and appearing twice
+    // was a mistake made once before.
     metrics: [
       // The robustness numbers were listed as blocked on Rajarshi, needing
       // Project_Report.pdf. They were not: the repository README publishes all
       // nine cells of the model-by-attack matrix, and they are now in
-      // content/data/robustness.ts driving flagship block 06.
+      // content/data/robustness.ts driving the card under Leeds.
       { label: "Clean-trained ResNet-18 under PGD, from 91.58%", value: "0.57%", chart: "gauge", series: [] },
       { label: "MSc Data Science, University of Leeds", value: "Merit", chart: "gauge", series: [] },
     ],

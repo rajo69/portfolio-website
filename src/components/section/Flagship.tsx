@@ -6,12 +6,10 @@ import { Clusters3D } from "@/components/projects/Clusters3D";
 import { ForecastScorecard } from "@/components/projects/ForecastScorecard";
 import { GatedAttentionExplorer } from "@/components/projects/GatedAttentionExplorer";
 import { ModelCard } from "@/components/projects/ModelCard";
-import { RobustnessMatrix } from "@/components/projects/RobustnessMatrix";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitHeading } from "@/components/motion/SplitHeading";
 import { Eyebrow, Label, Lede } from "@/components/type";
 import { models, scoreSummary } from "@/content/data/forecast";
-import { summary } from "@/content/data/robustness";
 
 /**
  * FLAGSHIP PROJECTS.
@@ -34,10 +32,10 @@ export function Flagship() {
           What I built, and where it broke.
         </SplitHeading>
         <Lede className="max-w-[58ch]">
-          Six things you can open and poke at: a running product, a clustering
+          Five things you can open and poke at: a running product, a clustering
           study in 3D, a published model, a forecast scored against what
-          actually happened, an interpretability experiment you can run
-          yourself, and a dissertation that survives being attacked.
+          actually happened, and an interpretability experiment you can run
+          yourself.
         </Lede>
       </Reveal>
 
@@ -278,60 +276,6 @@ export function Flagship() {
           />
         </Block>
 
-        {/* ── 06 · DISSERTATION ──────────────────────────────────────────── */}
-        <Block
-          index="06"
-          capabilities={["Vision & robustness", "Research"]}
-          period="2024"
-          title="The Model That Scored 91% and 0.57%"
-          lede="MSc dissertation at Leeds. One ResNet-18 is the most accurate model in the study on clean CIFAR-10 and the least accurate thing in it under a real attack, which is the entire argument for training on adversarial data."
-          artifact={<RobustnessMatrix />}
-          stats={[
-            {
-              value: `${summary.collapse.to}%`,
-              caption: `Clean-trained model under PGD, from ${summary.collapse.from}%`,
-            },
-            {
-              value: `${summary.robustnessGain.toFixed(0)}x`,
-              caption: "PGD robustness the hybrid buys",
-            },
-            {
-              value: `${summary.cleanCost.toFixed(2)} pts`,
-              caption: "Clean accuracy it costs",
-            },
-          ]}
-          links={[
-            {
-              label: "Read the analysis",
-              href: "https://github.com/rajo69/Enhancing-Neural-Network-Robustness-using-Hybrid-Adversarial-Training",
-              primary: true,
-              icon: "gh",
-            },
-          ]}
-        >
-          <Points
-            title="What the matrix shows"
-            items={[
-              `Clean accuracy ranks the models backwards: v1 leads on clean data and is ${summary.inversion.toFixed(0)} times worse than v2 under PGD, which is the model clean accuracy ranks last`,
-              "PGD was never trained against by any of the three, so it is the honest generalisation test rather than a home fixture",
-              "The hybrid is a trade, not a free win: 2.94 points of clean accuracy bought back from v2 for 3.09 points of PGD robustness",
-              "Grad-CAM on the adversarially trained models shows attention over broader and more relevant regions, the qualitative half of the same result",
-              "Every run held at 100 epochs, batch 128, learn rate 0.01 on ARC4, so the three are actually comparable",
-            ]}
-          />
-          <Fixes
-            items={[
-              {
-                problem: "Pure adversarial training (v2) beats the hybrid (v3) under PGD, which is not the result the hybrid approach was proposed to get.",
-                fix: "Reported as a trade rather than a win. v3's case is the clean-accuracy recovery, not PGD supremacy, and the block says which model actually leads on each attack.",
-              },
-              {
-                problem: "FGSM accuracy is published as a range across epsilon, with the intermediate points only in the report PDF.",
-                fix: "Drawn as a band rather than interpolated into a curve. A smooth line through two endpoints would look more finished and would be invented.",
-              },
-            ]}
-          />
-        </Block>
       </div>
 
       {/*

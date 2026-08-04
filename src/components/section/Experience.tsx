@@ -1,3 +1,4 @@
+import { DissertationCard } from "@/components/projects/DissertationCard";
 import { Section } from "@/components/layout/Section";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitHeading } from "@/components/motion/SplitHeading";
@@ -147,7 +148,11 @@ export function Experience() {
               <Label className="mt-1.5 block opacity-60">{ed.location}</Label>
             </div>
 
-            <div>
+            {/* min-w-0 is load bearing. A grid item defaults to
+                `min-width: auto`, so it grows to fit its widest content and
+                the dissertation card's `overflow-x-auto` table never gets to
+                scroll. Without this the page overflows by 103px at 375. */}
+            <div className="min-w-0">
               <h3 className="t-display text-[clamp(1.4rem,2.6vw,2rem)]">
                 {ed.institution}
               </h3>
@@ -156,9 +161,15 @@ export function Experience() {
                 {ed.grade ? `, ${ed.grade}` : ""}
               </p>
               {ed.thesis && (
-                <p className="mt-3 max-w-[60ch] text-sm leading-relaxed text-paper-dim">
-                  Dissertation: {ed.thesis}
-                </p>
+                <>
+                  <p className="mt-3 max-w-[60ch] text-sm leading-relaxed text-paper-dim">
+                    Dissertation: {ed.thesis}
+                  </p>
+                  {/* Only Leeds carries a thesis, so this is the association.
+                      The result used to be flagship block 06; it belongs here,
+                      at this size, because a taught dissertation is education. */}
+                  <DissertationCard />
+                </>
               )}
             </div>
           </Reveal>

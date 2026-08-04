@@ -46,7 +46,7 @@ TypeScript, Tailwind v4, GSAP, Lenis, MDX.
 |---|---|---|
 | Hero | `Hero.tsx` | Done. Logit-lens decode, parallax, 3 stat counters |
 | Spine | `Spine.tsx` | Done |
-| Flagship projects | `Flagship.tsx` | **6 blocks, all done** |
+| Flagship projects | `Flagship.tsx` | **5 blocks, all done** |
 | Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, education |
 | Work | `Work.tsx` | Done. Filterable by capability |
 | Method | `Method.tsx` | Done |
@@ -56,7 +56,7 @@ TypeScript, Tailwind v4, GSAP, Lenis, MDX.
 
 Plus `/blog`, `/blog/[slug]`, `/sitemap.xml`, `/robots.txt`. One **draft** post.
 
-### The six flagship blocks
+### The five flagship blocks
 
 Skeleton: **one-sentence lede → interactive artifact → three big numbers →
 bullets → where it broke → links.**
@@ -66,19 +66,26 @@ bullets → where it broke → links.**
 3. **Banking77 LoRA**: HF model card. `0%→90.21% · 77 · ~50 min`
 4. **The Forecast I Got Wrong**: 3-view scorecard. `10/11 · 49% · 0.50%`
 5. **What the Gates Actually Do**: 3-instrument explorer. `99.8% · 48.3% · 25,600`
-6. **The Model That Scored 91% and 0.57%**: robustness matrix. `0.57% · 63x · 2.83 pts`
 
-> **Block 06 is the Leeds dissertation, and he has asked twice where it is.**
-> It is the **last block of the Flagship section**. "MSc dissertation at Leeds"
-> is in the lede and "University of Leeds HPC" in the setup footer, but **Leeds
-> appears nowhere in the title or the capability pills**, which is almost
-> certainly why he keeps missing it. If he asks a third time, surface Leeds in
-> the title or add a pill, do not just point at it again.
+### The dissertation is NOT a flagship block
 
-**Block 06 was never actually blocked.** An earlier handoff said the v1/v2/v3
+It was built as block 06 with a three-tab interactive, and **he rejected that
+placement**: a taught dissertation is education, not a flagship project. It now
+renders as `DissertationCard.tsx`, a compact table **under the University of
+Leeds entry in the Experience section**. Three models by three attacks, four
+lines of prose, one link. Do not promote it back to Flagship.
+
+The association is `ed.thesis` being present in `education.ts`, which only Leeds
+has. `projects.ts` keeps `featured: true` on it **not** because it has a
+flagship block but to keep it out of the Work list, since it already has a
+hand-written surface and appearing twice was a mistake made once before. That is
+the one place the AGENTS.md rule 10 meaning is deliberately bent, and it is
+commented in the file.
+
+**It was never actually blocked.** An earlier handoff said the v1/v2/v3
 accuracies needed `Project_Report.pdf`. They did not: the repository README
 publishes all nine cells of the model-by-attack matrix. Only the per-epsilon
-FGSM curve is PDF-only, so FGSM renders as a band rather than a line.
+FGSM curve is PDF-only, so FGSM renders as a range rather than a curve.
 **Check the README before believing a "blocked" row in this file.**
 
 ---
@@ -93,7 +100,7 @@ Six commits on `feat/block-04-mobile-nav`, branched off `c6d07b4`.
 | `e44045c` | sitemap, robots, JSON-LD `Person` |
 | `a805180` | Section rail, larger hero, design pass 2 |
 | `42b7e70` | AI Accountant architecture diagram |
-| `5a1a3e9` | Dissertation block 06, cursor-as-query background, "Data & AI Engineer" |
+| `5a1a3e9` | Dissertation (later moved to Experience), background, "Data & AI Engineer" |
 | `5114291` | Glass panels + background lab (**lab since deleted, see §4**) |
 
 ### Bugs fixed that were real
