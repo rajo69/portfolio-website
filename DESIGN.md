@@ -142,12 +142,19 @@ All three self-hosted via `next/font/google`, zero external requests, zero CLS.
 ### Scale
 | Step | Size | Tracking | Leading | Use |
 |---|---|---|---|---|
-| Hero | `clamp(2.75rem, 7vw, 6.25rem)` | `-0.04em` | `0.92` | One per page |
+| Hero | `clamp(3rem, 8.4vw, 7.25rem)` | `-0.045em` | `0.88` | One per page |
 | H1 | `clamp(2.25rem, 5vw, 4.25rem)` | `-0.035em` | `0.94` | Section headlines (2 lines max) |
 | H2 | `clamp(1.5rem, 2.5vw, 2.25rem)` | `-0.02em` | `1.05` | Card titles, work rows |
 | H3 | `1.25rem` | `-0.01em` | `1.2` | Sub-items |
 | Body | `clamp(0.9375rem, 0.9rem+0.3vw, 1.0625rem)` | `0` | `1.65` | Max `62ch` |
 | Label | `0.6875rem` | `0.18em` | `1.4` | Uppercase mono |
+
+**Hero revision, design pass 2.** It previously capped at 100px inside a 1240px
+shell, so it set two comfortable lines at 952px and read as a heading rather
+than an opening statement. Now 116px at 1440, filling the measure at 1035px,
+still two lines. Leading and tracking close up as size grows, which is what
+stops a heavy grotesque going loose at display size. Verified unclipped from
+375 to 1920.
 
 ---
 
@@ -163,10 +170,38 @@ Presets pulled from the skill's `motion.csv`. Easing is `expo.out` / `cubic-bezi
 | Numbers | Count up on enter | Once only, `toggleActions: 'play none none none'` |
 | Cursor | Lagging outline ring, scales 1→2.4 over targets | `gsap.quickTo`, 0.4s `elastic.out(1,0.4)`. Desktop + fine-pointer only. |
 | Scroll progress | Accent bar, top edge, 2px | `scrub: true` |
+| Section rail | Gutter marker, pinned for the section's life | `sticky top-[34vh]`, 1px track, fill `scrub: true` |
 | Page scroll | Lenis, `lerp 0.09` | Synced to `ScrollTrigger.update` |
 | Track filter | FLIP re-layout | `gsap/Flip`, 500ms |
 
 **Correction to the skill's data:** `motion.csv` states SplitText is a paid GSAP Club plugin. That is out of date, since GSAP 3.13 (May 2025) every plugin including SplitText is free under the standard licence. We are on `gsap@3.15`, so no fallback is needed for licensing reasons. A plain fade fallback is still kept for `prefers-reduced-motion`.
+
+### 5.1 The section rail, design pass 2
+
+Two problems, one mechanism. Section eyebrows scroll away, so on a page this
+long you lose track of which section you are in about two screenfuls in. And
+Flagship is enormous: five blocks, each carrying an interactive artifact well
+over a screen tall, with no way to tell how far through it you were.
+
+`SectionRail` pins a marker in the **left gutter** for the life of its section:
+the section name set vertically, a 1px track whose fill scrubs with progress,
+and, where the section has repeating children, a count. Flagship reads
+`03 / 05`.
+
+- **Why the gutter, not a sticky eyebrow.** The obvious version floats an 11px
+  label over whatever scrolls beneath it, which on a page carrying charts and a
+  canvas is noise, and needs a scrim to stay legible. The gutter is empty by
+  construction. It costs a breakpoint: below `xl` there is no room, so the rail
+  does not render and the inline eyebrow does its normal job.
+- **Accent.** Track is `--line-strong`, fill is `--accent-dim`, never `--accent`.
+  One hairline in a column nothing else occupies. The section's real accent
+  element is still its numbers.
+- **Counting.** One ScrollTrigger per child, not arithmetic on section progress.
+  The blocks differ in height by several times over, so even spacing reports the
+  wrong block for most of the scroll.
+- **Reduced motion** shows the fill resolved rather than scrubbed, so it is never
+  stuck at zero. It is `aria-hidden` throughout: the real eyebrow and heading are
+  still in the markup and this only repeats them.
 
 **Hard rules**
 - At most **one** pinned section on the page (skill anti-pattern: excessive pinning fights mobile scroll).

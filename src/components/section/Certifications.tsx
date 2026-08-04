@@ -83,7 +83,7 @@ export function Certifications() {
   const rest = certifications.filter((c) => !c.featured);
 
   return (
-    <Section id="certifications">
+    <Section id="certifications" marker="Certifications">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Certifications</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">

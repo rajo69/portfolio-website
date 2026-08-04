@@ -24,7 +24,7 @@ import { models, scoreSummary } from "@/content/data/forecast";
  */
 export function Flagship() {
   return (
-    <Section id="flagship" bloom>
+    <Section id="flagship" bloom marker="Flagship projects" markerSteps="#flagship article">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Flagship projects</Eyebrow>
         <SplitHeading size="h1" className="max-w-[17ch]">

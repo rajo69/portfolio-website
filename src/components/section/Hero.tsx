@@ -29,7 +29,13 @@ export function Hero() {
         <Reveal variant="stagger" className="space-y-8">
           <Eyebrow>{profile.title}</Eyebrow>
 
-          <h1 className="t-display max-w-[16ch] text-[clamp(2.75rem,7vw,6.25rem)] leading-[0.92] tracking-[-0.04em]">
+          {/* Design pass 2: larger and tighter. It was capping at 100px inside
+              a 1240px shell, so it set two comfortable lines with room to
+              spare and read as a heading rather than an opening statement.
+              Now it fills the measure. Leading and tracking close up as the
+              size grows, which is what keeps a heavy grotesque from looking
+              loose at display size. */}
+          <h1 className="t-display max-w-[15ch] text-[clamp(3rem,8.4vw,7.25rem)] leading-[0.88] tracking-[-0.045em]">
             <LogitLens
               text={profile.headline}
               railRef={railRef}

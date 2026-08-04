@@ -47,7 +47,7 @@ export function Experience() {
   const roles = experience.filter((r) => !r.hidden);
 
   return (
-    <Section id="experience" bloom>
+    <Section id="experience" bloom marker="Experience">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Experience</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">

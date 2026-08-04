@@ -44,7 +44,7 @@ export function Work() {
     active === "all" ? rows : rows.filter((p) => p.capabilities.includes(active));
 
   return (
-    <Section id="work">
+    <Section id="work" marker="Work">
       <Reveal variant="stagger" className="space-y-8">
         <Eyebrow>Work</Eyebrow>
         <SplitHeading size="h1" className="max-w-[18ch]">

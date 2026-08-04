@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { SectionRail } from "@/components/layout/SectionRail";
 import { cn } from "@/lib/cn";
 
 /**
@@ -13,6 +14,8 @@ export function Section({
   id,
   bleed = false,
   bloom = false,
+  marker,
+  markerSteps,
 }: {
   children: ReactNode;
   className?: string;
@@ -25,6 +28,14 @@ export function Section({
    * that makes the type work starts to go muddy.
    */
   bloom?: boolean;
+  /**
+   * Pin a marker in the left gutter for the life of this section: the section
+   * name, and a hairline that fills with scroll progress. xl and up only, see
+   * SectionRail. Pass the same words as the inline eyebrow.
+   */
+  marker?: string;
+  /** Selector for repeating children, so the marker can count them. */
+  markerSteps?: string;
 }) {
   return (
     <section
@@ -36,6 +47,10 @@ export function Section({
         id && "scroll-mt-20",
         className)}
     >
+      {/* Direct child of the section on purpose: the rail measures scroll
+          progress against its own parentElement. */}
+      {marker && <SectionRail label={marker} stepSelector={markerSteps} />}
+
       {bleed ? children : <div className="mx-auto w-full max-w-(--shell)">{children}</div>}
     </section>
   );
