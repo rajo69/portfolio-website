@@ -5,9 +5,87 @@ this project is. `AGENTS.md` carries the hard rules, `DESIGN.md` the visual
 system. `PLAN.md` and `CONTENT-BRIEF.md` are older and partly stale; trust this
 file where they disagree.
 
-Last updated: 4 August 2026. Branch `feat/block-04-mobile-nav`, seven commits
-ahead of `master`, not yet merged or pushed. Run `git log --oneline master..HEAD`
-for the list; §3 explains what each one did.
+Last updated: 4 August 2026, end of the session that shipped it.
+
+## THE SITE IS LIVE
+
+**<https://portfoliowebsite-pi-neon.vercel.app>**
+
+- **Deployed** to Vercel, production, project `portfolio_website` under
+  `rajarshi-nandis-projects`. Redeploy with `vercel --prod`.
+- **Not connected to Git.** Pushing to GitHub does **not** redeploy. Connect at
+  Settings → Git if that is wanted.
+- **Repo: <https://github.com/rajo69/portfolio-website>, PRIVATE, deliberately.**
+  See §11 before making it public: this file alone says the blog posts were
+  assistant-drafted and carries three cold reviewers' critiques of him.
+- Branch `feat/block-04-mobile-nav`, pushed, and it is also the repo's **default
+  branch**. `master` exists and is behind. Worth merging before anyone looks.
+- `npm run build` **passes with no flags**. There are no placeholders left.
+
+### If you are here for aesthetic edits, read §0 first.
+
+---
+
+## 0. Starting an aesthetic session
+
+Everything visual swings off **one file**: `src/app/globals.css`. Tokens, the
+type scale, the glass treatment and the accent all live there, and every
+component reads them. A rebrand is genuinely a handful of lines at the top of
+that file.
+
+### The five things that will bite you
+
+1. **Type primitives must stay inside `@layer components`.** Un-layered CSS
+   outranks Tailwind utilities, so moving `t-display` or `t-label` out of the
+   layer silently kills `text-accent` and every `group-hover:` colour on them.
+   Nothing errors. It just stops working.
+2. **Tailwind v4 `scale-*` emits the standalone `scale` property**, which
+   composes with an inline `transform` instead of overriding it. Two scales
+   multiply.
+3. **Canvas colour strings are `rgb(r g b / a)` with spaces.** Commas plus
+   slash-alpha is invalid CSS, and canvas keeps the previous `fillStyle` rather
+   than throwing, so the symptom is "everything renders black", not an error.
+4. **An ancestor with `backdrop-filter`, `transform`, `filter`, `perspective`,
+   `contain` or `will-change` becomes the containing block for `position:
+   fixed` descendants.** This is not theoretical here: the mobile menu broke
+   exactly this way, see §5b. If you add any of those to a wrapper, check every
+   fixed overlay inside it.
+5. **Accent budget: roughly one accent element per screenful.** Numbers earn
+   it. Pills, bullet markers and rails do not. Ignoring this is what made the
+   page read as "AI slop" the first time.
+
+### Measure, do not eyeball
+
+Two separate things shipped invisible or wrong because someone judged by eye:
+the canvas at 1.22% lit pixels, and the harness graph collapsed into a hairball.
+Both were caught by sampling, not by looking.
+
+- Canvas density: `getImageData`, count lit pixels and mean alpha. DESIGN.md
+  §2.1 has the method.
+- Colour changes: compute contrast ratios before committing. The green accent
+  was chosen by measuring 12.26:1 on `--ink-900`, not by preference.
+- **`chrome-headless-shell` does not implement `backdrop-filter` and has no
+  GPU.** It cannot see the glass at all, and its FPS numbers are meaningless.
+  Anything about blur or real performance has to be checked on a device.
+
+### What he has already rejected
+
+Do not re-propose these without asking:
+
+- **Two background designs**, plus a third replaced. Full history in §4.
+- **The dissertation as a flagship block.** It is a card under Leeds. §2.
+- **A 13-certification list.** Four only, no toggle. §8c.
+- **Verifiable-but-illegible hero stats.** Tried and reverted the same day; the
+  reasoning is in `profile.ts` above `stats`.
+
+### The one aesthetic problem nobody has solved
+
+**The home page is 34,669px tall on a phone. That is about 34 screens.** The
+Kaggle row sits at 82% and the footer at 99%, which is why he could not find
+either. Anything below roughly the halfway mark is decoration. Six flagship
+blocks each carrying an interactive artifact is most of that height. If one
+aesthetic decision is worth making next, it is this one, and it is a structure
+question rather than a styling one.
 
 ---
 
@@ -39,18 +117,12 @@ showing its working to someone with professional liability).
 
 ## 2. Current state
 
-**Working, builds clean** with `CONTENT_DRAFT=1`. Next.js 16 App Router,
+**Live, and `npm run build` passes with no flags.** Next.js 16 App Router,
 TypeScript, Tailwind v4, GSAP, Lenis, MDX.
 
 | Section | Component | State |
 |---|---|---|
 | Hero | `Hero.tsx` | Done. Logit-lens decode, parallax, 3 stat counters |
-
-**Accent is green (`#00E88C`) as of 4 August 2026**, changed from Plasma pink.
-Everything reads the five `--accent*` tokens in `globals.css`; the only places
-that cannot are `opengraph-image.tsx`, the `DotGrid` fallback and the
-`AttentionField` fallback, all updated. Data series deliberately unchanged, see
-the note in `globals.css`.
 | Spine | `Spine.tsx` | Done |
 | Flagship projects | `Flagship.tsx` | **6 blocks, all done** |
 | Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, 3 freelance, education |
@@ -119,9 +191,21 @@ FGSM curve is PDF-only, so FGSM renders as a range rather than a curve.
 
 ---
 
-## 3. What was done this session
+## 3. History
 
-Six commits on `feat/block-04-mobile-nav`, branched off `c6d07b4`.
+### The session that shipped it, 4 August 2026
+
+| Commit | What |
+|---|---|
+| `48a0b1c` | Freelance entries, voice pass, cold-read fixes, harness block 05, green accent, DotGrid, OG card, env-based `siteUrl`, posts published |
+| `cd625e3` | Mobile stutter: blur off below 900px, canvas loop idles |
+| `67355fa` | Mobile menu containing block, canvas DPR, Kaggle |
+| `62c453d` | Drop a redundant portal guard |
+| `86243e4` | Canvas resolution and density on phones, profile links in the menu |
+
+The detail is in §5b, §8b, §8c and §8d. Accent went green in `48a0b1c`, see §8e.
+
+### Earlier sessions
 
 | Commit | What |
 |---|---|
@@ -221,20 +305,69 @@ blur(20px) saturate(1.6)`, a bright rim on the top edge, a weaker one on the
 bottom, and a sheen gradient. `@supports` falls back to the opaque panel.
 
 He asked for this explicitly and it was **not** reverted with the background.
-Two things to know:
 
-- **It is subtle over the lattice.** Glass needs something behind it to refract,
-  and the lattice is sparse (82 total light against embedding drift's 175). This
-  is why the background and the glass were worked on together.
-- **The GPU blur cost is UNMEASURED.** `chrome-headless-shell` does not
-  implement `backdrop-filter`, so Playwright cannot see it. Translucency alone
-  costs nothing (glass 14.9fps vs opaque 14.4fps at the same scroll position),
-  but **measure the real blur cost in a real browser before deploying.**
+**THE BLUR IS OFF BELOW 900px, AND MUST STAY OFF.** The cost this file used to
+record as UNMEASURED turned out to be the whole problem on a phone. Nine
+elements carry `.surface`, each asking the compositor to blur its backdrop, and
+behind all of them is a `position: fixed` canvas. When that canvas repainted
+every frame, no backdrop was ever static, so every blur was recomputed per card
+per frame. Rajarshi reported the stutter from a real device; Playwright could
+never have seen it, because `chrome-headless-shell` does not implement
+`backdrop-filter` at all.
+
+Phones now get the same opaque panel the `@supports` fallback already defined.
+Nothing is lost: glass reads as glass because of what shows through it, and on a
+390px screen a card fills the width with almost nothing behind it to refract.
+
+- **It is subtle over the dot grid.** Glass needs something behind it to
+  refract, and the grid is sparse. This is why the background and the glass were
+  worked on together.
+- **Do not re-enable the blur on mobile to "fix" the look.** It is the single
+  most expensive thing on the page and it buys nothing at that width.
 
 The SVG `feDisplacementMap` refraction that Apple's Liquid Glass and React Bits'
 `GlassSurface` use was deliberately not shipped: Chromium only, no
 super-sampling so edges pixelate, fixed-size rounded rects only, and it would
 bend the text inside the card. Full reasoning in the `globals.css` comment.
+
+---
+
+## 5b. Mobile, and three bugs Playwright could not see
+
+All three were reported from a real phone after the site was already live. Each
+one is a class of bug worth recognising again.
+
+**1. The menu collapsed into a strip once you had scrolled.** The panel rendered
+inside `<header>`, which is sticky and gains `backdrop-blur-md` on scroll. **An
+ancestor with a `backdrop-filter` becomes the containing block for `position:
+fixed` descendants**, so `fixed inset-0` stopped meaning the viewport and started
+meaning the 64px header box. Unscrolled it was fine, which made it look
+intermittent. Now portalled to `<body>` at `z-[80]`, so no ancestor can capture
+it. `transform`, `filter`, `perspective`, `contain` and `will-change` all do the
+same thing.
+
+*A wrong first fix is recorded here too, because the reasoning was sound and the
+diagnosis was not:* the panel had also used `bg-ink-900/95`, which Tailwind
+compiles to `color-mix(in oklab, …)`, needing Safari 16.4+. That was a real
+latent bug and fixing it did not fix his. It is now `background: var(--ink-900)`.
+
+**2. The canvas rendered at two thirds resolution.** `devicePixelRatio` was
+clamped to 2 on a 3x screen. The first fix made the clamp conditional on
+`hover: hover` being false, which is fragile in the way input media queries
+always are: **iPadOS and several Android browsers report `hover: hover`**, and
+any device that does went straight back to the blurry path. Now an unconditional
+cap of 3, safe because Retina desktops are 2 and most monitors are 1.
+
+**3. The grid looked coarse, which is a different problem from looking soft.** A
+20px pitch is 72 dots across a 1440px desktop and 20 across a 390px phone: the
+same spacing, three and a half times coarser as a proportion of the screen.
+Below 640px the pitch drops to 12.5. Measured lit density is now 7.2% on a phone
+against 8.0% on desktop.
+
+**The canvas loop idles.** It only runs while something is moving or a real
+pointer is on screen. Measured: 0 repaints in 2s on an idle phone, 0 on desktop
+with the pointer still, ~91 per 1.5s with it moving. This is what pays for the
+3x resolution, since a phone paints the canvas once.
 
 ---
 
@@ -268,9 +401,19 @@ bend the text inside the card. Full reasoning in the `globals.css` comment.
    removed it on 4 August 2026: the page should not advertise work that does
    not exist. If the block ships it goes into the list, not under it.
 2. **CV PDF** at `/cv`. He has a build pipeline that produces one.
-3. **Services/process block** for the client audience.
-4. **RSS + per-post OG images** for the blog.
-5. **Deploy to Vercel.** Blocked by the three TODOs above.
+3. **Services/process block** for the client audience. The SMB reviewer in §8c
+   would not have replied to the site as it stands; his review is the brief.
+4. **RSS + per-post OG images** for the blog. The site OG card exists; posts
+   fall back to it.
+5. **Rename the Vercel project.** The URL is `portfoliowebsite-pi-neon`, which
+   is Vercel's random alias and reads badly pasted into an application.
+   Settings → rename gives something like `rajarshi-nandi.vercel.app`, and
+   `siteUrl` follows on the next deploy with no code change.
+6. **Connect Vercel to GitHub** so pushes deploy themselves. It is currently a
+   CLI-only project.
+7. **Merge `feat/block-04-mobile-nav` into `master`**, or accept the feature
+   branch as the default. Right now the default branch is the feature branch.
+8. **Page length.** See §0. The biggest unsolved design problem.
 
 ### FAQ, researched but not written
 
@@ -301,11 +444,12 @@ only ideas judged worth stealing: `StaggeredMenu`'s layered reveal, and
 npm run dev                      # localhost:3000
 npm run typecheck
 npm run lint                     # 3 PRE-EXISTING errors, see below
-CONTENT_DRAFT=1 npm run build    # bypasses the TODO gate
-npm run build                    # exits 1 on the 3 surviving TODOs
+npm run build                    # PASSES. No placeholders left, no flag needed
+CONTENT_DRAFT=1 npm run build    # the bypass, no longer needed for anything
+vercel --prod                    # redeploy. Not wired to git pushes
 ```
 
-**Lint has 3 known errors, all pre-existing, none introduced this session:**
+**Lint has 3 known errors, all pre-existing:**
 `CursorRing.tsx`, `LiveEmbed.tsx` and `use-reduced-motion.ts`, all
 `react-hooks/set-state-in-effect`. The `use-reduced-motion` one is deliberate:
 AGENTS.md requires it be read synchronously.
@@ -344,14 +488,22 @@ src/content/            All copy. Nothing inlined in components.
   data/architecture.ts  AI Accountant graph, from its workflow.add_node calls
   data/harness.ts       The application harness, from the Obsidian vault. §8d
 
-src/app/globals.css     Every token. Accent budget and glass documented here.
-                        --series-1/2/3 are dataviz-validated chart colours,
-                        deliberately NOT the accent. Do not extend by eye.
-src/components/layout/AttentionField.tsx    The background. See §4.
+src/app/globals.css     EVERY TOKEN. Start here for anything visual.
+                        Accent, glass, the mobile blur override, the accent
+                        budget note. --series-1/2/3 are dataviz-validated
+                        chart colours, deliberately NOT the accent.
+src/app/opengraph-image.tsx  The OG card. The ONLY file allowed literal hex,
+                        because Satori has no stylesheet and cannot read
+                        custom properties. Keep it in sync with the tokens.
+
+src/components/layout/DotGrid.tsx           THE BACKGROUND. See §4 and §5b.
+src/components/layout/AttentionField.tsx    The PREVIOUS background, unused,
+                                            kept because two were reverted.
 src/components/layout/SectionRail.tsx       Gutter marker, xl+ only
 src/components/layout/SectionLink.tsx       Route-aware nav links
-src/components/layout/MobileNav.tsx         Below 768px
+src/components/layout/MobileNav.tsx         Below 768px. Portalled to body.
 src/components/projects/                    The six flagship artifacts
+src/components/projects/HarnessMap.tsx      Block 05, two views. §8d
 ```
 
 ---
@@ -465,6 +617,45 @@ by coefficient of variation. It is the tool that would have caught the site's
 own copy problems in §8b. If the voice ever needs re-auditing, run his linter
 rather than re-deriving the checks.
 
+## 8e. The accent, and how a rebrand actually works
+
+**Green `#00E88C`, changed from Plasma pink `#FF3D8B` on 4 August 2026.**
+
+The swap was five token values in `globals.css` plus four files that cannot read
+CSS custom properties. That is the whole surface area, and it is worth knowing
+before the next colour change:
+
+| Where | Why it cannot use a token |
+|---|---|
+| `opengraph-image.tsx` | Satori has no browser and no stylesheet |
+| `DotGrid.tsx` fallback | Guard for a missing token at canvas init |
+| `AttentionField.tsx` fallback | Same, in the unused background |
+| Two code comments | Quoted the old hex as history |
+
+Measured before committing, not chosen by eye:
+
+| | Green | Old pink |
+|---|---|---|
+| Accent on `--ink-900` | **12.26:1** | 5.97:1 |
+| Dark text on filled accent | **12.26:1** | 5.97:1 |
+| `--accent-dim` on `--ink-900` | **7.04:1** | 3.63:1 |
+
+Two consequences worth carrying forward:
+
+- **The old "accent copy must stay at label or headline size" constraint is
+  gone.** It existed because the pink sat low on contrast. Green has double the
+  headroom, so size is now taste, not accessibility.
+- **`--series-1/2/3` did NOT move, deliberately.** They are dataviz-validated as
+  a set for deuteranopia and protanopia separation against the chart surface,
+  and none of that depended on the accent. Recolouring charts to match the brand
+  means re-running the dataviz validator from scratch. "Make the charts green
+  too" is exactly the by-eye change that rule exists to stop.
+- One thing improved for free: `--accent` and `--series-1` used to be
+  near-identical pinks, which is why `ArchitectureDiagram` carries selection by
+  weight rather than hue. That collision is gone, so hue is now available there
+  if wanted. `HarnessMap` copied the weight convention, so change both or
+  neither.
+
 ## 9. Hard rules
 
 Full list in `AGENTS.md`. The ones that bite most often:
@@ -499,3 +690,35 @@ Full list in `AGENTS.md`. The ones that bite most often:
   built and reverted. For a taste decision, **build the comparison and let him
   look** rather than shipping one and defending it. That is what the background
   lab was for and it worked, right up until he preferred the original.
+- **He asks for a specific thing and means it.** DotGrid, the green accent and
+  the harness block were all named requests, not open briefs. Deliver the thing
+  he asked for; where a house rule conflicts, honour the rule, ship it, and say
+  clearly what you changed and how to flip it back. `DEMO_PALETTE` in
+  `DotGrid.tsx` is the pattern.
+- **He reports bugs from a real device, and he is right even when the tooling
+  disagrees.** All three mobile bugs in §5b were invisible to Playwright. When
+  he says something looks wrong on his phone, the tooling is the thing to doubt.
+
+---
+
+## 11. Before making the repo public
+
+It is private on purpose. This repo is a working notebook, not a portfolio
+artifact, and a hiring manager who likes the site is exactly the person who
+would click through to it. Currently readable by anyone with access:
+
+- **This file**, which states plainly that both blog posts were drafted by an
+  assistant rather than written by him.
+- The reasoning for anonymising three freelance clients, including that they are
+  friends.
+- The `William Hill` framing note: every cold reader inferred redundancy, a visa
+  problem or unavailability.
+- Three reviewers' verbatim critiques of him, including the certifications
+  reading as a junior signal and his own Method section being unreadable.
+- `AGENTS.md`, which opens on what made the page read as "AI slop".
+
+Either keep it private, or move the internal docs (`HANDOFF.md`, `AGENTS.md`,
+`DESIGN.md`, `PLAN.md`, `CONTENT-BRIEF.md`) into a separate private repo first.
+
+`gh repo edit rajo69/portfolio-website --visibility public` if he decides
+otherwise.
