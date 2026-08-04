@@ -1,6 +1,7 @@
 import { Section } from "@/components/layout/Section";
 import { LiveEmbed } from "@/components/section/LiveEmbed";
 import { Block, Points, Fixes } from "@/components/section/FlagshipParts";
+import { ArchitectureDiagram } from "@/components/projects/ArchitectureDiagram";
 import { Clusters3D } from "@/components/projects/Clusters3D";
 import { ForecastScorecard } from "@/components/projects/ForecastScorecard";
 import { GatedAttentionExplorer } from "@/components/projects/GatedAttentionExplorer";
@@ -46,7 +47,14 @@ export function Flagship() {
           period="2026"
           title="AI Accountant"
           lede="Categorises transactions, reconciles bank lines and drafts management letters off a Xero connection, and shows its working on every one, because an accountant signs the accounts."
-          artifact={<LiveEmbed />}
+          artifact={
+            /* The running app first, then how it is wired. Hiring-manager
+               research named the missing architecture diagram explicitly. */
+            <div className="space-y-6">
+              <LiveEmbed />
+              <ArchitectureDiagram />
+            </div>
+          }
           stats={[
             { value: "94%", caption: "Categorisation accuracy" },
             { value: "<2s", caption: "Per transaction" },

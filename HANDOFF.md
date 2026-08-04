@@ -158,11 +158,10 @@ Do not repeat these.
    data.
 
 3. **Design pass, part 2:** scrub-linked rail through the flagship blocks, sticky section eyebrows, larger/tighter hero type.
-4. **Architecture diagram** for AI Accountant. Named explicitly in hiring-manager research; still absent.
-5. **CV PDF** at `/cv`. He has a build pipeline that produces one.
-6. **Services/process block** for the client audience.
-7. **RSS + per-post OG images** for the blog.
-8. **Deploy to Vercel.**
+4. **CV PDF** at `/cv`. He has a build pipeline that produces one.
+5. **Services/process block** for the client audience.
+6. **RSS + per-post OG images** for the blog.
+7. **Deploy to Vercel.**
 
 ### Done since `c6d07b4`
 
@@ -171,6 +170,21 @@ Do not repeat these.
   Lenis (`lib/scroll-lock.ts`) rather than setting `overflow` on the document
   element, which is the thing Lenis measures against. Not rendered while closed,
   so no server markup carries invisible strings.
+- **AI Accountant architecture diagram.** `ArchitectureDiagram.tsx`, stacked
+  under the live embed in block 01. It deliberately does **not** draw
+  infrastructure, because Next to FastAPI to Postgres is true of every app ever
+  built. It draws **where the model is allowed to be**: three paths through the
+  same system, colour marking LLM presence. Reconcile has no accent anywhere
+  and that absence is the argument. Node names in
+  `src/content/data/architecture.ts` are the literal `workflow.add_node` calls
+  from the repo, cited by file and line.
+  **Note the repo's own `docs/ARCHITECTURE.md` is stale**: dated 2026-03-22, it
+  still says embeddings are 1536-dim in section 6.3 and invariant 9, but
+  `embedding_service.py` pins all-MiniLM-L6-v2 at 384 and there is a migration
+  renaming it. The code wins. Worth telling Rajarshi so he can fix his doc.
+- **Design pass 2.** Hero to 116px at 1440, and `SectionRail`, a gutter marker
+  that pins for the life of its section with a scrubbed fill and a step count.
+  See DESIGN.md section 5.1.
 - **SEO base.** `app/sitemap.ts`, `app/robots.ts`, and a JSON-LD `Person` in the
   root layout. All three read `profile.meta.siteUrl`, so **confirming the domain
   is a one-line change in `profile.ts` and nothing else**. The sitemap filters
