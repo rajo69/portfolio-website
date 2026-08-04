@@ -205,6 +205,35 @@
   }
 }
 
+/* PHONES GET THE OPAQUE PANEL, NO BLUR. This is a performance fix, not a
+   taste one, and it is the cause of the stutter Rajarshi reported on 4 August
+   2026.
+
+   Nine elements on the home page carry `.surface`, and each one asks the
+   compositor for blur(20px) saturate(1.6) of whatever is behind it. Behind all
+   of them is a position:fixed canvas that repaints every frame, so the backdrop
+   is never static and every blur has to be recomputed every frame, per card. A
+   desktop GPU absorbs that. A phone does not.
+
+   Dropping to the same opaque treatment the @supports fallback already uses
+   costs nothing visually here: the glass reads as glass because of what shows
+   through it, and on a 390px screen a card fills the width with almost nothing
+   behind it to refract anyway.
+
+   HANDOFF §5 flagged this cost as UNMEASURED because chrome-headless-shell does
+   not implement backdrop-filter, so Playwright could never see it. It went to a
+   real phone instead, which is where it showed up. */
+@media (max-width: 900px) {
+  .surface,
+  .glass {
+    background:
+      linear-gradient(to bottom, rgb(244 243 240 / 0.028), transparent 120px),
+      var(--ink-800);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 /* A single soft bloom, used once per major section to give the flat black
    somewhere to breathe. Purely atmospheric, never behind body copy. */
 .bloom::before {

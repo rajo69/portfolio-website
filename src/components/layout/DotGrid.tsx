@@ -104,11 +104,23 @@ export function DotGrid() {
       ? hexToRgb("#5227FF")
       : readToken("--accent", "#00e88c");
 
+    /* Does this device have a real hovering pointer?
+       On a phone there is none, so the proximity halo can never be seen: a
+       finger only produces pointer events while it is down. The loop below used
+       to run at 60fps forever anyway, repainting a full-screen canvas of
+       identical frames for an effect the device cannot show. That was half the
+       stutter Rajarshi reported; the other half was the backdrop blur, see
+       globals.css. */
+    const hasHover =
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: hover)").matches;
+
     let dots: Dot[] = [];
     let w = 0;
     let h = 0;
     let dpr = 1;
     let raf = 0;
+    let running = false;
     let last = performance.now();
 
     // Pointer lives outside the viewport until it is actually moved, so nothing
@@ -183,9 +195,18 @@ export function DotGrid() {
       }
     }
 
+    /** Start the loop if it is not already running. Idempotent. */
+    function ensureRunning() {
+      if (running) return;
+      running = true;
+      last = performance.now();
+      raf = requestAnimationFrame(step);
+    }
+
     function step(now: number) {
       const dt = Math.min((now - last) / 1000, 1 / 30);
       last = now;
+      let moving = false;
 
       /* Critically damped spring home. `returnDuration` sets the natural
          frequency and `resistance` trims the damping, so both of his numbers
@@ -211,21 +232,37 @@ export function DotGrid() {
           d.y = d.hy;
           d.vx = 0;
           d.vy = 0;
+        } else {
+          moving = true;
         }
       }
 
       draw();
-      raf = requestAnimationFrame(step);
+
+      /* Stop when there is nothing left to animate. A settled grid with the
+         pointer off-screen is a still image, and repainting it is pure cost.
+         Any of the listeners below restarts the loop. */
+      const pointerLive = hasHover && pointer.x > -9999;
+      if (moving || pointerLive) {
+        raf = requestAnimationFrame(step);
+      } else {
+        running = false;
+      }
     }
 
     function onMove(e: PointerEvent) {
+      // A touch drag fires pointermove too, and lighting a halo under a finger
+      // that is about to lift looks like a rendering fault rather than a hover.
+      if (!hasHover) return;
       pointer.x = e.clientX;
       pointer.y = e.clientY;
+      ensureRunning();
     }
 
     function onLeave() {
       pointer.x = -9999;
       pointer.y = -9999;
+      ensureRunning();
     }
 
     function onClick(e: PointerEvent) {
@@ -241,11 +278,16 @@ export function DotGrid() {
         d.vx += (dx / dist) * push;
         d.vy += (dy / dist) * push;
       }
+      // The shockwave is the one thing a touch device still gets.
+      ensureRunning();
     }
 
     function onResize() {
       build();
-      if (reduced) draw();
+      // Always repaint: the grid is rebuilt at the new size and, with the loop
+      // idle, nothing else would put it on screen.
+      draw();
+      if (!reduced) ensureRunning();
     }
 
     build();
@@ -261,7 +303,10 @@ export function DotGrid() {
     window.addEventListener("pointerdown", onClick, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     window.addEventListener("resize", onResize);
-    raf = requestAnimationFrame(step);
+
+    // Paint the resting grid once, then let the listeners decide whether the
+    // loop ever needs to run. On a phone, typically it never does.
+    draw();
 
     return () => {
       cancelAnimationFrame(raf);

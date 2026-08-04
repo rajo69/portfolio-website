@@ -104,7 +104,25 @@ export function MobileNav({
           role="dialog"
           aria-modal="true"
           aria-label="Site menu"
-          className="fixed inset-0 z-50 flex flex-col overscroll-contain bg-ink-900/95 backdrop-blur-lg outline-none md:hidden"
+          /*
+            SOLID, AND NOT VIA AN OPACITY MODIFIER.
+
+            This was `bg-ink-900/95 backdrop-blur-lg` and it rendered as
+            transparent on a real phone: the page text showed straight through
+            the open menu. Tailwind compiles the `/95` modifier to
+            `color-mix(in oklab, var(--color-ink-900) 95%, transparent)`, and
+            `color-mix` with an oklab interpolation space needs Safari 16.4+.
+            Where it fails to parse, the declaration is dropped entirely and the
+            panel keeps no background at all, which is exactly what a full-screen
+            dialog must never do.
+
+            `background: var(--ink-900)` has no such dependency. The blur went
+            with it: a full-screen modal has no reason to show the page behind
+            it, and the filter was costing a phone GPU real frames for an effect
+            nobody could see through an opaque panel anyway.
+          */
+          style={{ background: "var(--ink-900)" }}
+          className="fixed inset-0 z-50 flex flex-col overscroll-contain outline-none md:hidden"
         >
           <div className="flex items-center justify-between px-(--gutter) py-5">
             <Label>Menu</Label>
