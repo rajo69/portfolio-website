@@ -2,14 +2,13 @@
 
 **Read this first in a new session.** It is the single source of truth for where this project is. `AGENTS.md` carries the hard rules, `DESIGN.md` the visual system. `PLAN.md` and `CONTENT-BRIEF.md` are older and partly stale; trust this file where they disagree.
 
-Last updated: 4 August 2026. Working tree is ahead of commit `c6d07b4`: scroll and
-nav fixes, flagship block 04, and the rebuilt block 05 explorer are uncommitted.
+Last updated: 4 August 2026, at commit `42b7e70` plus the dissertation block.
 
 ---
 
 ## 1. The end goal
 
-A personal portfolio site for **Rajarshi Nandi**, AI engineer in Sheffield, UK. It exists to get him hired or hired-for-work, fast.
+A personal portfolio site for **Rajarshi Nandi**, Data & AI engineer in Sheffield, UK. It exists to get him hired or hired-for-work, fast.
 
 Three audiences, in priority order:
 
@@ -39,7 +38,7 @@ The site is balanced as a **T**: broad foundations (SQL, ETL, Python, statistics
 |---|---|---|
 | Hero | `Hero.tsx` | Done. Logit-lens decode, parallax, 3 stat counters |
 | Spine | `Spine.tsx` | Done. Pipeline / Model / Trust, animated triangle |
-| Flagship projects | `Flagship.tsx` | **5 of 6 blocks done.** Dissertation block outstanding |
+| Flagship projects | `Flagship.tsx` | **6 blocks, all done.** Next is a UK big-data block |
 | Experience | `Experience.tsx` | Done. IBM, ADHDNET, William Hill, education on one rail |
 | Work | `Work.tsx` | Done. 13 rows, filterable by capability |
 | Method | `Method.tsx` | Done. Principle + "every guard is a scar" |
@@ -49,7 +48,7 @@ The site is balanced as a **T**: broad foundations (SQL, ETL, Python, statistics
 
 Plus `/blog` (MDX) and `/blog/[slug]`, with one **draft** post.
 
-### The five flagship blocks
+### The six flagship blocks
 
 Each follows one skeleton: **one-sentence lede → interactive artifact → three big numbers → bullets → where it broke → links.**
 
@@ -58,6 +57,14 @@ Each follows one skeleton: **one-sentence lede → interactive artifact → thre
 3. **Banking77 LoRA**: native HF model card. `0%→90.21% · 77 · ~50 min`
 4. **The Forecast I Got Wrong**: three-view scorecard. `10/11 · 49% · 0.50%`
 5. **Gated Attention**: three-instrument explorer. `99.8% · 48.3% · 25,600`
+6. **The Model That Scored 91% and 0.57%**: robustness matrix. `0.57% · 63x · 2.83 pts`
+
+**Block 06 was never actually blocked.** HANDOFF listed the v1/v2/v3 accuracies as
+needing `Project_Report.pdf`. They are not in the PDF only: the repository README
+publishes all nine cells of the model-by-attack matrix, and they are now in
+`src/content/data/robustness.ts`. The PDF would add the per-epsilon FGSM curve,
+which is the one thing still missing, so FGSM renders as a band rather than a
+line. **Check the README before believing a "blocked" row in this file.**
 
 **Block 04 is the 2024 RPubs coursework, reframed.** He chose to ship it knowing
 the Oct 2024 point forecast is now falsified, so the block scores it instead of
@@ -136,8 +143,7 @@ Do not repeat these.
 | Item | Needed for |
 |---|---|
 | **Freelance engagements** | Experience section. Client/sector (anonymised fine), what was built, when, one outcome |
-| **Dissertation v1/v2/v3 accuracies** under clean/FGSM/PGD, from `Project_Report.pdf` | Flagship block 06 |
-| **Supervisor names**, and whether the industrial partner can be named | Block 06 |
+| **Supervisor names**, and whether the industrial partner can be named | Block 06 currently claims "an academic and an industrial supervisor" with no names. The repo's acknowledgments thank two GitHub handles, but naming someone as your supervisor is a claim about a real person, so nothing is named until he confirms. |
 | **94% vs 88% contradiction** | His accounting landing page claims 94%; the eval README says Haiku 88% (93.5% easy, 75% hard) and marks tiered routing as *not yet measured*. Site currently shows 94%. |
 | **Domain** | CSP allowlist, canonical URLs, OG, JSON-LD |
 | **"What are you looking for?"** FAQ answer | Last `TODO` blocking a production build |
@@ -145,9 +151,7 @@ Do not repeat these.
 
 ### Queued work
 
-1. **Flagship block 06**, the dissertation. Agreed approach: a hand-built interactive ResNet-18 layer strip in SVG (not Netron), above the real v1/v2/v3 robustness matrix.
-
-2. **Flagship block 07, a UK public data set at scale.** Agreed 4 August 2026, and
+1. **Flagship block 07, a UK public data set at scale.** Agreed 4 August 2026, and
    the rendered "Next" line under the flagship blocks already promises it. Either
    **HM Land Registry Price Paid** (roughly 30M transactions since 1995, open
    licence) or the **NHS English Prescribing Dataset** (hundreds of millions of
@@ -185,6 +189,16 @@ Do not repeat these.
 - **Design pass 2.** Hero to 116px at 1440, and `SectionRail`, a gutter marker
   that pins for the life of its section with a scrubbed fill and a step count.
   See DESIGN.md section 5.1.
+- **The cursor is now the query token.** `AttentionField` tracks the pointer and
+  most heads fire from the node nearest it, with structure brightening in a
+  300px falloff. Proximity brightens in **neutral**, never accent, so the cursor
+  reveals the lattice instead of dragging a pink blob across the page. Nodes
+  also drift on per-node phases so the field is alive between events. Measured,
+  not eyeballed: 2.8x the lit pixels around the cursor against an unattended box
+  the same size, whole-canvas resting density unchanged at 6.8%. Fine pointers
+  only, and reduced motion attaches no listener at all.
+- **Title is now "Data & AI Engineer"** in `profile.ts`, which flows to the hero
+  eyebrow, the metadata title template and the JSON-LD `jobTitle`.
 - **SEO base.** `app/sitemap.ts`, `app/robots.ts`, and a JSON-LD `Person` in the
   root layout. All three read `profile.meta.siteUrl`, so **confirming the domain
   is a one-line change in `profile.ts` and nothing else**. The sitemap filters

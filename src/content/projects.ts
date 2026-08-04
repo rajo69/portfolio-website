@@ -106,13 +106,11 @@ export const projects: Project[] = [
       "https://github.com/rajo69/Enhancing-Neural-Network-Robustness-using-Hybrid-Adversarial-Training",
     caseStudy: true,
     metrics: [
-      // Both of these are defensible from the degree record. The robustness
-      // numbers would be stronger and should replace the second one once
-      // Rajarshi sends them, along with the supervisors' names and whether
-      // the industrial partner can be named. Until then nothing here is a
-      // placeholder: a rendered "TODO" on a live card is worse than a
-      // smaller true number.
-      { label: "Reviewed by academic and industrial supervisors", value: "2", chart: "gauge", series: [] },
+      // The robustness numbers were listed as blocked on Rajarshi, needing
+      // Project_Report.pdf. They were not: the repository README publishes all
+      // nine cells of the model-by-attack matrix, and they are now in
+      // content/data/robustness.ts driving flagship block 06.
+      { label: "Clean-trained ResNet-18 under PGD, from 91.58%", value: "0.57%", chart: "gauge", series: [] },
       { label: "MSc Data Science, University of Leeds", value: "Merit", chart: "gauge", series: [] },
     ],
   },

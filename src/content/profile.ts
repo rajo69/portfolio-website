@@ -13,7 +13,7 @@ import type { Profile } from "./types";
 export const profile: Profile = {
   name: "Rajarshi Nandi",
 
-  title: "AI Engineer",
+  title: "Data & AI Engineer",
 
   /**
    * The thesis, and the thread that actually runs through the whole CV:

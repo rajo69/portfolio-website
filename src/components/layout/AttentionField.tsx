@@ -17,9 +17,26 @@ import { useReducedMotion } from "@/lib/use-reduced-motion";
  *                   with them, the gated-attention finding, rendered.
  *   3. IT DECAYS    Everything relaxes back to near-invisible, so the field
  *                   never competes with the copy sitting on top of it.
+ *   4. YOU ARE THE  The cursor is the query token. Structure brightens around
+ *      QUERY        it with a distance falloff, and most heads now fire from
+ *                   the node nearest the pointer instead of a random one.
+ *   5. IT BREATHES  Every node drifts on its own slow phase, so the lattice is
+ *                   alive between events rather than frozen.
  *
- * Budget: ≤420 nodes, DPR capped at 2, paused when off-screen or on a hidden
- * tab. Reads --accent at runtime, so swapping the token restyles the canvas.
+ * WHY THE CURSOR IS A QUERY AND NOT A REPULSOR. Pushing particles away from
+ * the pointer is the stock effect and means nothing. In attention, a query
+ * attends over keys with weights that fall off by similarity, so moving the
+ * pointer moves the query and the field answers. That is the one interaction
+ * that is actually about the subject of this site.
+ *
+ * PROXIMITY BRIGHTENS IN NEUTRAL, NEVER IN ACCENT. The cursor reveals
+ * structure, it does not paint a pink blob across the page. Only a firing head
+ * takes the accent, which is what keeps an event legible as an event and keeps
+ * the accent budget for the numbers.
+ *
+ * Budget: ≤620 nodes, DPR capped at 2, paused when off-screen or on a hidden
+ * tab, pointer work gated to fine pointers. Reads --accent at runtime, so
+ * swapping the token restyles the canvas.
  */
 
 type Node = {
@@ -31,6 +48,13 @@ type Node = {
   gateTarget: number;
   /** Decaying highlight from being part of a firing head. */
   flash: number;
+  /** Attention weight from the cursor-as-query, 0..1, lerped for smoothness. */
+  attend: number;
+  /** Per-node phase so the drift never looks like one synchronised wave. */
+  phase: number;
+  /** Current drift offset, recomputed each step and applied at draw time. */
+  dx: number;
+  dy: number;
 };
 
 type Edge = {
@@ -66,8 +90,30 @@ const MAX_PULSES = 30;
 /** Probability a node also throws a long-range edge across the field. */
 const LONG_RANGE_CHANCE = 0.16;
 
-const FIRE_INTERVAL = 1100; // ms between attention heads firing
+const FIRE_INTERVAL = 900; // ms between attention heads firing
 const GATE_INTERVAL = 2400; // ms between gate events
+
+/** How far the cursor-query attends, in px. */
+const ATTEND_RADIUS = 340;
+/** Chance a head fires from the cursor rather than at random, when pointing. */
+const ATTEND_FIRE_BIAS = 0.7;
+/**
+ * Alpha added at full attention. Tuned by sampling `getImageData`, not by eye.
+ *
+ * Measured in a 300px box around the cursor against an unattended box of the
+ * same size: 2.45x the lit pixels, and 3.8x the total light once lit fraction
+ * and mean alpha are combined. Whole-canvas resting density is unchanged at
+ * 6.8% lit, so the field has not crept toward competing with the copy.
+ *
+ * The first pass at 0.5 / 0.24 measured 2.3x total and read as almost nothing
+ * on a dark screen, which is the same failure mode DESIGN.md records from the
+ * original build. Sample after any change to these two numbers.
+ */
+const ATTEND_NODE_GAIN = 0.72;
+const ATTEND_EDGE_GAIN = 0.34;
+/** Idle drift, so the lattice is alive between events. Peak offset in px. */
+const DRIFT_AMP = 1.7;
+const DRIFT_SPEED = 0.00035; // rad per ms
 
 /**
  * `#rrggbb` → `"r g b"` for use in `rgb(r g b / alpha)`.
@@ -139,6 +185,12 @@ export function AttentionField() {
     let width = 0;
     let height = 0;
 
+    /**
+     * The cursor-as-query. Canvas is `fixed inset-0`, so client coordinates
+     * are canvas coordinates and no rect maths is needed.
+     */
+    const pointer = { x: -9999, y: -9999, active: false };
+
     // ── Build ──────────────────────────────────────────────────────────────
     function build() {
       const rect = canvas!.getBoundingClientRect();
@@ -166,6 +218,10 @@ export function AttentionField() {
             gate: 1,
             gateTarget: 1,
             flash: 0,
+            attend: 0,
+            phase: Math.random() * Math.PI * 2,
+            dx: 0,
+            dy: 0,
           });
         }
       }
@@ -210,10 +266,34 @@ export function AttentionField() {
 
     // ── Events ─────────────────────────────────────────────────────────────
 
+    /** Nearest node to the cursor, or -1 if the pointer is away or idle. */
+    function queryNode(): number {
+      if (!pointer.active) return -1;
+      let best = -1;
+      let bestD = ATTEND_RADIUS * ATTEND_RADIUS;
+      for (let i = 0; i < nodes.length; i++) {
+        const dx = nodes[i].x - pointer.x;
+        const dy = nodes[i].y - pointer.y;
+        const d = dx * dx + dy * dy;
+        if (d < bestD) {
+          bestD = d;
+          best = i;
+        }
+      }
+      return best;
+    }
+
     /** One attention head fires: a query node lights its edges. */
     function fireHead() {
       if (!nodes.length) return;
-      const query = Math.floor(Math.random() * nodes.length);
+
+      // Most of the time, fire from wherever the reader is pointing. That is
+      // the whole interaction: the cursor is the query, so the field answers
+      // where you are rather than somewhere you are not looking.
+      let query = -1;
+      if (Math.random() < ATTEND_FIRE_BIAS) query = queryNode();
+      if (query < 0) query = Math.floor(Math.random() * nodes.length);
+
       nodes[query].flash = 1;
 
       const incident: number[] = [];
@@ -273,7 +353,10 @@ export function AttentionField() {
         // A gated node dims every edge it touches.
         const gate = Math.min(a.gate, b.gate);
         const rest = edge.kind === "grid" ? EDGE_BASE_ALPHA : LONG_EDGE_BASE_ALPHA;
-        const alpha = (rest * edge.base + edge.flash * 0.28) * gate;
+        // An edge is as attended as its more attended endpoint.
+        const attend = Math.max(a.attend, b.attend);
+        const alpha =
+          (rest * edge.base + edge.flash * 0.28 + attend * ATTEND_EDGE_GAIN) * gate;
         if (alpha < 0.002) continue;
 
         // Strongly-lit edges get their own thicker pass, there are only ever
@@ -286,8 +369,8 @@ export function AttentionField() {
         const bucket = Math.min(
           BUCKETS - 1,
           Math.floor((alpha / EDGE_MAX_ALPHA) * BUCKETS));
-        edgePaths[bucket].moveTo(a.x, a.y);
-        edgePaths[bucket].lineTo(b.x, b.y);
+        edgePaths[bucket].moveTo(a.x + a.dx, a.y + a.dy);
+        edgePaths[bucket].lineTo(b.x + b.dx, b.y + b.dy);
       }
 
       ctx!.lineWidth = 0.6;
@@ -306,31 +389,43 @@ export function AttentionField() {
         ctx!.strokeStyle = `rgb(${accent} / ${Math.min(0.85, 0.25 + edge.flash * 0.4) * gate})`;
         ctx!.lineWidth = 1.4;
         ctx!.beginPath();
-        ctx!.moveTo(a.x, a.y);
-        ctx!.lineTo(b.x, b.y);
+        ctx!.moveTo(a.x + a.dx, a.y + a.dy);
+        ctx!.lineTo(b.x + b.dx, b.y + b.dy);
         ctx!.stroke();
       }
 
-      // --- Nodes, same bucketing ---
+      /* --- Nodes ---
+         Accent is decided by `flash`, NOT by which alpha bucket a node lands
+         in. The previous version inferred "hot" from the top two buckets,
+         which was fine while flash was the only thing that could push a node
+         that bright. Cursor attention can now do it too, and keying off the
+         bucket would turn the pointer into a travelling pink blob. Firing is
+         accent; proximity is neutral and brighter. */
       const nodePaths = Array.from({ length: BUCKETS }, () => new Path2D());
+      const nodePathsHot = Array.from({ length: BUCKETS }, () => new Path2D());
+
       for (const node of nodes) {
-        const alpha = (NODE_BASE_ALPHA + node.flash * 0.5) * node.gate;
+        const alpha =
+          (NODE_BASE_ALPHA + node.flash * 0.5 + node.attend * ATTEND_NODE_GAIN) *
+          node.gate;
         if (alpha < 0.004) continue;
         const bucket = Math.min(
           BUCKETS - 1,
           Math.floor((alpha / NODE_MAX_ALPHA) * BUCKETS));
-        const radius = node.r * (1 + node.flash * 0.8);
-        nodePaths[bucket].moveTo(node.x + radius, node.y);
-        nodePaths[bucket].arc(node.x, node.y, radius, 0, Math.PI * 2);
+        // Attention swells a node slightly as well as brightening it, which
+        // is what makes the cursor feel like it has a field around it.
+        const radius = node.r * (1 + node.flash * 0.8 + node.attend * 0.45);
+        const path = node.flash > 0.25 ? nodePathsHot[bucket] : nodePaths[bucket];
+        path.moveTo(node.x + node.dx + radius, node.y + node.dy);
+        path.arc(node.x + node.dx, node.y + node.dy, radius, 0, Math.PI * 2);
       }
 
       for (let b = 0; b < BUCKETS; b++) {
         const alpha = ((b + 0.5) / BUCKETS) * NODE_MAX_ALPHA;
-        // Top two buckets are only reachable by a flashing node, so they take
-        // the accent; the resting field below them stays neutral.
-        const hot = b >= BUCKETS - 2;
-        ctx!.fillStyle = `rgb(${hot ? accent : lattice} / ${alpha})`;
+        ctx!.fillStyle = `rgb(${lattice} / ${alpha})`;
         ctx!.fill(nodePaths[b]);
+        ctx!.fillStyle = `rgb(${accent} / ${alpha})`;
+        ctx!.fill(nodePathsHot[b]);
       }
 
       // --- Pulses: never more than MAX_PULSES, so drawn individually ---
@@ -342,8 +437,10 @@ export function AttentionField() {
         const gate = Math.min(from.gate, to.gate);
         if (gate < 0.05) continue;
 
-        const x = from.x + (to.x - from.x) * pulse.t;
-        const y = from.y + (to.y - from.y) * pulse.t;
+        const fx = from.x + from.dx;
+        const fy = from.y + from.dy;
+        const x = fx + (to.x + to.dx - fx) * pulse.t;
+        const y = fy + (to.y + to.dy - fy) * pulse.t;
         // Fade in and out across the traverse rather than popping.
         const fade = Math.sin(pulse.t * Math.PI);
 
@@ -355,10 +452,35 @@ export function AttentionField() {
     }
 
     /** Advance state. `dt` is normalised to 60fps so speed is frame-independent. */
-    function step(dt: number) {
+    function step(dt: number, now: number) {
+      const t = now * DRIFT_SPEED;
+      const r2 = ATTEND_RADIUS * ATTEND_RADIUS;
+
       for (const node of nodes) {
         node.flash *= Math.pow(0.94, dt);
         node.gate += (node.gateTarget - node.gate) * Math.min(1, 0.06 * dt);
+
+        // Idle drift. Two different frequencies so it wanders rather than
+        // orbiting, and the phase is per node so the field never pulses as
+        // one synchronised sheet.
+        node.dx = Math.cos(t + node.phase) * DRIFT_AMP;
+        node.dy = Math.sin(t * 0.8 + node.phase * 1.3) * DRIFT_AMP;
+
+        // Attention weight from the cursor. Squared falloff, which is close
+        // enough to a softmax over distance to read correctly and far cheaper.
+        // Measured against the base position, not the drifted one, so the
+        // field does not shimmer.
+        let target = 0;
+        if (pointer.active) {
+          const dx = node.x - pointer.x;
+          const dy = node.y - pointer.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < r2) {
+            const f = 1 - Math.sqrt(d2) / ATTEND_RADIUS;
+            target = f * f;
+          }
+        }
+        node.attend += (target - node.attend) * Math.min(1, 0.14 * dt);
       }
       for (const edge of edges) {
         edge.flash *= Math.pow(0.955, dt);
@@ -373,11 +495,30 @@ export function AttentionField() {
     build();
 
     if (reduced) {
-      // Static single frame: the page keeps its texture, nothing moves.
+      // Static single frame: the page keeps its texture, nothing moves, and
+      // no pointer listener is attached. Someone who asked for less motion
+      // does not want the background tracking their cursor either.
       for (let k = 0; k < 6; k++) fireHead();
-      step(1);
+      step(1, performance.now());
       draw();
       return;
+    }
+
+    // Cursor-as-query, fine pointers only. On touch there is no hover state to
+    // track, and a field that lit up under the last tap would be noise.
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const onPointerMove = (e: PointerEvent) => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.active = true;
+    };
+    const onPointerOut = () => {
+      // Let attention decay rather than snapping off.
+      pointer.active = false;
+    };
+    if (finePointer) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.addEventListener("pointerleave", onPointerOut);
     }
 
     let raf = 0;
@@ -401,7 +542,7 @@ export function AttentionField() {
         lastGate = now;
       }
 
-      step(dt);
+      step(dt, now);
       draw();
       raf = requestAnimationFrame(frame);
     }
@@ -434,6 +575,10 @@ export function AttentionField() {
       window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      if (finePointer) {
+        window.removeEventListener("pointermove", onPointerMove);
+        document.removeEventListener("pointerleave", onPointerOut);
+      }
     };
   }, [reduced]);
 
