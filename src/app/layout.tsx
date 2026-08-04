@@ -58,6 +58,35 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
+/**
+ * Structured data.
+ *
+ * Only facts already visible on the rendered page: name, role, city, the
+ * public email, the public profiles, and the stack that the Stack section
+ * already lists. Nothing is imported from the source profile, which holds NI
+ * number, DOB, address, visa status and salary. See AGENTS.md rule 7.
+ *
+ * `knowsAbout` is derived from `profile.stack` so it cannot drift from what
+ * the page actually claims.
+ */
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  url: profile.meta.siteUrl,
+  jobTitle: profile.title,
+  description: profile.meta.description,
+  email: `mailto:${profile.email}`,
+  // City level only, the same string the footer prints.
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: profile.location.split(",")[0].trim(),
+    addressCountry: "GB",
+  },
+  sameAs: Object.values(profile.socials).filter(Boolean),
+  knowsAbout: profile.stack.flatMap((group) => group.items),
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -72,6 +101,16 @@ export default function RootLayout({
           and the scroll limit stays frozen at whatever the first page measured.
           The sticky footer comes from min-h-screen on the flex column below. */}
       <body className="relative">
+        {/* Structured data, not executable code, so a native script tag is
+            correct here rather than next/script. `<` is escaped because
+            JSON.stringify does not sanitise for injection into HTML. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+
         {/* Ambient layer, fixed, behind everything, pointer-transparent. */}
         <AttentionField />
 

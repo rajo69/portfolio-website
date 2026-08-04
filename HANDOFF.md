@@ -157,14 +157,27 @@ Do not repeat these.
    become visible. Needs one non-obvious defensible finding, not a tour of the
    data.
 
-3. **Mobile navigation.** Still missing below 768px. Overdue.
-4. **Design pass, part 2:** scrub-linked rail through the flagship blocks, sticky section eyebrows, larger/tighter hero type.
-5. **Architecture diagram** for AI Accountant. Named explicitly in hiring-manager research; still absent.
-6. **CV PDF** at `/cv`. He has a build pipeline that produces one.
-7. **Services/process block** for the client audience.
-8. **RSS + per-post OG images** for the blog.
-9. **SEO finish:** sitemap, robots, JSON-LD `Person`.
-10. **Deploy to Vercel.**
+3. **Design pass, part 2:** scrub-linked rail through the flagship blocks, sticky section eyebrows, larger/tighter hero type.
+4. **Architecture diagram** for AI Accountant. Named explicitly in hiring-manager research; still absent.
+5. **CV PDF** at `/cv`. He has a build pipeline that produces one.
+6. **Services/process block** for the client audience.
+7. **RSS + per-post OG images** for the blog.
+8. **Deploy to Vercel.**
+
+### Done since `c6d07b4`
+
+- **Mobile navigation.** `MobileNav.tsx`, below 768px only. Dialog panel, Escape
+  to close, focus trapped and returned to the trigger, scroll locked by pausing
+  Lenis (`lib/scroll-lock.ts`) rather than setting `overflow` on the document
+  element, which is the thing Lenis measures against. Not rendered while closed,
+  so no server markup carries invisible strings.
+- **SEO base.** `app/sitemap.ts`, `app/robots.ts`, and a JSON-LD `Person` in the
+  root layout. All three read `profile.meta.siteUrl`, so **confirming the domain
+  is a one-line change in `profile.ts` and nothing else**. The sitemap filters
+  drafts explicitly rather than trusting `getPosts`, which keeps drafts visible
+  in development. `knowsAbout` is derived from `profile.stack` so it cannot
+  drift from what the Stack section claims. Still outstanding for SEO: per-post
+  OG images, which is item 7 above.
 
 ---
 
